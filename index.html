@@ -4,331 +4,233 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mockup Studio Pro</title>
+<!-- Global Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--accent:#c9956b;--accent2:#a67a52;--bg:#09090b;--card:#111113;--card2:#161618;--hover:#1c1c1f;--border:#1e1e22;--border2:#2a2a2e;--text:#e4e4e7;--dim:#71717a;--muted:#3f3f46;--radius:8px;--sb-w:270px}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#222;border-radius:3px}
-
-.sb{width:var(--sb-w);min-width:var(--sb-w);background:var(--card);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
-.sb.left{border-right:1px solid var(--border)}.sb.right{border-left:1px solid var(--border)}
-.sb-inner{padding:12px;display:flex;flex-direction:column;gap:12px}
-
-.logo{display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.logo-i{width:26px;height:26px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:800}
-.logo-t{font-size:13px;font-weight:700;letter-spacing:-.3px}.logo-t b{color:var(--accent)}
-.logo-v{font-size:7px;color:#000;background:var(--accent);padding:2px 5px;border-radius:3px;margin-left:auto;font-weight:700}
-
-.sec{display:flex;flex-direction:column;gap:6px}
-.sec-h{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:1px 0}
-.sec-t{font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:600;transition:color .2s}
-.sec-h:hover .sec-t{color:var(--dim)}
-.sec-b{font-size:7px;background:rgba(201,149,107,.15);color:var(--accent);padding:2px 5px;border-radius:3px;font-weight:600}
-.sec-arrow{font-size:8px;color:var(--muted);transition:transform .2s}
-.sec-arrow.collapsed{transform:rotate(-90deg)}
-.sec-body{display:flex;flex-direction:column;gap:6px;transition:all .3s ease}
-.sec-body.collapsed{max-height:0!important;overflow:hidden;opacity:0;margin:0;padding:0}
-.divider{height:1px;background:var(--border);margin:1px 0}
-
-.up-zone{border:1.5px dashed #27272a;border-radius:var(--radius);padding:10px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;background:var(--bg)}
-.up-zone:hover{border-color:var(--accent);background:#0f0e0b}
-.up-zone.has{border-style:solid;border-color:rgba(201,149,107,.25);padding:4px}
-.up-zone input{display:none}
-.up-info{display:flex;align-items:center;gap:8px}
-.up-icon{width:28px;height:28px;border-radius:6px;background:var(--hover);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.up-txt .l1{font-size:10px;font-weight:500}.up-txt .l2{font-size:8px;color:var(--dim);margin-top:1px}
-.up-prev{width:100%;height:50px;object-fit:cover;border-radius:5px;display:none}
-.up-zone.has .up-prev{display:block}.up-zone.has .up-info{display:none}
-.rm-btn{position:absolute;top:5px;right:5px;width:16px;height:16px;background:rgba(239,68,68,.85);border:none;border-radius:50%;color:#fff;font-size:7px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:5}
-.rm-btn:hover{transform:scale(1.1)}.up-zone.has .rm-btn{display:flex}
-
-.lay-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.lay-opt{aspect-ratio:16/10;background:var(--bg);border:1.5px solid transparent;border-radius:5px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;padding:4px}
-.lay-opt:hover{border-color:#27272a}.lay-opt.act{border-color:var(--accent);background:rgba(201,149,107,.05)}
-.lay-opt svg{width:100%;height:100%;opacity:.45}.lay-opt.act svg{opacity:1}
-
-.theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.theme-card{aspect-ratio:16/10;border-radius:5px;cursor:pointer;border:1.5px solid transparent;transition:all .15s;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:3px 5px}
-.theme-card:hover{border-color:#27272a;transform:scale(1.02)}.theme-card.act{border-color:var(--accent)}
-.theme-card span{font-size:6px;color:rgba(255,255,255,.8);font-weight:600;z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.5)}
-
-.bg-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
-.bg-sw{aspect-ratio:1;border-radius:5px;cursor:pointer;border:2px solid transparent;transition:all .15s}
-.bg-sw:hover{transform:scale(1.08)}.bg-sw.act{border-color:#fff;box-shadow:0 0 0 1px var(--bg)}
-
-.tpl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
-.tpl-card{aspect-ratio:16/9;border-radius:6px;cursor:pointer;border:1.5px solid var(--border);transition:all .2s;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
-.tpl-card:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
-.tpl-card span{font-size:7px;color:rgba(255,255,255,.8);font-weight:600;z-index:1;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-.tpl-card small{font-size:5px;color:rgba(255,255,255,.4);z-index:1}
-
-.inp-g{display:flex;flex-direction:column;gap:2px}
-.inp-g label{font-size:8px;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:.4px}
-.inp-g input[type="text"],.inp-g select,.inp-g textarea{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:5px 7px;color:var(--text);font-size:10px;font-family:inherit;outline:none;transition:border-color .2s}
-.inp-g input:focus,.inp-g select:focus,.inp-g textarea:focus{border-color:var(--accent)}
-.inp-g textarea{resize:vertical;min-height:40px}
-select{cursor:pointer}select option{background:var(--bg)}
-.inp-row{display:flex;gap:4px}.inp-row .inp-g{flex:1}
-
-.tog-row{display:flex;justify-content:space-between;align-items:center;padding:1px 0}
-.tog-l{font-size:9px;color:#a1a1aa}
-.tog{width:30px;height:16px;background:#27272a;border-radius:8px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
-.tog.on{background:var(--accent)}
-.tog::after{content:'';position:absolute;width:12px;height:12px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .2s}
-.tog.on::after{transform:translateX(14px)}
-
-.rng-g{display:flex;flex-direction:column;gap:3px}
-.rng-h{display:flex;justify-content:space-between;align-items:center}
-.rng-h span{font-size:8px;color:#a1a1aa}.rng-h .rv{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
-input[type="range"]{-webkit-appearance:none;width:100%;height:2px;background:#27272a;border-radius:2px;outline:none}
-input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;background:var(--accent);border-radius:50%;cursor:pointer}
-
-.btn-p{width:100%;padding:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:var(--radius);font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px}
-.btn-p:hover{box-shadow:0 4px 16px rgba(201,149,107,.3);transform:translateY(-1px)}
-.btn-o{padding:6px 8px;background:transparent;color:var(--dim);border:1px solid var(--border);border-radius:5px;font-size:9px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s}
-.btn-o:hover{border-color:var(--muted);color:var(--text)}
-.btn-s{padding:4px 7px;background:rgba(201,149,107,.1);color:var(--accent);border:1px solid rgba(201,149,107,.2);border-radius:4px;font-size:8px;font-weight:600;cursor:pointer;font-family:inherit}
-.btn-s:hover{background:rgba(201,149,107,.2)}
-.btn-d{padding:4px 7px;background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:8px;cursor:pointer;font-family:inherit}
-.btn-d:hover{background:rgba(239,68,68,.2)}
-.btn-row{display:flex;gap:4px}.btn-row>*{flex:1}
-
-.color-row{display:flex;align-items:center;gap:6px}
-.color-row input[type="color"]{width:26px;height:26px;border:1px solid var(--border);border-radius:5px;cursor:pointer;background:none;padding:0}
-.color-row input[type="color"]::-webkit-color-swatch-wrapper{padding:2px}
-.color-row input[type="color"]::-webkit-color-swatch{border-radius:3px;border:none}
-.color-row label{font-size:9px;color:var(--dim)}
-
-.preset-list{display:flex;flex-direction:column;gap:3px;max-height:140px;overflow-y:auto}
-.preset-item{display:flex;align-items:center;justify-content:space-between;padding:5px 6px;background:var(--bg);border-radius:4px;border:1px solid var(--border);cursor:pointer;transition:all .15s}
-.preset-item:hover{border-color:var(--accent)}
-.preset-item .pi-n{font-size:9px;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.preset-item .pi-d{font-size:7px;color:var(--muted);margin:0 6px}
-.preset-item .pi-a{display:flex;gap:3px}
-
-.txt-list{display:flex;flex-direction:column;gap:3px;max-height:140px;overflow-y:auto}
-.txt-item{display:flex;align-items:center;gap:4px;padding:4px 6px;background:var(--bg);border-radius:4px;border:1px solid var(--border);cursor:pointer;transition:all .15s}
-.txt-item:hover,.txt-item.sel{border-color:var(--accent)}
-.txt-item .ti-t{font-size:9px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:2px}
-.tab{flex:1;padding:6px 2px;font-size:7px;font-weight:600;text-align:center;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.3px;text-transform:uppercase}
-.tab:hover{color:var(--dim)}.tab.act{color:var(--accent);border-bottom-color:var(--accent)}
-.tab-body{display:none}.tab-body.act{display:flex;flex-direction:column;gap:8px}
-
-.img-ctrl{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:7px;display:flex;flex-direction:column;gap:5px}
-.img-ctrl-h{font-size:9px;font-weight:600;display:flex;align-items:center;gap:4px}
-
-/* STAGE */
-.stage-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.stage-bar{height:38px;min-height:38px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 12px}
-.stage-bar-l{display:flex;align-items:center;gap:8px}
-.stage-bar .si{font-size:9px;color:var(--muted)}.stage-bar .sd{font-size:9px;color:var(--dim);font-variant-numeric:tabular-nums}
-.zd{font-size:9px;color:var(--dim);background:var(--bg);padding:3px 6px;border-radius:4px;border:1px solid var(--border);font-variant-numeric:tabular-nums}
-.zb{width:22px;height:22px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .1s}
-.zb:hover{border-color:var(--muted);color:var(--text)}
-.stage-bar-r{display:flex;align-items:center;gap:4px}
-
-.stage{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden;background-image:radial-gradient(#141416 1px,transparent 1px);background-size:18px 18px}
-.stage-cv{position:relative;transition:transform .25s ease}
-
-/* MOCKUP */
-.ms{width:960px;height:600px;border-radius:12px;position:relative;overflow:hidden;transition:background .4s}
-.ms-bg-img{position:absolute;inset:0;z-index:0;object-fit:cover;border-radius:12px;display:none}
-.ms-bg-overlay{position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:12px}
-
-/* BROWSER */
-.bf{position:absolute;background:#fff;border-radius:10px;overflow:hidden;transition:all .35s ease;box-shadow:0 20px 50px rgba(0,0,0,.15);z-index:10}
-.bf.dragging{transition:none!important;z-index:100}
-.drag-h{position:absolute;cursor:grab;z-index:15}
-.bf .drag-h{top:0;left:0;right:0;height:30px}
-.dragging .drag-h{cursor:grabbing}
-.b-bar{height:28px;display:flex;align-items:center;padding:0 10px;gap:5px;position:relative;background:rgba(245,245,245,.95)}
-.b-bar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(0,0,0,.06)}
-.dot{width:6px;height:6px;border-radius:50%}.dot-r{background:#ff5f57}.dot-y{background:#ffbd2e}.dot-g{background:#28c840}
-.b-ctrl{display:flex;align-items:center;gap:4px;margin-left:4px}.b-ctrl span{font-size:9px;color:#ccc}
-.addr{flex:1;height:15px;background:rgba(0,0,0,.04);border-radius:3px;margin:0 5px;display:flex;align-items:center;padding:0 6px}
-.addr span{font-size:7px;color:#aaa}
-.b-nav{display:flex;gap:8px;padding:0 10px;height:20px;align-items:center;border-bottom:1px solid rgba(0,0,0,.04);background:rgba(250,250,250,.9)}
-.b-nav span{font-size:7px;color:#999}
-.b-body{width:100%;overflow:hidden;position:relative;background:#f5f0eb}
-.b-body img{width:100%;height:100%;display:block}
-.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;user-select:none}
-.ph-n{font-family:'Playfair Display',serif;font-weight:700;color:rgba(180,140,100,.15);line-height:1}
-.ph-t{font-weight:700;color:rgba(180,140,100,.25)}.ph-s{font-weight:500;color:rgba(180,140,100,.15);letter-spacing:2px;text-transform:uppercase}
-
-/* PHONE */
-.pf{position:absolute;background:#fff;border-radius:24px;padding:6px;transition:all .35s ease;z-index:20;box-shadow:0 20px 50px rgba(0,0,0,.2)}
-.pf.dragging{transition:none!important;z-index:100}
-.pf .drag-h{inset:0;border-radius:24px}
-.p-scr{width:100%;height:100%;border-radius:19px;overflow:hidden;position:relative;background:#f5f0eb}
-.p-scr img{width:100%;height:100%;display:block}
-.p-isl{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:26%;height:8px;background:#000;border-radius:20px;z-index:3}
-.p-hb{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:30%;height:3px;background:rgba(0,0,0,.15);border-radius:3px;z-index:3}
-
-/* TABLET */
-.tf{position:absolute;background:#fff;border-radius:14px;padding:7px;transition:all .35s ease;z-index:15;box-shadow:0 20px 50px rgba(0,0,0,.15)}
-.tf.dragging{transition:none!important;z-index:100}
-.tf .drag-h{inset:0;border-radius:14px}
-.t-scr{width:100%;height:100%;border-radius:8px;overflow:hidden;position:relative;background:#f5f0eb}
-.t-scr img{width:100%;height:100%;display:block}
-
-/* TEXT */
-.txt-el{position:absolute;cursor:grab;user-select:none;z-index:30;padding:3px 6px;transition:outline .1s;white-space:nowrap}
-.txt-el:hover{outline:1px dashed rgba(201,149,107,.4);outline-offset:2px}
-.txt-el.sel{outline:1.5px solid var(--accent);outline-offset:2px}
-.txt-el.dragging{cursor:grabbing;transition:none}
-
-/* THEMES */
-.ms.th-glass .bf{background:rgba(255,255,255,.1)!important;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12)}
-.ms.th-glass .b-bar{background:rgba(255,255,255,.06)!important}
-.ms.th-glass .b-bar::after{background:rgba(255,255,255,.05)!important}
-.ms.th-glass .b-nav{background:rgba(255,255,255,.04)!important}
-.ms.th-glass .addr{background:rgba(255,255,255,.06)!important}
-.ms.th-glass .b-ctrl span,.ms.th-glass .addr span,.ms.th-glass .b-nav span{color:rgba(255,255,255,.35)!important}
-.ms.th-glass .pf,.ms.th-glass .tf{background:rgba(255,255,255,.08)!important;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1)}
-.ms.th-glass .dot-r,.ms.th-glass .dot-y,.ms.th-glass .dot-g{opacity:.6}
-
-.ms.th-dark .bf{background:#1a1a1e!important}
-.ms.th-dark .b-bar{background:#222!important}.ms.th-dark .b-nav{background:#1e1e22!important}
-.ms.th-dark .b-bar::after{background:rgba(255,255,255,.05)!important}
-.ms.th-dark .addr{background:rgba(255,255,255,.05)!important}
-.ms.th-dark .b-ctrl span,.ms.th-dark .addr span,.ms.th-dark .b-nav span{color:#555!important}
-.ms.th-dark .pf,.ms.th-dark .tf{background:#1a1a1e!important}
-.ms.th-dark .b-body,.ms.th-dark .p-scr,.ms.th-dark .t-scr{background:#262628!important}
-.ms.th-dark .ph-n,.ms.th-dark .ph-t,.ms.th-dark .ph-s{color:rgba(255,255,255,.08)!important}
-
-.ms.th-minimal .bf{box-shadow:0 1px 4px rgba(0,0,0,.05)!important;border:1px solid rgba(0,0,0,.06)}
-.ms.th-minimal .pf,.ms.th-minimal .tf{box-shadow:0 1px 4px rgba(0,0,0,.05)!important;border:1px solid rgba(0,0,0,.06)}
-
-.ms.th-neo .bf{border:2px solid rgba(201,149,107,.25)!important;box-shadow:0 0 30px rgba(201,149,107,.08),0 20px 50px rgba(0,0,0,.12)!important}
-.ms.th-neo .pf,.ms.th-neo .tf{border:2px solid rgba(201,149,107,.25)!important;box-shadow:0 0 25px rgba(201,149,107,.08),0 15px 40px rgba(0,0,0,.15)!important}
-
-.ms.th-bento .bf{border-radius:16px!important}
-.ms.th-bento .pf{border-radius:28px!important}
-.ms.th-bento .tf{border-radius:18px!important}
-.ms.th-bento .bf,.ms.th-bento .pf,.ms.th-bento .tf{box-shadow:0 2px 8px rgba(0,0,0,.06)!important;border:1px solid rgba(0,0,0,.04)}
-
-.ms.reflection::after{content:'';position:absolute;bottom:0;left:0;right:0;height:20%;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.02));pointer-events:none;z-index:40}
-
-.wm{position:absolute;bottom:10px;right:14px;font-size:7px;color:rgba(255,255,255,.1);letter-spacing:1px;font-weight:500;z-index:50}
-
-/* Resize handle on devices */
-.resize-h{position:absolute;bottom:-4px;right:-4px;width:12px;height:12px;cursor:nwse-resize;z-index:20;opacity:0;transition:opacity .15s}
-.bf:hover .resize-h,.pf:hover .resize-h,.tf:hover .resize-h{opacity:1}
-.resize-h::after{content:'';position:absolute;bottom:2px;right:2px;width:6px;height:6px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);border-radius:0 0 2px 0}
-
-.exp-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .3s;gap:8px}
-.exp-ov.show{opacity:1;pointer-events:all}
-.spinner{width:30px;height:30px;border:3px solid #27272a;border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.exp-t{font-size:10px;color:var(--dim)}
-
-.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(50px);background:var(--card2);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:7px;font-size:10px;z-index:2000;transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:0 8px 25px rgba(0,0,0,.4)}
-.toast.show{transform:translateX(-50%) translateY(0)}
-
-.hidden{display:none!important}
-
-/* Crop Modal */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
-.modal-ov.show{opacity:1;pointer-events:all}
-.modal{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;width:500px;max-width:90vw;max-height:85vh;display:flex;flex-direction:column;gap:12px}
-.modal-head{display:flex;justify-content:space-between;align-items:center}
-.modal-head h3{font-size:14px;font-weight:600}
-.modal-close{width:24px;height:24px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px}
-.modal-close:hover{color:var(--text)}
-.crop-area{position:relative;width:100%;height:300px;background:#000;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.crop-area img{max-width:100%;max-height:100%;user-select:none;-webkit-user-drag:none}
-.crop-box{position:absolute;border:2px solid var(--accent);background:rgba(201,149,107,.1);cursor:move}
-.crop-controls{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<!-- Core Styles -->
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- LEFT SIDEBAR -->
-<div class="sb left" id="leftSb">
-<div class="sb-inner">
+<!-- SIDEBAR -->
+<div class="sidebar">
+<div class="sidebar-inner">
 
+<!-- LOGO -->
 <div class="logo">
-  <div class="logo-i">M</div>
-  <div class="logo-t">Mockup<b>Studio</b></div>
-  <div class="logo-v">PRO</div>
+  <div class="logo-icon">M</div>
+  <div class="logo-text">Mockup<span>Studio</span></div>
+  <div class="logo-ver">PRO</div>
 </div>
 
 <!-- UPLOADS -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Upload Assets</span><span class="sec-arrow">▾</span></div>
-  <div class="sec-body">
-    <div class="up-zone" id="upD" onclick="$('fD').click()">
-      <input type="file" id="fD" accept="image/*"><button class="rm-btn" onclick="event.stopPropagation();rmImg('desktop')">✕</button>
-      <img class="up-prev" id="pvD"><div class="up-info"><div class="up-icon">🖥</div><div class="up-txt"><div class="l1">Desktop</div><div class="l2">Browser frame</div></div></div>
-    </div>
-    <div class="up-zone" id="upM" onclick="$('fM').click()">
-      <input type="file" id="fM" accept="image/*"><button class="rm-btn" onclick="event.stopPropagation();rmImg('mobile')">✕</button>
-      <img class="up-prev" id="pvM"><div class="up-info"><div class="up-icon">📱</div><div class="up-txt"><div class="l1">Mobile</div><div class="l2">Phone frame</div></div></div>
-    </div>
-    <div class="up-zone" id="upT" onclick="$('fT').click()">
-      <input type="file" id="fT" accept="image/*"><button class="rm-btn" onclick="event.stopPropagation();rmImg('tablet')">✕</button>
-      <img class="up-prev" id="pvT"><div class="up-info"><div class="up-icon">📋</div><div class="up-txt"><div class="l1">Tablet</div><div class="l2">Tablet frame</div></div></div>
-    </div>
-    <div class="up-zone" id="upBg" onclick="$('fBg').click()">
-      <input type="file" id="fBg" accept="image/*"><button class="rm-btn" onclick="event.stopPropagation();rmBgImg()">✕</button>
-      <img class="up-prev" id="pvBg"><div class="up-info"><div class="up-icon">🖼</div><div class="up-txt"><div class="l1">Custom Background</div><div class="l2">Stage background image</div></div></div>
-    </div>
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Upload Assets</span>
   </div>
-</div><div class="divider"></div>
 
-<!-- LAYOUTS -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Layouts</span><span class="sec-b">12</span></div>
-  <div class="sec-body">
-    <div class="lay-grid" id="layGrid"></div>
+  <div class="upload-zone" id="uploadDesktop" onclick="document.getElementById('fileDesktop').click()">
+    <input type="file" id="fileDesktop" accept="image/*">
+    <button class="remove-btn" onclick="event.stopPropagation();removeImage('desktop')">✕</button>
+    <img class="upload-preview" id="previewDesktop">
+    <div class="upload-info">
+      <div class="upload-icon">🖥</div>
+      <div class="upload-text">
+        <div class="label">Desktop Screenshot</div>
+        <div class="sublabel">PNG, JPG — Browser frame</div>
+      </div>
+    </div>
   </div>
-</div><div class="divider"></div>
 
-<!-- QUICK TEMPLATES -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Quick Templates</span><span class="sec-b">8</span></div>
-  <div class="sec-body">
-    <div class="tpl-grid" id="tplGrid"></div>
+  <div class="upload-zone" id="uploadMobile" onclick="document.getElementById('fileMobile').click()">
+    <input type="file" id="fileMobile" accept="image/*">
+    <button class="remove-btn" onclick="event.stopPropagation();removeImage('mobile')">✕</button>
+    <img class="upload-preview" id="previewMobile">
+    <div class="upload-info">
+      <div class="upload-icon">📱</div>
+      <div class="upload-text">
+        <div class="label">Mobile Screenshot</div>
+        <div class="sublabel">PNG, JPG — Phone frame</div>
+      </div>
+    </div>
   </div>
-</div><div class="divider"></div>
 
-<!-- THEME -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Frame Theme</span></div>
-  <div class="sec-body">
-    <div class="theme-grid" id="themeGrid"></div>
+  <div class="upload-zone" id="uploadTablet" onclick="document.getElementById('fileTablet').click()">
+    <input type="file" id="fileTablet" accept="image/*">
+    <button class="remove-btn" onclick="event.stopPropagation();removeImage('tablet')">✕</button>
+    <img class="upload-preview" id="previewTablet">
+    <div class="upload-info">
+      <div class="upload-icon">📋</div>
+      <div class="upload-text">
+        <div class="label">Tablet Screenshot</div>
+        <div class="sublabel">PNG, JPG — Tablet frame</div>
+      </div>
+    </div>
   </div>
-</div><div class="divider"></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- LAYOUT -->
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Layout</span>
+    <span class="section-badge">4 PRESETS</span>
+  </div>
+  <div class="layout-grid">
+    <div class="layout-opt active" data-layout="hero" title="Desktop Hero" onclick="setLayout('hero')">
+      <svg viewBox="0 0 60 42"><rect x="8" y="6" width="44" height="30" rx="3" fill="none" stroke="#c9956b" stroke-width="1.5"/></svg>
+    </div>
+    <div class="layout-opt" data-layout="duo" title="Desktop + Phone" onclick="setLayout('duo')">
+      <svg viewBox="0 0 60 42"><rect x="4" y="6" width="36" height="28" rx="3" fill="none" stroke="#c9956b" stroke-width="1.5"/><rect x="42" y="12" width="14" height="24" rx="3" fill="none" stroke="#c9956b" stroke-width="1.5"/></svg>
+    </div>
+    <div class="layout-opt" data-layout="trio" title="All Devices" onclick="setLayout('trio')">
+      <svg viewBox="0 0 60 42"><rect x="8" y="4" width="44" height="30" rx="3" fill="none" stroke="#c9956b" stroke-width="1.5"/><rect x="14" y="16" width="14" height="22" rx="3" fill="none" stroke="#c9956b" stroke-width="1.5"/><rect x="32" y="14" width="20" height="16" rx="2" fill="none" stroke="#c9956b" stroke-width="1.5"/></svg>
+    </div>
+    <div class="layout-opt" data-layout="stack" title="Stacked" onclick="setLayout('stack')">
+      <svg viewBox="0 0 60 42"><rect x="12" y="2" width="36" height="22" rx="3" fill="none" stroke="#c9956b" stroke-width="1.5"/><rect x="22" y="20" width="16" height="20" rx="3" fill="none" stroke="#c9956b" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
 
 <!-- BACKGROUND -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Background</span><span class="sec-b">24+</span></div>
-  <div class="sec-body">
-    <div class="bg-grid" id="bgGrid"></div>
-    <div class="color-row">
-      <input type="color" id="custBg" value="#c9956b" oninput="setBgCustom(this.value)">
-      <label>Custom Color</label>
-    </div>
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Background</span>
   </div>
-</div><div class="divider"></div>
+  <div class="bg-grid">
+    <div class="bg-swatch active" data-bg="sahara" style="background:linear-gradient(135deg,#c9956b,#d4a57a)" onclick="setBg('sahara')"></div>
+    <div class="bg-swatch" data-bg="midnight" style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e)" onclick="setBg('midnight')"></div>
+    <div class="bg-swatch" data-bg="aurora" style="background:linear-gradient(135deg,#667eea,#764ba2)" onclick="setBg('aurora')"></div>
+    <div class="bg-swatch" data-bg="ocean" style="background:linear-gradient(135deg,#2193b0,#6dd5ed)" onclick="setBg('ocean')"></div>
+    <div class="bg-swatch" data-bg="forest" style="background:linear-gradient(135deg,#134e5e,#71b280)" onclick="setBg('forest')"></div>
+    <div class="bg-swatch" data-bg="sunset" style="background:linear-gradient(135deg,#f093fb,#f5576c)" onclick="setBg('sunset')"></div>
+    <div class="bg-swatch" data-bg="charcoal" style="background:linear-gradient(135deg,#232526,#414345)" onclick="setBg('charcoal')"></div>
+    <div class="bg-swatch" data-bg="peach" style="background:linear-gradient(135deg,#ffecd2,#fcb69f)" onclick="setBg('peach')"></div>
+    <div class="bg-swatch" data-bg="ice" style="background:linear-gradient(135deg,#e6e9f0,#eef1f5)" onclick="setBg('ice')"></div>
+    <div class="bg-swatch" data-bg="rose" style="background:linear-gradient(135deg,#fecfef,#ff9a9e)" onclick="setBg('rose')"></div>
+    <div class="bg-swatch" data-bg="emerald" style="background:linear-gradient(135deg,#0d9488,#34d399)" onclick="setBg('emerald')"></div>
+    <div class="bg-swatch" data-bg="custom" style="background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);opacity:.6" onclick="document.getElementById('customBgColor').click()"></div>
+  </div>
+  <input type="color" id="customBgColor" value="#c9956b" style="display:none" oninput="setBgCustom(this.value)">
+</div>
+
+<div class="divider"></div>
+
+<!-- CUSTOMIZATION -->
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Customize</span>
+  </div>
+
+  <div class="input-group">
+    <label>Device Frame Color</label>
+    <select id="frameColor" onchange="setFrameColor(this.value)">
+      <option value="#ffffff">White (Default)</option>
+      <option value="#000000">Black</option>
+      <option value="#1e1e1e">Space Gray</option>
+      <option value="#c0c0c0">Silver</option>
+      <option value="#f5e6d3">Gold</option>
+    </select>
+  </div>
+
+  <div class="range-group">
+    <div class="range-header">
+      <span>Browser Roundness</span>
+      <span id="roundVal">10px</span>
+    </div>
+    <input type="range" id="roundRange" min="0" max="24" value="10" oninput="setRound(this.value)">
+  </div>
+
+  <div class="range-group">
+    <div class="range-header">
+      <span>Shadow Intensity</span>
+      <span id="shadowVal">50%</span>
+    </div>
+    <input type="range" id="shadowRange" min="0" max="100" value="50" oninput="setShadow(this.value)">
+  </div>
+
+  <div class="range-group">
+    <div class="range-header">
+      <span>Phone Scale</span>
+      <span id="phoneScaleVal">100%</span>
+    </div>
+    <input type="range" id="phoneScaleRange" min="60" max="140" value="100" oninput="setPhoneScale(this.value)">
+  </div>
+
+  <div class="toggle-row">
+    <span class="toggle-label">Browser Navigation Bar</span>
+    <div class="toggle on" id="toggleNav" onclick="toggleNavBar()"></div>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Phone Notch / Island</span>
+    <div class="toggle on" id="toggleNotch" onclick="toggleNotch()"></div>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Reflection Effect</span>
+    <div class="toggle" id="toggleReflect" onclick="toggleReflection()"></div>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Watermark</span>
+    <div class="toggle on" id="toggleWm" onclick="toggleWatermark()"></div>
+  </div>
+</div>
+
+<div class="divider"></div>
 
 <!-- LABELS -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Labels</span><span class="sec-arrow">▾</span></div>
-  <div class="sec-body">
-    <div class="inp-row">
-      <div class="inp-g"><label>Number</label><input type="text" id="lblN" value="01" oninput="updateLabels()"></div>
-      <div class="inp-g"><label>Desktop</label><input type="text" id="lblD" value="Website" oninput="updateLabels()"></div>
-    </div>
-    <div class="inp-row">
-      <div class="inp-g"><label>Mobile</label><input type="text" id="lblM" value="Phone" oninput="updateLabels()"></div>
-      <div class="inp-g"><label>Tablet</label><input type="text" id="lblT" value="Tablet" oninput="updateLabels()"></div>
-    </div>
-    <div class="inp-g"><label>URL Bar</label><input type="text" id="urlTxt" value="www.yourproject.com" oninput="updateLabels()"></div>
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Labels</span>
+  </div>
+  <div class="input-group">
+    <label>Number Label</label>
+    <input type="text" id="labelNum" value="01" oninput="updateLabels()" placeholder="01">
+  </div>
+  <div class="input-group">
+    <label>Desktop Title</label>
+    <input type="text" id="labelDesktopTitle" value="Website" oninput="updateLabels()" placeholder="Website">
+  </div>
+  <div class="input-group">
+    <label>Phone Title</label>
+    <input type="text" id="labelMobileTitle" value="Phone" oninput="updateLabels()" placeholder="Phone">
+  </div>
+  <div class="input-group">
+    <label>URL Bar Text</label>
+    <input type="text" id="urlText" value="www.yourproject.com" oninput="updateLabels()" placeholder="www.example.com">
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- EXPORT -->
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Export</span>
+  </div>
+  <div class="input-group">
+    <label>Resolution Scale</label>
+    <select id="exportScale">
+      <option value="2">2x (Recommended)</option>
+      <option value="3" selected>3x (High Quality)</option>
+      <option value="4">4x (Ultra)</option>
+    </select>
+  </div>
+  <div class="input-group">
+    <label>Format</label>
+    <select id="exportFormat">
+      <option value="png">PNG (Transparent support)</option>
+      <option value="jpeg">JPEG (Smaller file)</option>
+    </select>
+  </div>
+  <button class="btn-primary" onclick="exportMockup()">
+    <span>⬇</span> Download Mockup
+  </button>
+  <div class="btn-row">
+    <button class="btn-outline" onclick="resetAll()">↺ Reset All</button>
+    <button class="btn-outline" onclick="copyToClipboard()">📋 Copy Image</button>
   </div>
 </div>
 
@@ -337,1076 +239,91 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;hei
 
 <!-- STAGE -->
 <div class="stage-wrap">
-<div class="stage-bar">
-  <div class="stage-bar-l">
-    <span class="si">Preview</span>
-    <span class="sd" id="stSize">960×600</span>
-    <span class="si" id="layName" style="color:var(--accent)">Hero</span>
+<div class="stage-toolbar">
+  <div class="stage-toolbar-left">
+    <span class="stage-info">Live Preview</span>
+    <span style="color:var(--text-muted)">·</span>
+    <span class="stage-info" id="stageSize">920 × 580</span>
   </div>
-  <div class="stage-bar-r">
-    <button class="zb" onclick="zOut()">−</button>
-    <span class="zd" id="zDisp">100%</span>
-    <button class="zb" onclick="zIn()">+</button>
-    <button class="zb" onclick="zFit()">⊞</button>
-    <span style="width:1px;height:14px;background:var(--border)"></span>
-    <button class="zb" id="freeBtn" onclick="togFree()" title="Free position mode" style="font-size:9px">🔓</button>
+  <div class="stage-toolbar-right">
+    <button class="zoom-btn" onclick="zoomOut()">−</button>
+    <span class="zoom-display" id="zoomDisplay">100%</span>
+    <button class="zoom-btn" onclick="zoomIn()">+</button>
+    <button class="zoom-btn" onclick="zoomFit()" title="Fit to view">⊞</button>
   </div>
 </div>
-<div class="stage" id="stageArea">
-  <div class="stage-cv" id="stageCv">
-    <div class="ms" id="ms">
-      <img class="ms-bg-img" id="msBgImg">
-      <div class="ms-bg-overlay" id="msBgOv"></div>
+<div class="stage-area" id="stageArea">
+  <div class="stage-canvas" id="stageCanvas">
+    <div class="mockup-stage" id="mockupStage">
 
-      <div class="bf" id="bf">
-        <div class="drag-h" id="bfDrag"></div>
-        <div class="resize-h" id="bfResize"></div>
-        <div class="b-bar" id="bBar">
-          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-          <div class="b-ctrl"><span>‹</span><span>›</span></div>
-          <div class="addr"><span id="addrTxt">www.yourproject.com</span></div>
+      <!-- BROWSER FRAME -->
+      <div class="browser-frame" id="browserFrame">
+        <div class="browser-bar" id="browserBar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <div class="browser-controls">
+            <span>‹</span><span>›</span>
+          </div>
+          <div class="address-bar">
+            <span id="addressText">www.yourproject.com</span>
+          </div>
         </div>
-        <div class="b-nav" id="bNav"><span>Home</span><span>About</span><span>Products</span><span>Blog</span><span>Contact</span></div>
-        <div class="b-body" id="bBody">
-          <div class="ph" id="phD"><div class="ph-n" style="font-size:52px" id="phDN">01</div><div class="ph-t" style="font-size:16px" id="phDT">Website</div><div class="ph-s" style="font-size:7px">Mock UP.</div></div>
-          <img id="imgD" style="display:none">
+        <div class="browser-nav" id="browserNav">
+          <span>Home</span><span>About Us</span><span>Shop</span><span>Products</span><span>Blog</span><span>Contact</span>
         </div>
-      </div>
-
-      <div class="pf hidden" id="pf">
-        <div class="drag-h" id="pfDrag"></div>
-        <div class="resize-h" id="pfResize"></div>
-        <div class="p-scr">
-          <div class="p-isl" id="pIsl"></div><div class="p-hb"></div>
-          <div class="ph" id="phM"><div class="ph-n" style="font-size:24px" id="phMN">01</div><div class="ph-t" style="font-size:8px" id="phMT">Phone</div><div class="ph-s" style="font-size:5px">Mock UP.</div></div>
-          <img id="imgM" style="display:none">
+        <div class="browser-body" id="browserBody">
+          <div class="browser-placeholder" id="desktopPlaceholder">
+            <div class="ph-num" id="desktopPhNum">01</div>
+            <div class="ph-title" id="desktopPhTitle">Website</div>
+            <div class="ph-sub">Mock UP.</div>
+          </div>
+          <img id="desktopImg" style="display:none" alt="">
         </div>
       </div>
 
-      <div class="tf hidden" id="tf">
-        <div class="drag-h" id="tfDrag"></div>
-        <div class="resize-h" id="tfResize"></div>
-        <div class="t-scr">
-          <div class="ph" id="phTb"><div class="ph-n" style="font-size:32px" id="phTN">01</div><div class="ph-t" style="font-size:10px" id="phTT">Tablet</div><div class="ph-s" style="font-size:5px">Mock UP.</div></div>
-          <img id="imgTb" style="display:none">
+      <!-- PHONE FRAME -->
+      <div class="phone-frame hidden" id="phoneFrame">
+        <div class="phone-screen">
+          <div class="phone-island" id="phoneIsland"></div>
+          <div class="phone-bar"></div>
+          <div class="phone-placeholder" id="mobilePlaceholder">
+            <div class="ph-num" id="mobilePhNum">01</div>
+            <div class="ph-title" id="mobilePhTitle">Phone</div>
+            <div class="ph-sub">Mock UP.</div>
+          </div>
+          <img id="mobileImg" style="display:none" alt="">
         </div>
       </div>
 
-      <div class="wm" id="wm">mockupstudio.pro</div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- RIGHT SIDEBAR -->
-<div class="sb right" id="rightSb">
-<div class="sb-inner">
-
-<div class="tabs">
-  <div class="tab act" data-tab="style" onclick="swTab('style')">Style</div>
-  <div class="tab" data-tab="image" onclick="swTab('image')">Image</div>
-  <div class="tab" data-tab="text" onclick="swTab('text')">Text</div>
-  <div class="tab" data-tab="save" onclick="swTab('save')">Presets</div>
-</div>
-
-<!-- STYLE TAB -->
-<div class="tab-body act" id="tabStyle">
-  <div class="sec">
-    <div class="sec-t" style="margin-bottom:3px">Device Frame</div>
-    <div class="inp-g"><label>Frame Color</label>
-      <select id="frmCol" onchange="setFrmCol(this.value)">
-        <option value="#ffffff">White</option><option value="#000000">Black</option>
-        <option value="#1a1a1e">Space Gray</option><option value="#c0c0c0">Silver</option>
-        <option value="#f5e6d3">Gold</option><option value="#e8d5c4">Rose Gold</option>
-      </select>
-    </div>
-  </div>
-  <div class="rng-g"><div class="rng-h"><span>Browser Radius</span><span class="rv" id="rvR">10</span></div>
-    <input type="range" id="rngR" min="0" max="28" value="10" oninput="setRnd(this.value)"></div>
-  <div class="rng-g"><div class="rng-h"><span>Shadow Depth</span><span class="rv" id="rvS">50%</span></div>
-    <input type="range" id="rngS" min="0" max="100" value="50" oninput="setShd(this.value)"></div>
-  <div class="rng-g"><div class="rng-h"><span>Phone Scale</span><span class="rv" id="rvP">100%</span></div>
-    <input type="range" id="rngP" min="50" max="150" value="100" oninput="setPSc(this.value)"></div>
-  <div class="rng-g"><div class="rng-h"><span>Stage Padding</span><span class="rv" id="rvPd">5%</span></div>
-    <input type="range" id="rngPd" min="0" max="15" value="5" oninput="setPad(this.value)"></div>
-  <div class="rng-g"><div class="rng-h"><span>Background Blur</span><span class="rv" id="rvBl">0</span></div>
-    <input type="range" id="rngBl" min="0" max="20" value="0" oninput="setBgBlur(this.value)"></div>
-  <div class="divider"></div>
-  <div class="tog-row"><span class="tog-l">Nav Bar</span><div class="tog on" id="tN" onclick="togNav()"></div></div>
-  <div class="tog-row"><span class="tog-l">Dynamic Island</span><div class="tog on" id="tI" onclick="togIsland()"></div></div>
-  <div class="tog-row"><span class="tog-l">Reflection</span><div class="tog" id="tR" onclick="togRefl()"></div></div>
-  <div class="tog-row"><span class="tog-l">Watermark</span><div class="tog on" id="tW" onclick="togWm()"></div></div>
-  <div class="tog-row"><span class="tog-l">Background Overlay</span><div class="tog" id="tOv" onclick="togBgOv()"></div></div>
-  <div class="divider"></div>
-  <div class="sec">
-    <div class="sec-t" style="margin-bottom:3px">Export</div>
-    <div class="inp-row">
-      <div class="inp-g"><label>Scale</label>
-        <select id="expSc"><option value="2">2x</option><option value="3" selected>3x</option><option value="4">4x Ultra</option></select>
+      <!-- TABLET FRAME -->
+      <div class="tablet-frame hidden" id="tabletFrame">
+        <div class="tablet-screen">
+          <div class="tablet-placeholder" id="tabletPlaceholder">
+            <div class="ph-num" id="tabletPhNum">01</div>
+            <div class="ph-title">Tablet</div>
+            <div class="ph-sub">Mock UP.</div>
+          </div>
+          <img id="tabletImg" style="display:none" alt="">
+        </div>
       </div>
-      <div class="inp-g"><label>Format</label>
-        <select id="expFmt"><option value="png">PNG</option><option value="jpeg">JPEG</option></select>
-      </div>
-    </div>
-    <button class="btn-p" onclick="doExport()">⬇ Download Mockup</button>
-    <div class="btn-row">
-      <button class="btn-o" onclick="doCopy()">📋 Copy</button>
-      <button class="btn-o" onclick="doReset()">↺ Reset</button>
-    </div>
-  </div>
-</div>
 
-<!-- IMAGE TAB -->
-<div class="tab-body" id="tabImage">
-  <div class="img-ctrl">
-    <div class="img-ctrl-h">🖥 Desktop Image</div>
-    <div class="rng-g"><div class="rng-h"><span>Fit Mode</span></div>
-      <select id="dFit" onchange="setImgFit('desktop',this.value)">
-        <option value="cover">Cover</option><option value="contain">Contain</option><option value="fill">Stretch</option><option value="none">Original</option>
-      </select>
-    </div>
-    <div class="rng-g"><div class="rng-h"><span>Scale</span><span class="rv" id="rvDS">100%</span></div>
-      <input type="range" min="50" max="200" value="100" oninput="setImgScale('desktop',this.value)"></div>
-    <div class="rng-g"><div class="rng-h"><span>Offset X</span><span class="rv" id="rvDX">0</span></div>
-      <input type="range" min="-50" max="50" value="0" oninput="setImgOff('desktop','x',this.value)"></div>
-    <div class="rng-g"><div class="rng-h"><span>Offset Y</span><span class="rv" id="rvDY">0</span></div>
-      <input type="range" min="-50" max="50" value="0" oninput="setImgOff('desktop','y',this.value)"></div>
-    <div class="rng-g"><div class="rng-h"><span>Border Radius</span><span class="rv" id="rvDR">0</span></div>
-      <input type="range" min="0" max="20" value="0" oninput="setImgRad('desktop',this.value)"></div>
-  </div>
-  <div class="img-ctrl">
-    <div class="img-ctrl-h">📱 Mobile Image</div>
-    <div class="rng-g"><div class="rng-h"><span>Fit Mode</span></div>
-      <select id="mFit" onchange="setImgFit('mobile',this.value)">
-        <option value="cover">Cover</option><option value="contain">Contain</option><option value="fill">Stretch</option><option value="none">Original</option>
-      </select>
-    </div>
-    <div class="rng-g"><div class="rng-h"><span>Scale</span><span class="rv" id="rvMS">100%</span></div>
-      <input type="range" min="50" max="200" value="100" oninput="setImgScale('mobile',this.value)"></div>
-    <div class="rng-g"><div class="rng-h"><span>Offset X</span><span class="rv" id="rvMX">0</span></div>
-      <input type="range" min="-50" max="50" value="0" oninput="setImgOff('mobile','x',this.value)"></div>
-    <div class="rng-g"><div class="rng-h"><span>Offset Y</span><span class="rv" id="rvMY">0</span></div>
-      <input type="range" min="-50" max="50" value="0" oninput="setImgOff('mobile','y',this.value)"></div>
-  </div>
-  <div class="img-ctrl">
-    <div class="img-ctrl-h">📋 Tablet Image</div>
-    <div class="rng-g"><div class="rng-h"><span>Fit Mode</span></div>
-      <select onchange="setImgFit('tablet',this.value)">
-        <option value="cover">Cover</option><option value="contain">Contain</option><option value="fill">Stretch</option><option value="none">Original</option>
-      </select>
-    </div>
-    <div class="rng-g"><div class="rng-h"><span>Scale</span><span class="rv" id="rvTS">100%</span></div>
-      <input type="range" min="50" max="200" value="100" oninput="setImgScale('tablet',this.value)"></div>
-    <div class="rng-g"><div class="rng-h"><span>Offset X</span><span class="rv" id="rvTX">0</span></div>
-      <input type="range" min="-50" max="50" value="0" oninput="setImgOff('tablet','x',this.value)"></div>
-    <div class="rng-g"><div class="rng-h"><span>Offset Y</span><span class="rv" id="rvTY">0</span></div>
-      <input type="range" min="-50" max="50" value="0" oninput="setImgOff('tablet','y',this.value)"></div>
-  </div>
-</div>
-
-<!-- TEXT TAB -->
-<div class="tab-body" id="tabText">
-  <div class="sec">
-    <div class="sec-t" style="margin-bottom:3px">Add Text to Stage</div>
-    <div class="inp-g"><label>Text Content</label><input type="text" id="newTxtVal" value="Your Text" placeholder="Type here..."></div>
-    <div class="inp-row">
-      <div class="inp-g"><label>Font</label>
-        <select id="newTxtFont">
-          <option value="Inter">Inter</option><option value="Playfair Display">Playfair</option>
-          <option value="Space Grotesk">Space Grotesk</option><option value="DM Sans">DM Sans</option>
-          <option value="Poppins">Poppins</option><option value="Outfit">Outfit</option>
-        </select>
-      </div>
-      <div class="inp-g"><label>Size</label>
-        <select id="newTxtSize">
-          <option value="10">10px</option><option value="14">14px</option><option value="18" selected>18px</option>
-          <option value="24">24px</option><option value="32">32px</option><option value="48">48px</option>
-          <option value="64">64px</option><option value="80">80px</option>
-        </select>
-      </div>
-    </div>
-    <div class="inp-row">
-      <div class="inp-g"><label>Weight</label>
-        <select id="newTxtW">
-          <option value="300">Light</option><option value="400">Regular</option>
-          <option value="500">Medium</option><option value="600" selected>Semi</option>
-          <option value="700">Bold</option><option value="800">Extra Bold</option>
-        </select>
-      </div>
-      <div class="inp-g"><label>Color</label>
-        <input type="color" id="newTxtCol" value="#ffffff" style="width:100%;height:26px;border-radius:4px;border:1px solid var(--border);background:none;cursor:pointer">
-      </div>
-    </div>
-    <div class="rng-g"><div class="rng-h"><span>Opacity</span><span class="rv" id="rvTO">100%</span></div>
-      <input type="range" id="newTxtOp" min="5" max="100" value="100" oninput="$('rvTO').textContent=this.value+'%'"></div>
-    <div class="rng-g"><div class="rng-h"><span>Letter Spacing</span><span class="rv" id="rvTL">0</span></div>
-      <input type="range" id="newTxtLs" min="-5" max="20" value="0" oninput="$('rvTL').textContent=this.value+'px'"></div>
-    <button class="btn-p" onclick="addText()">+ Add Text to Stage</button>
-  </div>
-  <div class="divider"></div>
-  <div class="sec">
-    <div class="sec-t" style="margin-bottom:3px">Active Texts</div>
-    <div class="txt-list" id="txtList"><div style="font-size:9px;color:var(--muted);text-align:center;padding:10px">No text added yet</div></div>
-  </div>
-  <div class="sec" id="txtEditSec" style="display:none">
-    <div class="sec-t" style="margin-bottom:3px">Edit Selected</div>
-    <div class="inp-g"><label>Content</label><input type="text" id="edTxtVal" oninput="editTxtProp('text')"></div>
-    <div class="inp-row">
-      <div class="inp-g"><label>Size</label><input type="range" id="edTxtSz" min="8" max="80" value="18" oninput="editTxtProp('size')"></div>
-      <div class="inp-g"><label>Color</label><input type="color" id="edTxtCol" oninput="editTxtProp('color')" style="width:100%;height:22px;border-radius:3px;border:1px solid var(--border);background:none;cursor:pointer"></div>
-    </div>
-    <div class="btn-row">
-      <button class="btn-s" onclick="duplicateTxt()">Duplicate</button>
-      <button class="btn-d" onclick="deleteTxt()">Delete</button>
+      <div class="wm" id="watermark">mockupstudio.pro</div>
     </div>
   </div>
-</div>
-
-<!-- SAVE TAB -->
-<div class="tab-body" id="tabSave">
-  <div class="sec">
-    <div class="sec-t" style="margin-bottom:3px">Save Current as Preset</div>
-    <div class="inp-g"><label>Preset Name</label><input type="text" id="presetName" value="" placeholder="My awesome mockup..."></div>
-    <button class="btn-p" onclick="savePreset()">💾 Save Preset</button>
-  </div>
-  <div class="divider"></div>
-  <div class="sec">
-    <div class="sec-t" style="margin-bottom:3px">Saved Presets</div>
-    <div class="preset-list" id="presetList"><div style="font-size:9px;color:var(--muted);text-align:center;padding:10px">No presets saved</div></div>
-  </div>
-</div>
-
 </div>
 </div>
 
 <!-- EXPORT OVERLAY -->
-<div class="exp-ov" id="expOv"><div class="spinner"></div><div class="exp-t">Rendering...</div></div>
+<div class="export-overlay" id="exportOverlay">
+  <div class="export-spinner"></div>
+  <div class="export-text">Rendering your mockup...</div>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script>
-const $=id=>document.getElementById(id);
-
-// ==================== STATE ====================
-const S={
-  layout:'hero',bg:'sahara',bgCustom:null,bgImgUrl:null,theme:'default',
-  desktopImg:null,mobileImg:null,tabletImg:null,
-  frameColor:'#ffffff',round:10,shadow:50,phoneScale:100,pad:5,bgBlur:0,
-  showNav:true,showIsland:true,showRefl:false,showWm:true,showBgOv:false,
-  freeMode:false,zoom:1,
-  imgFit:{desktop:'cover',mobile:'cover',tablet:'cover'},
-  imgScale:{desktop:100,mobile:100,tablet:100},
-  imgOff:{desktop:{x:0,y:0},mobile:{x:0,y:0},tablet:{x:0,y:0}},
-  imgRad:{desktop:0,mobile:0,tablet:0},
-  texts:[],selTxt:null,
-  presets:JSON.parse(localStorage.getItem('mp_presets')||'[]')
-};
-
-// ==================== BACKGROUNDS ====================
-const BGS={
-  sahara:'linear-gradient(145deg,#c9956b,#b8845d,#d4a57a)',
-  midnight:'linear-gradient(145deg,#0f0c29,#302b63,#24243e)',
-  aurora:'linear-gradient(145deg,#667eea,#764ba2)',
-  ocean:'linear-gradient(145deg,#2193b0,#6dd5ed)',
-  forest:'linear-gradient(145deg,#134e5e,#71b280)',
-  sunset:'linear-gradient(145deg,#f093fb,#f5576c)',
-  charcoal:'linear-gradient(145deg,#232526,#414345)',
-  peach:'linear-gradient(145deg,#ffecd2,#fcb69f)',
-  ice:'linear-gradient(145deg,#e6e9f0,#eef1f5)',
-  rose:'linear-gradient(145deg,#fecfef,#ff9a9e)',
-  emerald:'linear-gradient(145deg,#0d9488,#34d399)',
-  lavender:'linear-gradient(145deg,#c471f5,#fa71cd)',
-  slate:'linear-gradient(145deg,#373B44,#4286f4)',
-  coffee:'linear-gradient(145deg,#3E2723,#795548)',
-  wine:'linear-gradient(145deg,#4a0e2b,#8e2c5a)',
-  arctic:'linear-gradient(145deg,#74ebd5,#ACB6E5)',
-  honey:'linear-gradient(145deg,#f7971e,#ffd200)',
-  blush:'linear-gradient(145deg,#fbc2eb,#a6c1ee)',
-  noir:'linear-gradient(145deg,#0a0a0a,#1a1a1a)',
-  cream:'linear-gradient(145deg,#f5f0eb,#e8ddd4)',
-  sky:'linear-gradient(145deg,#89CFF0,#a0d8ef)',
-  moss:'linear-gradient(145deg,#4a7c59,#8fbc8f)',
-  coral:'linear-gradient(145deg,#ff7675,#fab1a0)',
-  indigo:'linear-gradient(145deg,#4338ca,#6366f1)'
-};
-
-// ==================== LAYOUTS ====================
-const LAYS={
-  hero:{n:'Hero',bf:{l:5,t:5,w:90,h:90},pf:null,tf:null},
-  duo:{n:'Duo',bf:{l:3,t:6,w:62,h:86},pf:{l:68,t:30,w:16,h:54},tf:null},
-  duoR:{n:'Duo R',bf:{l:35,t:6,w:62,h:86},pf:{l:3,t:30,w:16,h:54},tf:null},
-  trio:{n:'Trio',bf:{l:3,t:3,w:94,h:58},pf:{l:5,t:52,w:13,h:44},tf:{l:60,t:52,w:26,h:38}},
-  stack:{n:'Stack',bf:{l:8,t:3,w:84,h:56},pf:{l:42,t:45,w:15,h:50},tf:null},
-  phone:{n:'Phone',bf:null,pf:{l:35,t:5,w:18,h:90},tf:null},
-  phones:{n:'2 Phones',bf:null,pf:{l:15,t:8,w:16,h:82},tf:null,pf2:{l:55,t:8,w:16,h:82}},
-  tabDesk:{n:'Tab+Desk',bf:{l:30,t:3,w:66,h:75},pf:null,tf:{l:3,t:18,w:26,h:60}},
-  overlap:{n:'Overlap',bf:{l:5,t:8,w:70,h:80},pf:{l:60,t:20,w:18,h:60},tf:null},
-  grid:{n:'Grid',bf:{l:2,t:2,w:48,h:48},pf:{l:52,t:2,w:16,h:48},tf:{l:2,t:52,w:48,h:46}},
-  center:{n:'Center',bf:{l:15,t:10,w:70,h:80},pf:null,tf:null},
-  float:{n:'Float',bf:{l:8,t:12,w:55,h:70},pf:{l:66,t:5,w:15,h:50},tf:{l:50,t:55,w:25,h:36}}
-};
-
-// ==================== THEMES ====================
-
-// ==================== THEMES (continued) ====================
-const THEMES=[
-  {id:'default',n:'Default',bg:'linear-gradient(135deg,#f5f0eb,#e8ddd4)'},
-  {id:'glass',n:'Glass',bg:'linear-gradient(135deg,rgba(100,100,255,.1),rgba(200,100,255,.05))'},
-  {id:'dark',n:'Dark',bg:'linear-gradient(135deg,#1a1a1e,#0a0a0c)'},
-  {id:'minimal',n:'Minimal',bg:'linear-gradient(135deg,#fafafa,#f0f0f0)'},
-  {id:'neo',n:'Neon',bg:'linear-gradient(135deg,#0a0a1a,#1a0a2e)'},
-  {id:'bento',n:'Bento',bg:'linear-gradient(135deg,#f8f8f8,#efefef)'}
-];
-
-// ==================== TEMPLATES ====================
-const TPLS=[
-  {n:'SaaS Landing',s:'For product pages',lay:'duo',bg:'midnight',theme:'glass'},
-  {n:'Portfolio',s:'Showcase work',lay:'hero',bg:'cream',theme:'minimal'},
-  {n:'App Launch',s:'Mobile first',lay:'phone',bg:'aurora',theme:'default'},
-  {n:'Dashboard',s:'Admin panels',lay:'center',bg:'charcoal',theme:'dark'},
-  {n:'E-Commerce',s:'Online stores',lay:'trio',bg:'peach',theme:'default'},
-  {n:'Startup Pitch',s:'Investor decks',lay:'overlap',bg:'indigo',theme:'neo'},
-  {n:'Agency',s:'Creative studios',lay:'float',bg:'sahara',theme:'default'},
-  {n:'Multi Device',s:'Responsive',lay:'grid',bg:'ice',theme:'minimal'}
-];
-
-// ==================== INIT DYNAMIC UI ====================
-function buildUI(){
-  // Layouts
-  const lg=$('layGrid');lg.innerHTML='';
-  Object.keys(LAYS).forEach(k=>{
-    const l=LAYS[k];
-    const d=document.createElement('div');
-    d.className='lay-opt'+(S.layout===k?' act':'');
-    d.dataset.lay=k;
-    d.title=l.n;
-    d.onclick=()=>setLayout(k);
-    let svg='<svg viewBox="0 0 64 40">';
-    if(l.bf) svg+=`<rect x="${l.bf.l*.64}" y="${l.bf.t*.4}" width="${l.bf.w*.64}" height="${l.bf.h*.4}" rx="3" fill="none" stroke="#c9956b" stroke-width="1.2"/>`;
-    if(l.pf) svg+=`<rect x="${l.pf.l*.64}" y="${l.pf.t*.4}" width="${l.pf.w*.64}" height="${l.pf.h*.4}" rx="4" fill="none" stroke="#c9956b" stroke-width="1.2"/>`;
-    if(l.tf) svg+=`<rect x="${l.tf.l*.64}" y="${l.tf.t*.4}" width="${l.tf.w*.64}" height="${l.tf.h*.4}" rx="2" fill="none" stroke="#c9956b" stroke-width="1.2"/>`;
-    svg+='</svg>';
-    d.innerHTML=svg;
-    lg.appendChild(d);
-  });
-
-  // Backgrounds
-  const bg=$('bgGrid');bg.innerHTML='';
-  Object.keys(BGS).forEach(k=>{
-    const d=document.createElement('div');
-    d.className='bg-sw'+(S.bg===k?' act':'');
-    d.dataset.bg=k;
-    d.style.background=BGS[k];
-    d.title=k;
-    d.onclick=()=>setBg(k);
-    bg.appendChild(d);
-  });
-
-  // Themes
-  const tg=$('themeGrid');tg.innerHTML='';
-  THEMES.forEach(t=>{
-    const d=document.createElement('div');
-    d.className='theme-card'+(S.theme===t.id?' act':'');
-    d.dataset.theme=t.id;
-    d.style.background=t.bg;
-    d.onclick=()=>setTheme(t.id);
-    d.innerHTML=`<span>${t.n}</span>`;
-    tg.appendChild(d);
-  });
-
-  // Templates
-  const tp=$('tplGrid');tp.innerHTML='';
-  TPLS.forEach((t,i)=>{
-    const bg=BGS[t.bg]||BGS.sahara;
-    const d=document.createElement('div');
-    d.className='tpl-card';
-    d.style.background=bg;
-    d.onclick=()=>applyTemplate(i);
-    d.innerHTML=`<span>${t.n}</span><small>${t.s}</small>`;
-    tp.appendChild(d);
-  });
-
-  renderPresets();
-}
-
-// ==================== SECTION COLLAPSE ====================
-function togSec(el){
-  const body=el.parentElement.querySelector('.sec-body');
-  const arrow=el.querySelector('.sec-arrow');
-  if(body){
-    body.classList.toggle('collapsed');
-    if(body.classList.contains('collapsed')){
-      body.style.maxHeight='0';
-      if(arrow)arrow.classList.add('collapsed');
-    }else{
-      body.style.maxHeight=body.scrollHeight+200+'px';
-      if(arrow)arrow.classList.remove('collapsed');
-    }
-  }
-}
-
-// ==================== TAB SWITCHING ====================
-function swTab(name){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('act',t.dataset.tab===name));
-  document.querySelectorAll('.tab-body').forEach(tb=>tb.classList.remove('act'));
-  const target=$('tab'+name.charAt(0).toUpperCase()+name.slice(1));
-  if(target)target.classList.add('act');
-}
-
-// ==================== FILE UPLOADS ====================
-$('fD').addEventListener('change',e=>handleUpload(e,'desktop'));
-$('fM').addEventListener('change',e=>handleUpload(e,'mobile'));
-$('fT').addEventListener('change',e=>handleUpload(e,'tablet'));
-$('fBg').addEventListener('change',e=>{
-  const f=e.target.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    S.bgImgUrl=ev.target.result;
-    $('pvBg').src=ev.target.result;
-    $('upBg').classList.add('has');
-    $('msBgImg').src=ev.target.result;
-    $('msBgImg').style.display='block';
-    toast('✓ Background image set');
-  };r.readAsDataURL(f);
-});
-
-function handleUpload(e,type){
-  const f=e.target.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    const url=ev.target.result;
-    S[type+'Img']=url;
-    const pvId={desktop:'pvD',mobile:'pvM',tablet:'pvT'}[type];
-    const upId={desktop:'upD',mobile:'upM',tablet:'upT'}[type];
-    $(pvId).src=url;
-    $(upId).classList.add('has');
-    const imgId={desktop:'imgD',mobile:'imgM',tablet:'imgTb'}[type];
-    const phId={desktop:'phD',mobile:'phM',tablet:'phTb'}[type];
-    $(imgId).src=url;
-    $(imgId).style.display='block';
-    applyImgStyle(type);
-    $(phId).style.display='none';
-    applyLayout();
-    toast('✓ '+cap(type)+' uploaded');
-  };r.readAsDataURL(f);
-}
-
-function rmImg(type){
-  S[type+'Img']=null;
-  const pvId={desktop:'pvD',mobile:'pvM',tablet:'pvT'}[type];
-  const upId={desktop:'upD',mobile:'upM',tablet:'upT'}[type];
-  const fId={desktop:'fD',mobile:'fM',tablet:'fT'}[type];
-  const imgId={desktop:'imgD',mobile:'imgM',tablet:'imgTb'}[type];
-  const phId={desktop:'phD',mobile:'phM',tablet:'phTb'}[type];
-  $(pvId).src='';$(upId).classList.remove('has');$(fId).value='';
-  $(imgId).style.display='none';$(imgId).src='';
-  $(phId).style.display='flex';
-  applyLayout();
-  toast('✕ '+cap(type)+' removed');
-}
-
-function rmBgImg(){
-  S.bgImgUrl=null;
-  $('pvBg').src='';$('upBg').classList.remove('has');$('fBg').value='';
-  $('msBgImg').style.display='none';$('msBgImg').src='';
-  toast('✕ Background image removed');
-}
-
-function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
-
-// ==================== LAYOUT ====================
-function setLayout(k){
-  S.layout=k;
-  document.querySelectorAll('.lay-opt').forEach(el=>el.classList.toggle('act',el.dataset.lay===k));
-  $('layName').textContent=LAYS[k].n;
-  applyLayout();
-}
-
-function applyLayout(){
-  const L=LAYS[S.layout];
-  const ms=$('ms'),bf=$('bf'),pf=$('pf'),tf=$('tf');
-  const p=S.pad;
-
-  // Browser
-  if(L.bf){
-    bf.classList.remove('hidden');
-    if(!S.freeMode){
-      bf.style.left=L.bf.l+'%';bf.style.top=L.bf.t+'%';
-      bf.style.width=L.bf.w+'%';bf.style.height=L.bf.h+'%';
-      bf.style.right='auto';bf.style.bottom='auto';
-      bf.style.transform='none';
-    }
-    const navH=S.showNav?48:28;
-    $('bBody').style.height='calc(100% - '+navH+'px)';
-  }else{
-    bf.classList.add('hidden');
-  }
-
-  // Phone
-  if(L.pf&&(S.mobileImg||S.layout==='phone'||S.layout==='phones'||S.layout==='duo'||S.layout==='duoR'||S.layout==='trio'||S.layout==='stack'||S.layout==='overlap'||S.layout==='grid'||S.layout==='float')){
-    pf.classList.remove('hidden');
-    if(!S.freeMode){
-      pf.style.left=L.pf.l+'%';pf.style.top=L.pf.t+'%';
-      pf.style.width=L.pf.w+'%';pf.style.height=L.pf.h+'%';
-      pf.style.right='auto';pf.style.bottom='auto';
-      const sc=S.phoneScale/100;
-      pf.style.transform='scale('+sc+')';
-      pf.style.transformOrigin='top left';
-    }
-  }else{
-    pf.classList.add('hidden');
-  }
-
-  // Tablet
-  if(L.tf&&(S.tabletImg||S.layout==='trio'||S.layout==='grid'||S.layout==='float'||S.layout==='tabDesk')){
-    tf.classList.remove('hidden');
-    if(!S.freeMode){
-      tf.style.left=L.tf.l+'%';tf.style.top=L.tf.t+'%';
-      tf.style.width=L.tf.w+'%';tf.style.height=L.tf.h+'%';
-      tf.style.right='auto';tf.style.bottom='auto';
-      tf.style.transform='none';
-    }
-  }else{
-    tf.classList.add('hidden');
-  }
-
-  applyShadow();
-}
-
-// ==================== BACKGROUND ====================
-function setBg(k){
-  S.bg=k;S.bgCustom=null;
-  document.querySelectorAll('.bg-sw').forEach(el=>el.classList.toggle('act',el.dataset.bg===k));
-  $('ms').style.background=BGS[k];
-}
-
-function setBgCustom(v){
-  S.bgCustom=v;S.bg='custom';
-  document.querySelectorAll('.bg-sw').forEach(el=>el.classList.remove('act'));
-  $('ms').style.background=v;
-}
-
-// ==================== THEME ====================
-function setTheme(id){
-  S.theme=id;
-  document.querySelectorAll('.theme-card').forEach(el=>el.classList.toggle('act',el.dataset.theme===id));
-  const ms=$('ms');
-  THEMES.forEach(t=>ms.classList.remove('th-'+t.id));
-  if(id!=='default')ms.classList.add('th-'+id);
-}
-
-// ==================== TEMPLATE ====================
-function applyTemplate(i){
-  const t=TPLS[i];
-  setLayout(t.lay);
-  setBg(t.bg);
-  setTheme(t.theme);
-  toast('✓ Template "'+t.n+'" applied');
-}
-
-// ==================== FRAME COLOR ====================
-function setFrmCol(c){
-  S.frameColor=c;
-  $('bf').style.backgroundColor=c;
-  $('pf').style.backgroundColor=c;
-  $('tf').style.backgroundColor=c;
-  const dk=c==='#000000'||c==='#1a1a1e';
-  $('bBar').style.background=dk?'rgba(30,30,30,.95)':'rgba(245,245,245,.95)';
-  $('bNav').style.background=dk?'rgba(30,30,30,.9)':'rgba(250,250,250,.9)';
-  document.querySelectorAll('.b-ctrl span').forEach(s=>s.style.color=dk?'#555':'#ccc');
-  document.querySelectorAll('.addr span').forEach(s=>s.style.color=dk?'#666':'#aaa');
-  document.querySelectorAll('.b-nav span').forEach(s=>s.style.color=dk?'#666':'#999');
-}
-
-// ==================== STYLE CONTROLS ====================
-function setRnd(v){S.round=v;$('rvR').textContent=v+'px';$('bf').style.borderRadius=v+'px'}
-function setShd(v){S.shadow=v;$('rvS').textContent=v+'%';applyShadow()}
-function setPSc(v){S.phoneScale=v;$('rvP').textContent=v+'%';applyLayout()}
-function setPad(v){S.pad=v;$('rvPd').textContent=v+'%';applyLayout()}
-function setBgBlur(v){S.bgBlur=v;$('rvBl').textContent=v+'px';$('msBgImg').style.filter='blur('+v+'px)'}
-
-function applyShadow(){
-  const i=S.shadow/100;
-  const bs=`0 ${Math.round(25*i)}px ${Math.round(60*i)}px rgba(0,0,0,${(.18*i).toFixed(2)}), 0 ${Math.round(8*i)}px ${Math.round(20*i)}px rgba(0,0,0,${(.1*i).toFixed(2)})`;
-  const ps=`0 ${Math.round(25*i)}px ${Math.round(55*i)}px rgba(0,0,0,${(.22*i).toFixed(2)}), 0 ${Math.round(8*i)}px ${Math.round(20*i)}px rgba(0,0,0,${(.12*i).toFixed(2)})`;
-  $('bf').style.boxShadow=bs;
-  $('pf').style.boxShadow=ps;
-  $('tf').style.boxShadow=bs;
-}
-
-// ==================== TOGGLES ====================
-function togNav(){S.showNav=!S.showNav;$('tN').classList.toggle('on');$('bNav').style.display=S.showNav?'flex':'none';const h=S.showNav?48:28;$('bBody').style.height='calc(100% - '+h+'px)'}
-function togIsland(){S.showIsland=!S.showIsland;$('tI').classList.toggle('on');$('pIsl').style.display=S.showIsland?'block':'none'}
-function togRefl(){S.showRefl=!S.showRefl;$('tR').classList.toggle('on');$('ms').classList.toggle('reflection')}
-function togWm(){S.showWm=!S.showWm;$('tW').classList.toggle('on');$('wm').style.display=S.showWm?'block':'none'}
-function togBgOv(){S.showBgOv=!S.showBgOv;$('tOv').classList.toggle('on');$('msBgOv').style.background=S.showBgOv?'rgba(0,0,0,.3)':'none'}
-
-// ==================== IMAGE CONTROLS ====================
-function setImgFit(type,v){
-  S.imgFit[type]=v;
-  applyImgStyle(type);
-}
-function setImgScale(type,v){
-  S.imgScale[type]=parseInt(v);
-  const rvId={desktop:'rvDS',mobile:'rvMS',tablet:'rvTS'}[type];
-  $(rvId).textContent=v+'%';
-  applyImgStyle(type);
-}
-function setImgOff(type,axis,v){
-  S.imgOff[type][axis]=parseInt(v);
-  const rvId={desktop:{x:'rvDX',y:'rvDY'},mobile:{x:'rvMX',y:'rvMY'},tablet:{x:'rvTX',y:'rvTY'}}[type][axis];
-  $(rvId).textContent=v+'px';
-  applyImgStyle(type);
-}
-function setImgRad(type,v){
-  S.imgRad[type]=parseInt(v);
-  if(type==='desktop')$('rvDR').textContent=v+'px';
-  applyImgStyle(type);
-}
-
-function applyImgStyle(type){
-  const imgId={desktop:'imgD',mobile:'imgM',tablet:'imgTb'}[type];
-  const img=$(imgId);if(!img)return;
-  const sc=S.imgScale[type]/100;
-  const ox=S.imgOff[type].x;
-  const oy=S.imgOff[type].y;
-  const fit=S.imgFit[type];
-  const rad=S.imgRad[type]||0;
-
-  img.style.objectFit=fit;
-  img.style.width='100%';
-  img.style.height='100%';
-  img.style.transform=`scale(${sc}) translate(${ox}px, ${oy}px)`;
-  img.style.borderRadius=rad+'px';
-}
-
-// ==================== LABELS ====================
-function updateLabels(){
-  const n=$('lblN').value,d=$('lblD').value,m=$('lblM').value,t=$('lblT').value,u=$('urlTxt').value;
-  $('phDN').textContent=n;$('phDT').textContent=d;
-  $('phMN').textContent=n;$('phMT').textContent=m;
-  $('phTN').textContent=n;$('phTT').textContent=t;
-  $('addrTxt').textContent=u;
-}
-
-// ==================== ZOOM ====================
-function zIn(){S.zoom=Math.min(S.zoom+.1,2.5);applyZoom()}
-function zOut(){S.zoom=Math.max(S.zoom-.1,.2);applyZoom()}
-function zFit(){
-  const a=$('stageArea').getBoundingClientRect();
-  const zx=(a.width-40)/960;const zy=(a.height-40)/600;
-  S.zoom=Math.min(zx,zy,1.2);applyZoom();
-}
-function applyZoom(){$('stageCv').style.transform='scale('+S.zoom+')';$('zDisp').textContent=Math.round(S.zoom*100)+'%'}
-
-// ==================== FREE POSITION MODE ====================
-let dragTarget=null,dragOff={x:0,y:0};
-
-function togFree(){
-  S.freeMode=!S.freeMode;
-  $('freeBtn').style.background=S.freeMode?'rgba(201,149,107,.2)':'';
-  $('freeBtn').style.borderColor=S.freeMode?'var(--accent)':'';
-  $('freeBtn').title=S.freeMode?'Free mode ON':'Free mode OFF';
-  toast(S.freeMode?'🔓 Free position mode ON':'🔒 Snapped to layout');
-  if(!S.freeMode)applyLayout();
-}
-
-function initDrag(){
-  const handles=['bfDrag','pfDrag','tfDrag'];
-  const frames=['bf','pf','tf'];
-
-  handles.forEach((hId,i)=>{
-    const h=$(hId);const fr=$(frames[i]);
-    if(!h||!fr)return;
-
-    h.addEventListener('mousedown',e=>{
-      if(!S.freeMode)return;
-      e.preventDefault();
-      dragTarget=fr;
-      const rect=fr.getBoundingClientRect();
-      const msRect=$('ms').getBoundingClientRect();
-      const scale=S.zoom;
-      dragOff.x=e.clientX-rect.left;
-      dragOff.y=e.clientY-rect.top;
-      fr.classList.add('dragging');
-      document.addEventListener('mousemove',onDrag);
-      document.addEventListener('mouseup',offDrag);
-    });
-  });
-
-  // Resize handles
-  const resizes=['bfResize','pfResize','tfResize'];
-  resizes.forEach((rId,i)=>{
-    const rh=$(rId);const fr=$(frames[i]);
-    if(!rh||!fr)return;
-
-    rh.addEventListener('mousedown',e=>{
-      if(!S.freeMode)return;
-      e.preventDefault();e.stopPropagation();
-      const startW=fr.offsetWidth;
-      const startH=fr.offsetHeight;
-      const startX=e.clientX;
-      const startY=e.clientY;
-      const ar=startW/startH;
-
-      function onResize(ev){
-        const dx=(ev.clientX-startX)/S.zoom;
-        const dy=(ev.clientY-startY)/S.zoom;
-        const nw=Math.max(80,startW+dx);
-        const nh=nw/ar;
-        fr.style.width=nw+'px';
-        fr.style.height=nh+'px';
-      }
-      function offResize(){
-        document.removeEventListener('mousemove',onResize);
-        document.removeEventListener('mouseup',offResize);
-      }
-      document.addEventListener('mousemove',onResize);
-      document.addEventListener('mouseup',offResize);
-    });
-  });
-}
-
-function onDrag(e){
-  if(!dragTarget)return;
-  const msRect=$('ms').getBoundingClientRect();
-  const scale=S.zoom;
-  const x=(e.clientX-msRect.left)/scale-dragOff.x/scale;
-  const y=(e.clientY-msRect.top)/scale-dragOff.y/scale;
-  dragTarget.style.left=Math.max(0,x)+'px';
-  dragTarget.style.top=Math.max(0,y)+'px';
-  dragTarget.style.right='auto';
-  dragTarget.style.bottom='auto';
-  dragTarget.style.transform='none';
-}
-
-function offDrag(){
-  if(dragTarget)dragTarget.classList.remove('dragging');
-  dragTarget=null;
-  document.removeEventListener('mousemove',onDrag);
-  document.removeEventListener('mouseup',offDrag);
-}
-
-// ==================== TEXT ON STAGE ====================
-let txtIdCounter=0;
-
-function addText(){
-  const txt=$('newTxtVal').value||'Your Text';
-  const font=$('newTxtFont').value;
-  const size=$('newTxtSize').value;
-  const weight=$('newTxtW').value;
-  const color=$('newTxtCol').value;
-  const opacity=parseInt($('newTxtOp').value)/100;
-  const ls=parseInt($('newTxtLs').value);
-
-  const id='txt_'+(++txtIdCounter);
-  const obj={id,text:txt,font,size:parseInt(size),weight:parseInt(weight),color,opacity,ls,x:50,y:50};
-  S.texts.push(obj);
-
-  const el=document.createElement('div');
-  el.className='txt-el';
-  el.id=id;
-  el.textContent=txt;
-  el.style.fontFamily=font;
-  el.style.fontSize=size+'px';
-  el.style.fontWeight=weight;
-  el.style.color=color;
-  el.style.opacity=opacity;
-  el.style.letterSpacing=ls+'px';
-  el.style.left='50%';
-  el.style.top='50%';
-  el.style.transform='translate(-50%,-50%)';
-
-  // Draggable
-  el.addEventListener('mousedown',e=>{
-    e.preventDefault();
-    selectText(id);
-    const rect=el.getBoundingClientRect();
-    const msRect=$('ms').getBoundingClientRect();
-    const ox=e.clientX-rect.left;
-    const oy=e.clientY-rect.top;
-    el.classList.add('dragging');
-
-    function mv(ev){
-      const x=(ev.clientX-msRect.left)/S.zoom-ox/S.zoom;
-      const y=(ev.clientY-msRect.top)/S.zoom-oy/S.zoom;
-      el.style.left=x+'px';
-      el.style.top=y+'px';
-      el.style.transform='none';
-      const tObj=S.texts.find(t=>t.id===id);
-      if(tObj){tObj.x=x;tObj.y=y}
-    }
-    function up(){
-      el.classList.remove('dragging');
-      document.removeEventListener('mousemove',mv);
-      document.removeEventListener('mouseup',up);
-    }
-    document.addEventListener('mousemove',mv);
-    document.addEventListener('mouseup',up);
-  });
-
-  $('ms').appendChild(el);
-  renderTextList();
-  selectText(id);
-  toast('✓ Text added');
-}
-
-function selectText(id){
-  S.selTxt=id;
-  document.querySelectorAll('.txt-el').forEach(e=>e.classList.toggle('sel',e.id===id));
-  document.querySelectorAll('.txt-item').forEach(e=>e.classList.toggle('sel',e.dataset.id===id));
-
-  const obj=S.texts.find(t=>t.id===id);
-  if(obj){
-    $('txtEditSec').style.display='flex';
-    $('edTxtVal').value=obj.text;
-    $('edTxtSz').value=obj.size;
-    $('edTxtCol').value=obj.color;
-  }
-}
-
-function editTxtProp(prop){
-  if(!S.selTxt)return;
-  const obj=S.texts.find(t=>t.id===S.selTxt);
-  const el=$(S.selTxt);
-  if(!obj||!el)return;
-
-  if(prop==='text'){obj.text=$('edTxtVal').value;el.textContent=obj.text;renderTextList()}
-  if(prop==='size'){obj.size=parseInt($('edTxtSz').value);el.style.fontSize=obj.size+'px'}
-  if(prop==='color'){obj.color=$('edTxtCol').value;el.style.color=obj.color}
-}
-
-function deleteTxt(){
-  if(!S.selTxt)return;
-  const el=$(S.selTxt);
-  if(el)el.remove();
-  S.texts=S.texts.filter(t=>t.id!==S.selTxt);
-  S.selTxt=null;
-  $('txtEditSec').style.display='none';
-  renderTextList();
-  toast('✕ Text removed');
-}
-
-function duplicateTxt(){
-  if(!S.selTxt)return;
-  const obj=S.texts.find(t=>t.id===S.selTxt);
-  if(!obj)return;
-  $('newTxtVal').value=obj.text;
-  $('newTxtFont').value=obj.font;
-  $('newTxtSize').value=obj.size;
-  $('newTxtW').value=obj.weight;
-  $('newTxtCol').value=obj.color;
-  addText();
-}
-
-function renderTextList(){
-  const list=$('txtList');
-  if(S.texts.length===0){
-    list.innerHTML='<div style="font-size:9px;color:var(--muted);text-align:center;padding:10px">No text added yet</div>';
-    return;
-  }
-  list.innerHTML='';
-  S.texts.forEach(t=>{
-    const d=document.createElement('div');
-    d.className='txt-item'+(S.selTxt===t.id?' sel':'');
-    d.dataset.id=t.id;
-    d.innerHTML=`<span class="ti-t">${t.text}</span><span class="ti-del" onclick="event.stopPropagation();S.selTxt='${t.id}';deleteTxt()">✕</span>`;
-    d.onclick=()=>selectText(t.id);
-    list.appendChild(d);
-  });
-}
-
-// ==================== PRESETS ====================
-function savePreset(){
-  const name=$('presetName').value.trim()||('Preset '+(S.presets.length+1));
-  const preset={
-    name,date:new Date().toLocaleDateString(),
-    layout:S.layout,bg:S.bg,bgCustom:S.bgCustom,theme:S.theme,
-    frameColor:S.frameColor,round:S.round,shadow:S.shadow,
-    phoneScale:S.phoneScale,pad:S.pad,
-    showNav:S.showNav,showIsland:S.showIsland,showRefl:S.showRefl,showWm:S.showWm,
-    imgFit:{...S.imgFit},imgScale:{...S.imgScale}
-  };
-  S.presets.push(preset);
-  localStorage.setItem('mp_presets',JSON.stringify(S.presets));
-  renderPresets();
-  $('presetName').value='';
-  toast('💾 Preset "'+name+'" saved');
-}
-
-function loadPreset(i){
-  const p=S.presets[i];if(!p)return;
-  setLayout(p.layout);
-  if(p.bgCustom)setBgCustom(p.bgCustom); else setBg(p.bg);
-  setTheme(p.theme);
-  $('frmCol').value=p.frameColor;setFrmCol(p.frameColor);
-  $('rngR').value=p.round;setRnd(p.round);
-  $('rngS').value=p.shadow;setShd(p.shadow);
-  $('rngP').value=p.phoneScale;setPSc(p.phoneScale);
-  $('rngPd').value=p.pad;setPad(p.pad);
-  if(p.showNav!==S.showNav)togNav();
-  if(p.showIsland!==S.showIsland)togIsland();
-  if(p.showRefl!==S.showRefl)togRefl();
-  if(p.showWm!==S.showWm)togWm();
-  toast('✓ Preset "'+p.name+'" loaded');
-}
-
-function deletePreset(i){
-  const name=S.presets[i].name;
-  S.presets.splice(i,1);
-  localStorage.setItem('mp_presets',JSON.stringify(S.presets));
-  renderPresets();
-  toast('✕ Preset "'+name+'" deleted');
-}
-
-function renderPresets(){
-  const list=$('presetList');
-  if(S.presets.length===0){
-    list.innerHTML='<div style="font-size:9px;color:var(--muted);text-align:center;padding:10px">No presets saved</div>';
-    return;
-  }
-  list.innerHTML='';
-  S.presets.forEach((p,i)=>{
-    const d=document.createElement('div');
-    d.className='preset-item';
-    d.innerHTML=`<span class="pi-n">${p.name}</span><span class="pi-d">${p.date}</span>
-      <div class="pi-a"><button class="btn-s" onclick="event.stopPropagation();loadPreset(${i})">Load</button>
-      <button class="btn-d" onclick="event.stopPropagation();deletePreset(${i})">✕</button></div>`;
-    list.appendChild(d);
-  });
-}
-
-// ==================== EXPORT ====================
-async function doExport(){
-  $('expOv').classList.add('show');
-  try{
-    const scale=parseInt($('expSc').value);
-    const fmt=$('expFmt').value;
-    const prevZ=S.zoom;
-    $('stageCv').style.transform='scale(1)';
-
-    // Hide selection outlines on texts
-    document.querySelectorAll('.txt-el').forEach(e=>e.classList.remove('sel'));
-    // Hide drag handles and resize handles visibility
-    document.querySelectorAll('.drag-h,.resize-h').forEach(e=>e.style.visibility='hidden');
-
-    await new Promise(r=>setTimeout(r,300));
-    const canvas=await html2canvas($('ms'),{scale,useCORS:true,allowTaint:true,backgroundColor:null,logging:false,width:960,height:600});
-
-    // Restore
-    document.querySelectorAll('.drag-h,.resize-h').forEach(e=>e.style.visibility='');
-    $('stageCv').style.transform='scale('+prevZ+')';
-    if(S.selTxt)$(S.selTxt).classList.add('sel');
-
-    const link=document.createElement('a');
-    link.download='mockup-'+S.layout+'-'+Date.now()+'.'+fmt;
-    link.href=canvas.toDataURL(fmt==='jpeg'?'image/jpeg':'image/png',.95);
-    link.click();
-    toast('✓ Exported successfully!');
-  }catch(err){
-    console.error(err);toast('✕ Export failed');
-  }
-  $('expOv').classList.remove('show');
-}
-
-async function doCopy(){
-  try{
-    const prevZ=S.zoom;
-    $('stageCv').style.transform='scale(1)';
-    document.querySelectorAll('.drag-h,.resize-h').forEach(e=>e.style.visibility='hidden');
-    await new Promise(r=>setTimeout(r,300));
-    const canvas=await html2canvas($('ms'),{scale:2,useCORS:true,allowTaint:true,backgroundColor:null,logging:false});
-    document.querySelectorAll('.drag-h,.resize-h').forEach(e=>e.style.visibility='');
-    $('stageCv').style.transform='scale('+prevZ+')';
-    canvas.toBlob(async b=>{
-      try{await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);toast('✓ Copied!')}
-      catch(e){toast('✕ Clipboard denied')}
-    });
-  }catch(e){toast('✕ Copy failed')}
-}
-
-// ==================== RESET ====================
-function doReset(){
-  rmImg('desktop');rmImg('mobile');rmImg('tablet');rmBgImg();
-  setLayout('hero');setBg('sahara');setTheme('default');
-  $('frmCol').value='#ffffff';setFrmCol('#ffffff');
-  $('rngR').value=10;setRnd(10);$('rngS').value=50;setShd(50);
-  $('rngP').value=100;setPSc(100);$('rngPd').value=5;setPad(5);
-  $('rngBl').value=0;setBgBlur(0);
-  if(!S.showNav)togNav();if(!S.showIsland)togIsland();
-  if(S.showRefl)togRefl();if(!S.showWm)togWm();if(S.showBgOv)togBgOv();
-
-  // Remove all texts
-  S.texts.forEach(t=>{const e=$(t.id);if(e)e.remove()});
-  S.texts=[];S.selTxt=null;
-  $('txtEditSec').style.display='none';
-  renderTextList();
-
-  $('lblN').value='01';$('lblD').value='Website';$('lblM').value='Phone';$('lblT').value='Tablet';$('urlTxt').value='www.yourproject.com';
-  updateLabels();
-
-  if(S.freeMode)togFree();
-  toast('↺ Reset complete');
-}
-
-// ==================== DRAG & DROP ON STAGE ====================
-$('stageArea').addEventListener('dragover',e=>{e.preventDefault();$('stageArea').style.outline='2px dashed var(--accent)';$('stageArea').style.outlineOffset='-3px'});
-$('stageArea').addEventListener('dragleave',()=>{$('stageArea').style.outline='none'});
-$('stageArea').addEventListener('drop',e=>{
-  e.preventDefault();$('stageArea').style.outline='none';
-  const f=e.dataTransfer.files[0];
-  if(!f||!f.type.startsWith('image/'))return;
-  if(!S.desktopImg){const dt=new DataTransfer();dt.items.add(f);$('fD').files=dt.files;handleUpload({target:{files:[f]}},'desktop')}
-  else if(!S.mobileImg){handleUpload({target:{files:[f]}},'mobile')}
-  else if(!S.tabletImg){handleUpload({target:{files:[f]}},'tablet')}
-  else toast('All slots full');
-});
-
-// ==================== KEYBOARD SHORTCUTS ====================
-document.addEventListener('keydown',e=>{
-  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
-  if(e.ctrlKey||e.metaKey){
-    if(e.key==='='||e.key==='+'){e.preventDefault();zIn()}
-    if(e.key==='-'){e.preventDefault();zOut()}
-    if(e.key==='0'){e.preventDefault();zFit()}
-    if(e.key==='s'){e.preventDefault();doExport()}
-    if(e.key==='c'){e.preventDefault();doCopy()}
-    if(e.key==='z'){e.preventDefault();doReset()}
-  }
-  if(e.key==='Delete'||e.key==='Backspace'){if(S.selTxt)deleteTxt()}
-  if(e.key==='Escape'){
-    S.selTxt=null;document.querySelectorAll('.txt-el').forEach(e=>e.classList.remove('sel'));
-    $('txtEditSec').style.display='none';
-    document.querySelectorAll('.txt-item').forEach(e=>e.classList.remove('sel'));
-  }
-});
-
-// ==================== TOAST ====================
-function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._to);t._to=setTimeout(()=>t.classList.remove('show'),2200)}
-
-// ==================== WINDOW RESIZE ====================
-window.addEventListener('resize',()=>{clearTimeout(window._rz);window._rz=setTimeout(zFit,200)});
-
-// ==================== CLICK STAGE TO DESELECT TEXT ====================
-$('ms').addEventListener('click',e=>{
-  if(e.target===$('ms')||e.target.classList.contains('ms-bg-overlay')){
-    S.selTxt=null;
-    document.querySelectorAll('.txt-el').forEach(el=>el.classList.remove('sel'));
-    $('txtEditSec').style.display='none';
-    document.querySelectorAll('.txt-item').forEach(el=>el.classList.remove('sel'));
-  }
-});
-
-// ==================== INIT ====================
-function init(){
-  buildUI();
-  setBg('sahara');
-  applyLayout();
-  initDrag();
-  setTimeout(zFit,150);
-}
-init();
-</script>
+<!-- Core Logic -->
+<script src="js/main.js"></script>
 </body>
 </html>

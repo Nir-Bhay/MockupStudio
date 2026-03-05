@@ -1,0 +1,36 @@
+/* ==================== GLASS THEME ==================== */
+.ms.th-glass .bf{background:rgba(255,255,255,.1)!important;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12)}
+.ms.th-glass .b-bar{background:rgba(255,255,255,.06)!important}
+.ms.th-glass .b-bar::after{background:rgba(255,255,255,.05)!important}
+.ms.th-glass .b-nav{background:rgba(255,255,255,.04)!important}
+.ms.th-glass .addr{background:rgba(255,255,255,.06)!important}
+.ms.th-glass .b-ctrl span,.ms.th-glass .addr span,.ms.th-glass .b-nav span{color:rgba(255,255,255,.35)!important}
+.ms.th-glass .pf,.ms.th-glass .tf{background:rgba(255,255,255,.08)!important;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1)}
+.ms.th-glass .dot-r,.ms.th-glass .dot-y,.ms.th-glass .dot-g{opacity:.6}
+
+/* ==================== DARK THEME ==================== */
+.ms.th-dark .bf{background:#1a1a1e!important}
+.ms.th-dark .b-bar{background:#222!important}.ms.th-dark .b-nav{background:#1e1e22!important}
+.ms.th-dark .b-bar::after{background:rgba(255,255,255,.05)!important}
+.ms.th-dark .addr{background:rgba(255,255,255,.05)!important}
+.ms.th-dark .b-ctrl span,.ms.th-dark .addr span,.ms.th-dark .b-nav span{color:#555!important}
+.ms.th-dark .pf,.ms.th-dark .tf{background:#1a1a1e!important}
+.ms.th-dark .b-body,.ms.th-dark .p-scr,.ms.th-dark .t-scr{background:#262628!important}
+.ms.th-dark .ph-n,.ms.th-dark .ph-t,.ms.th-dark .ph-s{color:rgba(255,255,255,.08)!important}
+
+/* ==================== MINIMAL THEME ==================== */
+.ms.th-minimal .bf{box-shadow:0 1px 4px rgba(0,0,0,.05)!important;border:1px solid rgba(0,0,0,.06)}
+.ms.th-minimal .pf,.ms.th-minimal .tf{box-shadow:0 1px 4px rgba(0,0,0,.05)!important;border:1px solid rgba(0,0,0,.06)}
+
+/* ==================== NEO/NEON THEME ==================== */
+.ms.th-neo .bf{border:2px solid rgba(201,149,107,.25)!important;box-shadow:0 0 30px rgba(201,149,107,.08),0 20px 50px rgba(0,0,0,.12)!important}
+.ms.th-neo .pf,.ms.th-neo .tf{border:2px solid rgba(201,149,107,.25)!important;box-shadow:0 0 25px rgba(201,149,107,.08),0 15px 40px rgba(0,0,0,.15)!important}
+
+/* ==================== BENTO THEME ==================== */
+.ms.th-bento .bf{border-radius:16px!important}
+.ms.th-bento .pf{border-radius:28px!important}
+.ms.th-bento .tf{border-radius:18px!important}
+.ms.th-bento .bf,.ms.th-bento .pf,.ms.th-bento .tf{box-shadow:0 2px 8px rgba(0,0,0,.06)!important;border:1px solid rgba(0,0,0,.04)}
+
+/* ==================== REFLECTION EFFECT ==================== */
+.ms.reflection::after{content:'';position:absolute;bottom:0;left:0;right:0;height:20%;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.02));pointer-events:none;z-index:40}

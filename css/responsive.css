@@ -1,0 +1,98 @@
+/* ==================== RESPONSIVE DESIGN ==================== */
+
+/* Large screens (default) — no changes needed */
+
+/* Medium screens: collapse right sidebar */
+@media (max-width: 1200px) {
+  :root { --sb-w: 240px }
+  .stage-bar-l .si:first-child { display: none }
+}
+
+/* Tablet / small laptop */
+@media (max-width: 1024px) {
+  :root { --sb-w: 220px }
+  .ms { width: 800px; height: 500px }
+  .lay-grid { grid-template-columns: repeat(3, 1fr) }
+  .bg-grid { grid-template-columns: repeat(5, 1fr) }
+}
+
+/* Below 900px: hide right sidebar, make left sidebar overlay-able */
+@media (max-width: 900px) {
+  body { flex-direction: column; position: relative }
+  
+  .sb.left {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    border-right: 1px solid var(--border);
+    width: 270px;
+    min-width: 270px;
+  }
+  .sb.left.open { transform: translateX(0) }
+  
+  .sb.right {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    border-left: 1px solid var(--border);
+    width: 270px;
+    min-width: 270px;
+  }
+  .sb.right.open { transform: translateX(0) }
+  
+  .stage-wrap { width: 100%; flex: 1 }
+  
+  /* Mobile sidebar overlay backdrop */
+  .sb-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 199;
+  }
+  .sb-overlay.show { display: block }
+  
+  /* Mobile toolbar buttons to open sidebars */
+  .mobile-toggle {
+    display: flex !important;
+    width: 28px;
+    height: 28px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--dim);
+    cursor: pointer;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+  }
+  .mobile-toggle:hover { border-color: var(--accent); color: var(--text) }
+  
+  .ms { width: 700px; height: 438px }
+}
+
+/* Phone */
+@media (max-width: 600px) {
+  .stage-bar { padding: 0 6px; height: 34px; min-height: 34px }
+  .stage-bar-l { gap: 4px }
+  .stage-bar-r { gap: 2px }
+  .zd { font-size: 8px; padding: 2px 4px }
+  .zb { width: 20px; height: 20px; font-size: 10px }
+  
+  .ms { width: 500px; height: 312px }
+  
+  .sb.left, .sb.right { width: 100%; min-width: 100% }
+  
+  .lay-grid { grid-template-columns: repeat(3, 1fr) }
+  .bg-grid { grid-template-columns: repeat(6, 1fr) }
+  .theme-grid { grid-template-columns: repeat(3, 1fr) }
+  .tpl-grid { grid-template-columns: 1fr }
+}
+
+/* Utility: hidden by default, shown via JS on mobile */
+.mobile-toggle { display: none }

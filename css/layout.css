@@ -1,0 +1,41 @@
+/* ==================== SIDEBAR LAYOUT ==================== */
+.sb{width:var(--sb-w);min-width:var(--sb-w);background:var(--card);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.sb.left{border-right:1px solid var(--border)}.sb.right{border-left:1px solid var(--border)}
+.sb-inner{padding:12px;display:flex;flex-direction:column;gap:12px}
+
+/* ==================== LOGO ==================== */
+.logo{display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.logo-i{width:26px;height:26px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:800}
+.logo-t{font-size:13px;font-weight:700;letter-spacing:-.3px}.logo-t b{color:var(--accent)}
+.logo-v{font-size:7px;color:#000;background:var(--accent);padding:2px 5px;border-radius:3px;margin-left:auto;font-weight:700}
+
+/* ==================== COLLAPSIBLE SECTIONS ==================== */
+.sec{display:flex;flex-direction:column;gap:6px}
+.sec-h{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:1px 0}
+.sec-t{font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:600;transition:color .2s}
+.sec-h:hover .sec-t{color:var(--dim)}
+.sec-b{font-size:7px;background:rgba(201,149,107,.15);color:var(--accent);padding:2px 5px;border-radius:3px;font-weight:600}
+.sec-arrow{font-size:8px;color:var(--muted);transition:transform .2s}
+.sec-arrow.collapsed{transform:rotate(-90deg)}
+.sec-body{display:flex;flex-direction:column;gap:6px;transition:all .3s ease}
+.sec-body.collapsed{max-height:0!important;overflow:hidden;opacity:0;margin:0;padding:0}
+.divider{height:1px;background:var(--border);margin:1px 0}
+
+/* ==================== STAGE ==================== */
+.stage-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.stage-bar{height:38px;min-height:38px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 12px}
+.stage-bar-l{display:flex;align-items:center;gap:8px}
+.stage-bar .si{font-size:9px;color:var(--muted)}.stage-bar .sd{font-size:9px;color:var(--dim);font-variant-numeric:tabular-nums}
+.zd{font-size:9px;color:var(--dim);background:var(--bg);padding:3px 6px;border-radius:4px;border:1px solid var(--border);font-variant-numeric:tabular-nums}
+.zb{width:22px;height:22px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .1s}
+.zb:hover{border-color:var(--muted);color:var(--text)}
+.stage-bar-r{display:flex;align-items:center;gap:4px}
+
+.stage{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden;background-image:radial-gradient(#141416 1px,transparent 1px);background-size:18px 18px}
+.stage-cv{position:relative;transition:transform .25s ease}
+
+/* ==================== TABS ==================== */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:2px}
+.tab{flex:1;padding:6px 2px;font-size:7px;font-weight:600;text-align:center;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.3px;text-transform:uppercase}
+.tab:hover{color:var(--dim)}.tab.act{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-body{display:none}.tab-body.act{display:flex;flex-direction:column;gap:8px}

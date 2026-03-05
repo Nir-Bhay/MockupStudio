@@ -1,0 +1,5 @@
+/* ==================== RESET & VARIABLES ==================== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#c9956b;--accent2:#a67a52;--bg:#09090b;--card:#111113;--card2:#161618;--hover:#1c1c1f;--border:#1e1e22;--border2:#2a2a2e;--text:#e4e4e7;--dim:#71717a;--muted:#3f3f46;--radius:8px;--sb-w:270px}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#222;border-radius:3px}

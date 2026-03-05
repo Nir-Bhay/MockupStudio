@@ -176,6 +176,10 @@
   </div>
   <div class="toggle-row">
     <span class="toggle-label">Dynamic Glow</span>
+  <div class="toggle-row">
+    <span class="toggle-label">Isometric (3D) View</span>
+    <div class="toggle" id="toggle3D" onclick="this.classList.toggle('on');togglePerspective(this.classList.contains('on'))"></div>
+  </div>
     <div class="toggle" id="toggleGlow" onclick="this.classList.toggle('on');toggleLighting(this.classList.contains('on'))"></div>
   </div>
     <div class="toggle" id="toggleReflect" onclick="toggleReflection()"></div>
@@ -333,5 +337,7 @@
 
 <!-- Core Logic -->
 <script src="js/main.js"></script>
+<script src="js/v2-creative.js"></script>
+<script src="js/v3-innovation.js"></script>
 </body>
 </html>

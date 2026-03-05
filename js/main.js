@@ -16,7 +16,7 @@ const state = new Proxy({
   phoneScale: 100,
   showNav: true,
   showNotch: true,
-  showReflection: false,
+  showReflection: false, showGlass: false, showGlow: false,
   showWatermark: true,
   zoom: 1,
   exportScale: 3,

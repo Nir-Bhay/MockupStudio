@@ -27,10 +27,10 @@
     transform: translateX(-100%);
     transition: transform .3s cubic-bezier(.4,0,.2,1);
     border-right: 1px solid var(--border);
-    width: 270px;
-    min-width: 270px;
+    flex-direction: row;
   }
   .sb.left.open { transform: translateX(0) }
+  .sb-panel { width: 220px; min-width: 220px }
   
   .sb.right {
     position: fixed;

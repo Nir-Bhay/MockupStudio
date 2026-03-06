@@ -91,6 +91,10 @@ function init(){
   applyLayout();
   initDrag();
   initCanvasToolbar();
+  initArtboards();
+  buildRulers();
+  renderLayerPanel();
+  renderPatternGrid();
   setTimeout(zFit,150);
   pushHistory();
 }

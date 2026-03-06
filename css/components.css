@@ -16,6 +16,13 @@
 .rm-btn{position:absolute;top:5px;right:5px;width:16px;height:16px;background:rgba(239,68,68,.85);border:none;border-radius:50%;color:#fff;font-size:7px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:5}
 .rm-btn:hover{transform:scale(1.1)}.up-zone.has .rm-btn{display:flex}
 
+/* ==================== CATEGORY BAR ==================== */
+.cat-bar{display:flex;gap:4px;padding:0 0 8px;flex-wrap:wrap}
+.cat-btn{font-size:10px;padding:3px 8px;border:1px solid #27272a;border-radius:12px;background:transparent;color:#888;cursor:pointer;transition:all .2s var(--ease-out);white-space:nowrap}
+.cat-btn:hover{border-color:#444;color:#bbb}.cat-btn.act{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.tpl-cat-btn{font-size:10px;padding:3px 8px;border:1px solid #27272a;border-radius:12px;background:transparent;color:#888;cursor:pointer;transition:all .2s var(--ease-out);white-space:nowrap}
+.tpl-cat-btn:hover{border-color:#444;color:#bbb}.tpl-cat-btn.act{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+
 /* ==================== LAYOUT GRID ==================== */
 .lay-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
 .lay-opt{aspect-ratio:16/10;background:var(--bg);border:1.5px solid transparent;border-radius:5px;cursor:pointer;transition:all .2s var(--ease-out);display:flex;align-items:center;justify-content:center;padding:4px}
@@ -61,8 +68,8 @@ select{cursor:pointer}select option{background:var(--bg)}
 .rng-g{display:flex;flex-direction:column;gap:3px}
 .rng-h{display:flex;justify-content:space-between;align-items:center}
 .rng-h span{font-size:8px;color:#a1a1aa}.rng-h .rv{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
-input[type="range"]{-webkit-appearance:none;width:100%;height:2px;background:#27272a;border-radius:2px;outline:none;transition:background .2s}
-input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;background:var(--accent);border-radius:50%;cursor:pointer;transition:transform .15s var(--ease-spring),box-shadow .15s}
+input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:#27272a;border-radius:2px;outline:none;transition:background .2s}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:12px;height:12px;background:var(--accent);border-radius:50%;cursor:pointer;transition:transform .15s var(--ease-spring),box-shadow .15s}
 input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.2);box-shadow:0 0 0 4px rgba(201,149,107,.15)}
 input[type="range"]::-webkit-slider-thumb:active{transform:scale(1.1)}
 

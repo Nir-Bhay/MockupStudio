@@ -1,0 +1,54 @@
+/* ==================== GRID OVERLAY ==================== */
+.ms.show-grid::before{
+  content:'';position:absolute;inset:0;z-index:95;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(201,149,107,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,149,107,.08) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+
+/* ==================== RULERS ==================== */
+.ruler{position:absolute;z-index:96;pointer-events:none;font-family:monospace}
+.ruler-h{top:-16px;left:0;right:0;height:14px;background:rgba(20,20,22,.8);border-bottom:1px solid var(--border)}
+.ruler-v{left:-20px;top:0;bottom:0;width:18px;background:rgba(20,20,22,.8);border-right:1px solid var(--border)}
+.ruler-mark{position:absolute;font-size:6px;color:var(--muted);line-height:1}
+.ruler-h .ruler-mark{bottom:2px;transform:translateX(-50%)}
+.ruler-v .ruler-mark{right:2px;transform:translateY(-50%);writing-mode:vertical-lr;text-orientation:mixed;font-size:5px}
+
+/* ==================== LAYER PANEL ==================== */
+.layer-list{display:flex;flex-direction:column;gap:2px}
+.layer-item{display:flex;align-items:center;gap:4px;padding:4px 5px;background:var(--bg);border:1px solid var(--border);border-radius:4px;transition:all .15s var(--ease-out)}
+.layer-item:hover{border-color:rgba(201,149,107,.2);background:rgba(201,149,107,.03)}
+.layer-item.locked{opacity:.6}
+.ly-grip{font-size:8px;color:var(--muted);cursor:grab;flex-shrink:0;user-select:none}
+.ly-name{font-size:9px;flex:1;font-weight:500}
+.ly-btn{width:18px;height:18px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;font-size:9px;border-radius:3px;transition:background .12s;flex-shrink:0;padding:0}
+.ly-btn:hover{background:rgba(255,255,255,.06)}
+.ly-btn.act{background:rgba(201,149,107,.12)}
+
+/* Frame locked indicator */
+.frame-locked{outline:2px dashed rgba(239,68,68,.3)!important;outline-offset:-2px}
+.frame-locked .drag-h{cursor:not-allowed!important}
+
+/* ==================== PERSPECTIVE MODE ==================== */
+.persp-controls{display:flex;flex-direction:column;gap:4px;padding:6px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius)}
+
+/* ==================== TOOLBAR EXTENSIONS ==================== */
+.tb-group{display:flex;align-items:center;gap:3px;padding:0 4px;border-left:1px solid var(--border);margin-left:2px}
+.tb-btn{width:22px;height:22px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center;transition:all .1s var(--ease-out)}
+.tb-btn:hover{border-color:var(--muted);color:var(--text)}
+.tb-btn.act{background:rgba(201,149,107,.15);border-color:rgba(201,149,107,.3);color:var(--accent)}
+
+/* ==================== PROJECT SAVE/LOAD ==================== */
+.project-actions{display:flex;gap:4px}
+
+/* ==================== ALIGN/DISTRIBUTE TOOLBAR ==================== */
+.align-bar{display:flex;gap:2px;flex-wrap:wrap}
+.align-bar button{width:24px;height:22px;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--muted);cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.align-bar button:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ==================== PATTERN GRID ==================== */
+.pat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.pat-sw{aspect-ratio:1;background-color:#18181b;background-repeat:repeat;border:1.5px solid transparent;border-radius:5px;cursor:pointer;transition:all .2s var(--ease-out);display:flex;align-items:flex-end;justify-content:center;padding:2px;position:relative}
+.pat-sw:hover{border-color:#27272a;transform:scale(1.05)}.pat-sw.act{border-color:var(--accent)}
+.pat-sw span{font-size:6px;color:var(--muted);text-align:center;line-height:1;background:rgba(0,0,0,.6);padding:1px 3px;border-radius:2px}

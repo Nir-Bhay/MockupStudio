@@ -21,6 +21,7 @@ function initDrag(){
 
     h.addEventListener('mousedown',e=>{
       if(!S.freeMode)return;
+      if(isFrameLocked&&isFrameLocked(frames[i]))return;
       e.preventDefault();
       dragTarget=fr;
       // Bring to front on click
@@ -48,6 +49,7 @@ function initDrag(){
       const dir=rh.dataset.dir;
       const fr=$(frameId);
       if(!fr)return;
+      if(isFrameLocked&&isFrameLocked(frameId))return;
       
       fr.style.zIndex=++_activeZIndex;
       const startW=fr.offsetWidth;

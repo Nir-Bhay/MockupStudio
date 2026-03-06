@@ -14,6 +14,8 @@
 <link rel="stylesheet" href="css/themes.css">
 <link rel="stylesheet" href="css/effects.css">
 <link rel="stylesheet" href="css/modal.css">
+<link rel="stylesheet" href="css/artboard.css">
+<link rel="stylesheet" href="css/advanced.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -23,18 +25,41 @@
 
 <!-- LEFT SIDEBAR -->
 <div class="sb left" id="leftSb">
-<div class="sb-inner">
 
-<div class="logo">
-  <div class="logo-i">M</div>
-  <div class="logo-t">Mockup<b>Studio</b></div>
-  <div class="logo-v">PRO</div>
+<!-- Icon Rail -->
+<div class="icon-rail">
+  <div class="logo-i-sm" title="MockupStudio Pro">M</div>
+  <div class="rail-icon act" data-panel="uploads" onclick="togPanel('uploads')" title="Upload Assets">
+    <span class="ri-ico">📤</span><span class="ri-txt">Upload</span>
+  </div>
+  <div class="rail-icon" data-panel="layouts" onclick="togPanel('layouts')" title="Layouts">
+    <span class="ri-ico">⊞</span><span class="ri-txt">Layouts</span>
+  </div>
+  <div class="rail-icon" data-panel="templates" onclick="togPanel('templates')" title="Templates">
+    <span class="ri-ico">✦</span><span class="ri-txt">Templates</span>
+  </div>
+  <div class="rail-icon" data-panel="themes" onclick="togPanel('themes')" title="Themes">
+    <span class="ri-ico">◐</span><span class="ri-txt">Themes</span>
+  </div>
+  <div class="rail-icon" data-panel="backgrounds" onclick="togPanel('backgrounds')" title="Backgrounds">
+    <span class="ri-ico">◧</span><span class="ri-txt">BG</span>
+  </div>
+  <div class="rail-icon" data-panel="labels" onclick="togPanel('labels')" title="Labels">
+    <span class="ri-ico">Aa</span><span class="ri-txt">Labels</span>
+  </div>
 </div>
 
-<!-- UPLOADS -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Upload Assets</span><span class="sec-arrow">▾</span></div>
-  <div class="sec-body">
+<!-- Content Panel -->
+<div class="sb-panel" id="sbPanel">
+<div class="sb-inner">
+
+<div class="panel-hdr" id="panelHdr">
+  <span class="panel-title" id="panelTitle">Upload Assets</span>
+  <button class="panel-close" onclick="closePanel()">✕</button>
+</div>
+
+<!-- UPLOADS PANEL -->
+<div class="panel-content act" id="panelUploads">
     <div class="up-zone" id="upD" onclick="$('fD').click()">
       <input type="file" id="fD" accept="image/*"><button class="rm-btn" onclick="event.stopPropagation();rmImg('desktop')">✕</button>
       <img class="up-prev" id="pvD"><div class="up-info"><div class="up-icon">🖥</div><div class="up-txt"><div class="l1">Desktop</div><div class="l2">Browser frame</div></div></div>
@@ -51,49 +76,45 @@
       <input type="file" id="fBg" accept="image/*"><button class="rm-btn" onclick="event.stopPropagation();rmBgImg()">✕</button>
       <img class="up-prev" id="pvBg"><div class="up-info"><div class="up-icon">🖼</div><div class="up-txt"><div class="l1">Custom Background</div><div class="l2">Stage background image</div></div></div>
     </div>
-  </div>
-</div><div class="divider"></div>
+</div>
 
-<!-- LAYOUTS -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Layouts</span><span class="sec-b">12</span></div>
-  <div class="sec-body">
+<!-- LAYOUTS PANEL -->
+<div class="panel-content" id="panelLayouts">
+    <div class="cat-bar" id="layCats"></div>
     <div class="lay-grid" id="layGrid"></div>
-  </div>
-</div><div class="divider"></div>
+</div>
 
-<!-- QUICK TEMPLATES -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Quick Templates</span><span class="sec-b">8</span></div>
-  <div class="sec-body">
+<!-- TEMPLATES PANEL -->
+<div class="panel-content" id="panelTemplates">
+    <div class="cat-bar" id="tplCats"></div>
     <div class="tpl-grid" id="tplGrid"></div>
-  </div>
-</div><div class="divider"></div>
+</div>
 
-<!-- THEME -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Frame Theme</span></div>
-  <div class="sec-body">
+<!-- THEMES PANEL -->
+<div class="panel-content" id="panelThemes">
     <div class="theme-grid" id="themeGrid"></div>
-  </div>
-</div><div class="divider"></div>
+</div>
 
-<!-- BACKGROUND -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Background</span><span class="sec-b">24+</span></div>
-  <div class="sec-body">
+<!-- BACKGROUNDS PANEL -->
+<div class="panel-content" id="panelBackgrounds">
     <div class="bg-grid" id="bgGrid"></div>
-    <div class="color-row">
+    <div class="sec" style="margin-top:8px">
+      <div class="sec-hdr" onclick="togSec(this)"><span>Patterns</span><span class="sec-arrow">▾</span></div>
+      <div class="sec-body">
+        <div class="pat-grid" id="patGrid"></div>
+      </div>
+    </div>
+    <div class="color-row" style="margin-top:6px">
       <input type="color" id="custBg" value="#c9956b" oninput="setBgCustom(this.value)">
       <label>Custom Color</label>
     </div>
-  </div>
-</div><div class="divider"></div>
+    <div class="inp-row" style="margin-top:4px">
+      <div class="inp-g"><label>BG Image</label><input type="file" accept="image/*" id="bgImgUp" onchange="handleBgImgUpload(event)" style="font-size:9px"></div>
+    </div>
+</div>
 
-<!-- LABELS -->
-<div class="sec">
-  <div class="sec-h" onclick="togSec(this)"><span class="sec-t">Labels</span><span class="sec-arrow">▾</span></div>
-  <div class="sec-body">
+<!-- LABELS PANEL -->
+<div class="panel-content" id="panelLabels">
     <div class="inp-row">
       <div class="inp-g"><label>Number</label><input type="text" id="lblN" value="01" oninput="updateLabels()"></div>
       <div class="inp-g"><label>Desktop</label><input type="text" id="lblD" value="Website" oninput="updateLabels()"></div>
@@ -103,10 +124,43 @@
       <div class="inp-g"><label>Tablet</label><input type="text" id="lblT" value="Tablet" oninput="updateLabels()"></div>
     </div>
     <div class="inp-g"><label>URL Bar</label><input type="text" id="urlTxt" value="www.yourproject.com" oninput="updateLabels()"></div>
-  </div>
+    <div class="sec" style="margin-top:8px">
+      <div class="sec-hdr" onclick="togSec(this)"><span>Label Style</span><span class="sec-arrow">▾</span></div>
+      <div class="sec-body">
+        <div class="inp-row">
+          <div class="inp-g"><label>Font</label>
+            <select id="lblFont" onchange="updateLabelStyle()">
+              <option value="Inter">Inter</option>
+              <option value="Playfair Display">Playfair</option>
+              <option value="Space Grotesk">Space Grotesk</option>
+              <option value="DM Sans">DM Sans</option>
+              <option value="Poppins">Poppins</option>
+              <option value="Outfit">Outfit</option>
+            </select>
+          </div>
+          <div class="inp-g"><label>Size</label><input type="range" id="lblSize" min="6" max="16" value="9" oninput="updateLabelStyle()"></div>
+        </div>
+        <div class="inp-row">
+          <div class="inp-g"><label>Color</label><input type="color" id="lblColor" value="#888888" oninput="updateLabelStyle()"></div>
+          <div class="inp-g"><label>Weight</label>
+            <select id="lblWeight" onchange="updateLabelStyle()">
+              <option value="400">Regular</option>
+              <option value="500">Medium</option>
+              <option value="600" selected>Semi-Bold</option>
+              <option value="700">Bold</option>
+            </select>
+          </div>
+        </div>
+        <div class="tog-row" style="margin-top:4px">
+          <label class="tog"><input type="checkbox" id="lblVisible" checked onchange="toggleLabelsVisible()"> <span class="togsl"></span> Show Labels</label>
+        </div>
+      </div>
+    </div>
 </div>
 
 </div>
+</div>
+
 </div>
 
 <!-- STAGE -->
@@ -125,6 +179,15 @@
     <button class="zb" onclick="zFit()">⊞</button>
     <span style="width:1px;height:14px;background:var(--border)"></span>
     <button class="zb" id="freeBtn" onclick="togFree()" title="Free position mode" style="font-size:9px">🔓</button>
+    <div class="tb-group">
+      <button class="tb-btn" id="gridBtn" onclick="toggleGrid()" title="Toggle grid">⊞</button>
+      <button class="tb-btn" id="rulerBtn" onclick="toggleRulers()" title="Toggle rulers">📏</button>
+      <button class="tb-btn" id="perspBtn" onclick="togPerspective()" title="3D perspective">◇</button>
+    </div>
+    <div class="tb-group">
+      <button class="tb-btn" onclick="saveProject()" title="Save project">💾</button>
+      <button class="tb-btn" onclick="loadProject()" title="Load project">📂</button>
+    </div>
     <button class="mobile-toggle" style="display:none" onclick="toggleRightSidebar()">⚙</button>
   </div>
 </div>
@@ -207,6 +270,16 @@
     </div>
   </div>
 </div>
+<!-- Artboard Navigation Bar -->
+<div class="ab-bar">
+  <div class="ab-bar-actions">
+    <button onclick="addArtboard()" title="Add artboard">+ New</button>
+    <button onclick="dupArtboard()" title="Duplicate artboard">⧉ Dup</button>
+    <button onclick="delArtboard()" title="Delete artboard">✕ Del</button>
+    <button onclick="batchExport()" title="Export all artboards">⬇ All</button>
+  </div>
+  <div class="ab-nav-strip" id="abNav"></div>
+</div>
 </div>
 
 <!-- RIGHT SIDEBAR -->
@@ -217,6 +290,7 @@
   <div class="tab act" data-tab="style" onclick="swTab('style')">Style</div>
   <div class="tab" data-tab="image" onclick="swTab('image')">Image</div>
   <div class="tab" data-tab="text" onclick="swTab('text')">Text</div>
+  <div class="tab" data-tab="layers" onclick="swTab('layers')">Layers</div>
   <div class="tab" data-tab="save" onclick="swTab('save')">Presets</div>
 </div>
 
@@ -419,6 +493,38 @@
   </div>
 </div>
 
+<!-- LAYERS TAB -->
+<div class="tab-body" id="tabLayers">
+  <div class="sec">
+    <div class="sec-t" style="margin-bottom:3px">Frame Layers</div>
+    <div class="layer-list" id="layerList"></div>
+    <div class="divider" style="margin:4px 0"></div>
+    <div class="sec-t" style="margin-bottom:3px">Align &amp; Distribute</div>
+    <div class="align-bar">
+      <button onclick="alignFrames('left')" title="Align left">⫷</button>
+      <button onclick="alignFrames('centerH')" title="Center horizontally">⫿</button>
+      <button onclick="alignFrames('right')" title="Align right">⫸</button>
+      <button onclick="alignFrames('top')" title="Align top">⊤</button>
+      <button onclick="alignFrames('centerV')" title="Center vertically">⊕</button>
+      <button onclick="alignFrames('bottom')" title="Align bottom">⊥</button>
+      <button onclick="distributeFrames('h')" title="Distribute horizontally">⫼</button>
+      <button onclick="distributeFrames('v')" title="Distribute vertically">≡</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="sec">
+    <div class="sec-t" style="margin-bottom:3px">3D Perspective</div>
+    <div class="persp-controls">
+      <div class="rng-g"><div class="rng-h"><span>Rotate X</span><span class="rv" id="rvPX">0°</span></div>
+        <input type="range" id="perspX" min="-45" max="45" value="0" oninput="setPerspective('x',this.value);$('rvPX').textContent=this.value+'°'"></div>
+      <div class="rng-g"><div class="rng-h"><span>Rotate Y</span><span class="rv" id="rvPY">0°</span></div>
+        <input type="range" id="perspY" min="-45" max="45" value="0" oninput="setPerspective('y',this.value);$('rvPY').textContent=this.value+'°'"></div>
+      <div class="rng-g"><div class="rng-h"><span>Rotate Z</span><span class="rv" id="rvPZ">0°</span></div>
+        <input type="range" id="perspZ" min="-30" max="30" value="0" oninput="setPerspective('z',this.value);$('rvPZ').textContent=this.value+'°'"></div>
+    </div>
+  </div>
+</div>
+
 <!-- SAVE TAB -->
 <div class="tab-body" id="tabSave">
   <div class="sec">
@@ -456,6 +562,9 @@
 <script src="js/image-controls.js"></script>
 <script src="js/text-system.js"></script>
 <script src="js/zoom.js"></script>
+<script src="js/artboard-manager.js"></script>
+<script src="js/layer-panel.js"></script>
+<script src="js/advanced-features.js"></script>
 <script src="js/drag-resize.js"></script>
 <script src="js/presets.js"></script>
 <script src="js/export.js"></script>

@@ -10,13 +10,13 @@ async function doExport(){
     // Hide selection outlines on texts
     document.querySelectorAll('.txt-el').forEach(e=>e.classList.remove('sel'));
     // Hide drag handles and resize handles visibility
-    document.querySelectorAll('.drag-h,.resize-h').forEach(e=>e.style.visibility='hidden');
+    document.querySelectorAll('.drag-h,.resize-h,.canvas-toolbar').forEach(e=>e.style.visibility='hidden');
 
     await new Promise(r=>setTimeout(r,300));
     const canvas=await html2canvas($('ms'),{scale,useCORS:true,allowTaint:true,backgroundColor:null,logging:false,width:960,height:600});
 
     // Restore
-    document.querySelectorAll('.drag-h,.resize-h').forEach(e=>e.style.visibility='');
+    document.querySelectorAll('.drag-h,.resize-h,.canvas-toolbar').forEach(e=>e.style.visibility='');
     $('stageCv').style.transform='scale('+prevZ+')';
     if(S.selTxt)$(S.selTxt).classList.add('sel');
 
@@ -35,10 +35,10 @@ async function doCopy(){
   try{
     const prevZ=S.zoom;
     $('stageCv').style.transform='scale(1)';
-    document.querySelectorAll('.drag-h,.resize-h').forEach(e=>e.style.visibility='hidden');
+    document.querySelectorAll('.drag-h,.resize-h,.canvas-toolbar').forEach(e=>e.style.visibility='hidden');
     await new Promise(r=>setTimeout(r,300));
     const canvas=await html2canvas($('ms'),{scale:2,useCORS:true,allowTaint:true,backgroundColor:null,logging:false});
-    document.querySelectorAll('.drag-h,.resize-h').forEach(e=>e.style.visibility='');
+    document.querySelectorAll('.drag-h,.resize-h,.canvas-toolbar').forEach(e=>e.style.visibility='');
     $('stageCv').style.transform='scale('+prevZ+')';
     canvas.toBlob(async b=>{
       try{await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);toast('✓ Copied!')}

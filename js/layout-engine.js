@@ -27,8 +27,8 @@ function applyLayout(){
     bf.classList.add('hidden');
   }
 
-  // Phone
-  if(L.pf&&(S.mobileImg||S.layout==='phone'||S.layout==='phones'||S.layout==='duo'||S.layout==='duoR'||S.layout==='trio'||S.layout==='stack'||S.layout==='overlap'||S.layout==='grid'||S.layout==='float')){
+  // Phone — show if layout defines pf, or user uploaded a mobile image
+  if(L.pf&&(S.mobileImg||L.cat!=='single'||S.layout==='phone'||S.layout==='phones')){
     pf.classList.remove('hidden');
     if(!S.freeMode){
       pf.style.left=L.pf.l+'%';pf.style.top=L.pf.t+'%';
@@ -42,8 +42,8 @@ function applyLayout(){
     pf.classList.add('hidden');
   }
 
-  // Tablet
-  if(L.tf&&(S.tabletImg||S.layout==='trio'||S.layout==='grid'||S.layout==='float'||S.layout==='tabDesk')){
+  // Tablet — show if layout defines tf, or user uploaded a tablet image
+  if(L.tf&&(S.tabletImg||L.cat!=='single')){
     tf.classList.remove('hidden');
     if(!S.freeMode){
       tf.style.left=L.tf.l+'%';tf.style.top=L.tf.t+'%';

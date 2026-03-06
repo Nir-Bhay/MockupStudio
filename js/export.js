@@ -46,3 +46,47 @@ async function doCopy(){
     });
   }catch(e){toast('✕ Copy failed')}
 }
+
+// ==================== SVG EXPORT ====================
+async function doExportSVG(){
+  $('expOv').classList.add('show');
+  try{
+    document.querySelectorAll('.drag-h,.resize-h,.canvas-toolbar').forEach(e=>e.style.visibility='hidden');
+    const prevZ=S.zoom;
+    $('stageCv').style.transform='scale(1)';
+    await new Promise(r=>setTimeout(r,300));
+    const canvas=await html2canvas($('ms'),{scale:2,useCORS:true,allowTaint:true,backgroundColor:null,logging:false,width:960,height:600});
+    document.querySelectorAll('.drag-h,.resize-h,.canvas-toolbar').forEach(e=>e.style.visibility='');
+    $('stageCv').style.transform='scale('+prevZ+')';
+    const dataUrl=canvas.toDataURL('image/png');
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="960" height="600" viewBox="0 0 960 600"><image xlink:href="${dataUrl}" width="960" height="600"/></svg>`;
+    const blob=new Blob([svg],{type:'image/svg+xml'});
+    const a=document.createElement('a');
+    a.download='mockup-'+Date.now()+'.svg';
+    a.href=URL.createObjectURL(blob);
+    a.click();URL.revokeObjectURL(a.href);
+    toast('✓ SVG exported');
+  }catch(err){console.error(err);toast('✕ SVG export failed')}
+  $('expOv').classList.remove('show');
+}
+
+// ==================== PDF EXPORT ====================
+async function doExportPDF(){
+  $('expOv').classList.add('show');
+  try{
+    document.querySelectorAll('.drag-h,.resize-h,.canvas-toolbar').forEach(e=>e.style.visibility='hidden');
+    const prevZ=S.zoom;
+    $('stageCv').style.transform='scale(1)';
+    await new Promise(r=>setTimeout(r,300));
+    const canvas=await html2canvas($('ms'),{scale:3,useCORS:true,allowTaint:true,backgroundColor:null,logging:false,width:960,height:600});
+    document.querySelectorAll('.drag-h,.resize-h,.canvas-toolbar').forEach(e=>e.style.visibility='');
+    $('stageCv').style.transform='scale('+prevZ+')';
+    const dataUrl=canvas.toDataURL('image/png',.98);
+    const w=window.open('','_blank');
+    if(!w){toast('✕ Popup blocked — allow popups');return}
+    w.document.write(`<!DOCTYPE html><html><head><title>Mockup Print</title><style>@page{margin:0;size:960px 600px}*{margin:0;padding:0;box-sizing:border-box}body{width:960px;height:600px;overflow:hidden}img{width:960px;height:600px;display:block}</style></head><body><img src="${dataUrl}"><script>window.onload=()=>setTimeout(()=>{window.print();window.close()},400)<\/script></body></html>`);
+    w.document.close();
+    toast('✓ PDF print dialog opened');
+  }catch(err){console.error(err);toast('✕ PDF export failed')}
+  $('expOv').classList.remove('show');
+}

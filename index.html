@@ -47,6 +47,9 @@
   <div class="rail-icon" data-panel="labels" onclick="togPanel('labels')" title="Labels">
     <span class="ri-ico">Aa</span><span class="ri-txt">Labels</span>
   </div>
+  <div class="rail-icon" data-panel="brand" onclick="togPanel('brand')" title="Brand Kit">
+    <span class="ri-ico">🎨</span><span class="ri-txt">Brand</span>
+  </div>
 </div>
 
 <!-- Content Panel -->
@@ -97,70 +100,184 @@
 
 <!-- BACKGROUNDS PANEL -->
 <div class="panel-content" id="panelBackgrounds">
+  <div class="bg-tabs">
+    <button class="bg-tab act" onclick="swBgTab('Gradients',this)">Gradients</button>
+    <button class="bg-tab" onclick="swBgTab('Patterns',this)">Patterns</button>
+    <button class="bg-tab" onclick="swBgTab('Solid',this)">Solid</button>
+    <button class="bg-tab" onclick="swBgTab('Images',this)">Images</button>
+  </div>
+  <!-- Gradients Tab -->
+  <div class="bg-tab-body act" id="bgTabGradients">
     <div class="bg-grid" id="bgGrid"></div>
-    <div class="sec" style="margin-top:8px">
-      <div class="sec-hdr" onclick="togSec(this)"><span>Patterns</span><span class="sec-arrow">▾</span></div>
+    <div class="sec" style="margin-top:6px">
+      <div class="sec-hdr" onclick="togSec(this)"><span>Customize</span><span class="sec-arrow">▾</span></div>
       <div class="sec-body">
-        <div class="pat-grid" id="patGrid"></div>
+        <div class="inp-row">
+          <div class="inp-g"><label>Type</label>
+            <select id="gradType" onchange="setGradType(this.value)">
+              <option value="linear">Linear</option><option value="radial">Radial</option><option value="conic">Conic</option>
+            </select>
+          </div>
+          <div class="inp-g"><label>Angle <span class="rv" id="rvGAngle">145°</span></label>
+            <input type="range" id="gradAngle" min="0" max="360" value="145" oninput="setGradAngle(this.value)">
+          </div>
+        </div>
+        <div style="margin-top:4px">
+          <label style="font-size:8px;color:var(--muted)">Color Stops</label>
+          <div id="gradStopEditor"></div>
+          <div class="btn-row" style="margin-top:3px">
+            <button class="btn-s" onclick="addGradStop()">+ Stop</button>
+            <button class="btn-p" onclick="applyCustomGradient()" style="flex:1">Apply</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="color-row" style="margin-top:6px">
+  </div>
+  <!-- Patterns Tab -->
+  <div class="bg-tab-body" id="bgTabPatterns">
+    <div class="pat-grid" id="patGrid"></div>
+  </div>
+  <!-- Solid Tab -->
+  <div class="bg-tab-body" id="bgTabSolid">
+    <div class="color-row">
       <input type="color" id="custBg" value="#c9956b" oninput="setBgCustom(this.value)">
-      <label>Custom Color</label>
+      <label>Pick Color</label>
     </div>
-    <div class="inp-row" style="margin-top:4px">
-      <div class="inp-g"><label>BG Image</label><input type="file" accept="image/*" id="bgImgUp" onchange="handleBgImgUpload(event)" style="font-size:9px"></div>
+  </div>
+  <!-- Images Tab -->
+  <div class="bg-tab-body" id="bgTabImages">
+    <div class="inp-row" style="margin-bottom:5px">
+      <div class="inp-g"><label>Upload Image</label><input type="file" accept="image/*" id="bgImgUp" onchange="handleBgImgUpload(event)" style="font-size:9px"></div>
     </div>
+    <div class="bg-img-gallery" id="bgImgGallery"></div>
+  </div>
 </div>
 
 <!-- LABELS PANEL -->
 <div class="panel-content" id="panelLabels">
-    <div class="inp-row">
-      <div class="inp-g"><label>Number</label><input type="text" id="lblN" value="01" oninput="updateLabels()"></div>
-      <div class="inp-g"><label>Desktop</label><input type="text" id="lblD" value="Website" oninput="updateLabels()"></div>
+  <div class="inp-row">
+    <div class="inp-g"><label>Number</label><input type="text" id="lblN" value="01" oninput="updateLabels()"></div>
+    <div class="inp-g"><label>Desktop</label><input type="text" id="lblD" value="Website" oninput="updateLabels()"></div>
+  </div>
+  <div class="inp-row">
+    <div class="inp-g"><label>Mobile</label><input type="text" id="lblM" value="Phone" oninput="updateLabels()"></div>
+    <div class="inp-g"><label>Tablet</label><input type="text" id="lblT" value="Tablet" oninput="updateLabels()"></div>
+  </div>
+  <div class="inp-g"><label>URL Bar</label><input type="text" id="urlTxt" value="www.yourproject.com" oninput="updateLabels()"></div>
+  <!-- Per-label visibility -->
+  <div class="sec" style="margin-top:6px">
+    <div class="sec-hdr" onclick="togSec(this)"><span>Visibility</span><span class="sec-arrow">▾</span></div>
+    <div class="sec-body">
+      <div class="tog-row"><label class="tog"><input type="checkbox" id="lv_desktop" checked onchange="toggleDeviceLabel('desktop')"> <span class="togsl"></span> Desktop Label</label></div>
+      <div class="tog-row"><label class="tog"><input type="checkbox" id="lv_mobile" checked onchange="toggleDeviceLabel('mobile')"> <span class="togsl"></span> Mobile Label</label></div>
+      <div class="tog-row"><label class="tog"><input type="checkbox" id="lv_tablet" checked onchange="toggleDeviceLabel('tablet')"> <span class="togsl"></span> Tablet Label</label></div>
+      <div class="tog-row"><label class="tog"><input type="checkbox" id="lv_url" checked onchange="toggleUrlLabel()"> <span class="togsl"></span> URL Bar</label></div>
+      <div class="tog-row"><label class="tog"><input type="checkbox" id="lblVisible" checked onchange="toggleLabelsVisible()"> <span class="togsl"></span> All Labels</label></div>
     </div>
-    <div class="inp-row">
-      <div class="inp-g"><label>Mobile</label><input type="text" id="lblM" value="Phone" oninput="updateLabels()"></div>
-      <div class="inp-g"><label>Tablet</label><input type="text" id="lblT" value="Tablet" oninput="updateLabels()"></div>
-    </div>
-    <div class="inp-g"><label>URL Bar</label><input type="text" id="urlTxt" value="www.yourproject.com" oninput="updateLabels()"></div>
-    <div class="sec" style="margin-top:8px">
-      <div class="sec-hdr" onclick="togSec(this)"><span>Label Style</span><span class="sec-arrow">▾</span></div>
-      <div class="sec-body">
-        <div class="inp-row">
-          <div class="inp-g"><label>Font</label>
-            <select id="lblFont" onchange="updateLabelStyle()">
-              <option value="Inter">Inter</option>
-              <option value="Playfair Display">Playfair</option>
-              <option value="Space Grotesk">Space Grotesk</option>
-              <option value="DM Sans">DM Sans</option>
-              <option value="Poppins">Poppins</option>
-              <option value="Outfit">Outfit</option>
-            </select>
-          </div>
-          <div class="inp-g"><label>Size</label><input type="range" id="lblSize" min="6" max="16" value="9" oninput="updateLabelStyle()"></div>
+  </div>
+  <!-- Label Style -->
+  <div class="sec" style="margin-top:5px">
+    <div class="sec-hdr" onclick="togSec(this)"><span>Label Style</span><span class="sec-arrow">▾</span></div>
+    <div class="sec-body">
+      <div class="inp-row">
+        <div class="inp-g"><label>Font</label>
+          <select id="lblFont" onchange="updateLabelStyle()">
+            <option value="Inter">Inter</option>
+            <option value="Playfair Display">Playfair</option>
+            <option value="Space Grotesk">Space Grotesk</option>
+            <option value="DM Sans">DM Sans</option>
+            <option value="Poppins">Poppins</option>
+            <option value="Outfit">Outfit</option>
+          </select>
         </div>
-        <div class="inp-row">
-          <div class="inp-g"><label>Color</label><input type="color" id="lblColor" value="#888888" oninput="updateLabelStyle()"></div>
-          <div class="inp-g"><label>Weight</label>
-            <select id="lblWeight" onchange="updateLabelStyle()">
-              <option value="400">Regular</option>
-              <option value="500">Medium</option>
-              <option value="600" selected>Semi-Bold</option>
-              <option value="700">Bold</option>
-            </select>
-          </div>
-        </div>
-        <div class="tog-row" style="margin-top:4px">
-          <label class="tog"><input type="checkbox" id="lblVisible" checked onchange="toggleLabelsVisible()"> <span class="togsl"></span> Show Labels</label>
+        <div class="inp-g"><label>Size</label><input type="range" id="lblSize" min="6" max="16" value="9" oninput="updateLabelStyle()"></div>
+      </div>
+      <div class="inp-row">
+        <div class="inp-g"><label>Color</label><input type="color" id="lblColor" value="#888888" oninput="updateLabelStyle()"></div>
+        <div class="inp-g"><label>Weight</label>
+          <select id="lblWeight" onchange="updateLabelStyle()">
+            <option value="400">Regular</option>
+            <option value="500">Medium</option>
+            <option value="600" selected>Semi-Bold</option>
+            <option value="700">Bold</option>
+          </select>
         </div>
       </div>
+      <div class="inp-g"><label>Transform</label>
+        <select id="lblTransform" onchange="updateLabelStyle()">
+          <option value="none">None</option>
+          <option value="uppercase">UPPERCASE</option>
+          <option value="lowercase">lowercase</option>
+          <option value="capitalize">Capitalize</option>
+        </select>
+      </div>
+      <div style="margin-top:5px">
+        <label style="font-size:8px;color:var(--muted)">Quick Presets</label>
+        <div class="lbl-presets" id="lblPresets"></div>
+      </div>
     </div>
+  </div>
+  <!-- Canvas Badges -->
+  <div class="sec" style="margin-top:5px">
+    <div class="sec-hdr" onclick="togSec(this)"><span>Canvas Badges</span><span class="sec-arrow">▾</span></div>
+    <div class="sec-body">
+      <div class="badge-grid">
+        <button class="btn-s" onclick="addBadge('version')">📦 Version</button>
+        <button class="btn-s" onclick="addBadge('date')">📅 Date</button>
+        <button class="btn-s" onclick="addBadge('specs')">📱 Specs</button>
+        <button class="btn-s" onclick="addBadge('new')">⚡ New</button>
+        <button class="btn-s" onclick="addBadge('beta')">🔬 Beta</button>
+        <button class="btn-s" onclick="addBadge('custom')">🏷 Custom</button>
+      </div>
+      <div id="badgeEditSec" style="display:none;flex-direction:column;gap:4px;margin-top:5px">
+        <div class="inp-g"><label>Badge Text</label>
+          <input type="text" id="badgeTxt" oninput="editBadgeText()">
+        </div>
+        <button class="btn-d" onclick="deleteBadge()">✕ Delete Badge</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 </div>
 </div>
 
+<!-- BRAND KIT PANEL -->
+<div class="panel-content" id="panelBrand">
+  <div class="sec">
+    <div class="sec-t" style="margin-bottom:4px">Brand Colors</div>
+    <div class="bk-colors" id="brandColors"></div>
+    <div class="inp-row" style="margin-top:6px;align-items:flex-end">
+      <div class="inp-g"><label>Add Color</label><input type="color" id="bkColorPick" value="#c9956b"></div>
+      <button class="btn-s" onclick="addBrandColor()">+ Add</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="sec">
+    <div class="sec-t" style="margin-bottom:4px">Brand Fonts</div>
+    <div class="bk-font-list" id="brandFonts"></div>
+    <div class="inp-row" style="margin-top:6px;align-items:flex-end">
+      <div class="inp-g"><label>Add Font</label>
+        <select id="bkFontSel">
+          <option value="Inter">Inter</option>
+          <option value="Playfair Display">Playfair</option>
+          <option value="Space Grotesk">Space Grotesk</option>
+          <option value="DM Sans">DM Sans</option>
+          <option value="Poppins">Poppins</option>
+          <option value="Outfit">Outfit</option>
+        </select>
+      </div>
+      <button class="btn-s" onclick="addBrandFont()">+ Add</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="btn-row">
+    <button class="btn-o" onclick="exportBrandKit()">📦 Export</button>
+    <button class="btn-o" onclick="importBrandKit()">📥 Import</button>
+  </div>
+</div>
+
+</div>
 </div>
 
 <!-- STAGE -->
@@ -183,6 +300,7 @@
       <button class="tb-btn" id="gridBtn" onclick="toggleGrid()" title="Toggle grid">⊞</button>
       <button class="tb-btn" id="rulerBtn" onclick="toggleRulers()" title="Toggle rulers">📏</button>
       <button class="tb-btn" id="perspBtn" onclick="togPerspective()" title="3D perspective">◇</button>
+      <button class="tb-btn" id="bezelsBtn" onclick="toggleBezels()" title="Realistic bezels">📱</button>
     </div>
     <div class="tb-group">
       <button class="tb-btn" onclick="saveProject()" title="Save project">💾</button>
@@ -322,6 +440,13 @@
   <div class="tog-row"><span class="tog-l">Reflection</span><div class="tog" id="tR" onclick="togRefl()"></div></div>
   <div class="tog-row"><span class="tog-l">Watermark</span><div class="tog on" id="tW" onclick="togWm()"></div></div>
   <div class="tog-row"><span class="tog-l">Background Overlay</span><div class="tog" id="tOv" onclick="togBgOv()"></div></div>
+  <div class="tog-row"><span class="tog-l">Noise / Grain</span><div class="tog" id="tNoise" onclick="togNoise()"></div></div>
+  <div class="rng-g"><div class="rng-h"><span>Noise Intensity</span><span class="rv" id="rvNoise">15%</span></div>
+    <input type="range" id="rngNoise" min="1" max="60" value="15" oninput="setNoiseIntensity(this.value)"></div>
+  <div class="tog-row"><span class="tog-l">Vignette</span><div class="tog" id="tVig" onclick="togVignette()"></div></div>
+  <div class="rng-g"><div class="rng-h"><span>Vignette Intensity</span><span class="rv" id="rvVig">40%</span></div>
+    <input type="range" id="rngVig" min="10" max="100" value="40" oninput="setVignetteIntensity(this.value)"></div>
+  <div class="tog-row"><span class="tog-l">Animated BG</span><div class="tog" id="tAnimBg" onclick="togAnimBg()"></div></div>
   <div class="divider"></div>
   <div class="sec">
     <div class="sec-t" style="margin-bottom:3px">Export</div>
@@ -333,7 +458,11 @@
         <select id="expFmt"><option value="png">PNG</option><option value="jpeg">JPEG</option></select>
       </div>
     </div>
-    <button class="btn-p" onclick="doExport()">⬇ Download Mockup</button>
+    <button class="btn-p" onclick="doExport()">⬇ Download PNG/JPEG</button>
+    <div class="btn-row">
+      <button class="btn-s" onclick="doExportSVG()">SVG</button>
+      <button class="btn-s" onclick="doExportPDF()">PDF</button>
+    </div>
     <div class="btn-row">
       <button class="btn-o" onclick="doCopy()">📋 Copy</button>
       <button class="btn-o" onclick="doReset()">↺ Reset</button>
@@ -513,6 +642,48 @@
   </div>
   <div class="divider"></div>
   <div class="sec">
+    <div class="sec-t" style="margin-bottom:3px">Shape Tools</div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="addShape('rect')">▭ Rect</button>
+      <button class="btn-s" onclick="addShape('circle')">○ Circle</button>
+      <button class="btn-s" onclick="addShape('line')">― Line</button>
+    </div>
+    <div id="shapeEditSec" style="display:none;flex-direction:column;gap:4px;margin-top:4px">
+      <div class="inp-row">
+        <div class="inp-g"><label>Fill</label><input type="color" id="shpFill" value="#000000" oninput="editShapeProp('fill')"></div>
+        <div class="inp-g"><label>Stroke</label><input type="color" id="shpStroke" value="#c9956b" oninput="editShapeProp('stroke')"></div>
+      </div>
+      <div class="inp-row">
+        <div class="inp-g"><label>Border</label><input type="range" id="shpStrokeW" min="0" max="10" value="2" oninput="editShapeProp('strokeW')"></div>
+        <div class="inp-g"><label>Rotate</label><input type="range" id="shpRot" min="0" max="360" value="0" oninput="editShapeProp('rotation')"></div>
+      </div>
+      <div class="inp-row">
+        <div class="inp-g"><label>Width</label><input type="range" id="shpW" min="10" max="500" value="100" oninput="editShapeProp('w')"></div>
+        <div class="inp-g"><label>Height</label><input type="range" id="shpH" min="4" max="400" value="80" oninput="editShapeProp('h')"></div>
+      </div>
+      <div class="rng-g"><div class="rng-h"><span>Opacity</span></div>
+        <input type="range" id="shpOp" min="5" max="100" value="100" oninput="editShapeProp('opacity')"></div>
+      <button class="btn-d" onclick="deleteShape()" style="align-self:flex-start">✕ Delete Shape</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="sec">
+    <div class="sec-t" style="margin-bottom:3px">Annotations</div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="addAnnotation()">➕ Add Marker</button>
+      <button class="btn-d" onclick="clearAnnotations()">✕ Clear All</button>
+    </div>
+    <div id="annoEditSec" style="display:none;flex-direction:column;gap:4px;margin-top:4px">
+      <div class="inp-row">
+        <div class="inp-g"><label>Number</label><input type="number" id="annoNum" min="1" max="99" value="1" oninput="editAnnoProp('num')"></div>
+        <div class="inp-g"><label>Color</label><input type="color" id="annoColor" value="#c9956b" oninput="editAnnoProp('color')"></div>
+      </div>
+      <div class="inp-g"><label>Tooltip</label><input type="text" id="annoText" placeholder="Description..." oninput="editAnnoProp('text')"></div>
+      <button class="btn-d" onclick="deleteAnno()" style="align-self:flex-start">✕ Remove</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="sec">
     <div class="sec-t" style="margin-bottom:3px">3D Perspective</div>
     <div class="persp-controls">
       <div class="rng-g"><div class="rng-h"><span>Rotate X</span><span class="rv" id="rvPX">0°</span></div>
@@ -569,6 +740,9 @@
 <script src="js/presets.js"></script>
 <script src="js/export.js"></script>
 <script src="js/labels.js"></script>
+<script src="js/annotations.js"></script>
+<script src="js/brand-kit.js"></script>
+<script src="js/bezel-renderer.js"></script>
 <script src="js/keyboard.js"></script>
 <script src="js/init.js"></script>
 </body>

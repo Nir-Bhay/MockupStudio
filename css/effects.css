@@ -8,3 +8,28 @@
 /* ==================== TOAST ==================== */
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(50px) scale(.95);background:var(--card2);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:7px;font-size:10px;z-index:2000;transition:transform .35s var(--ease-spring),opacity .3s;box-shadow:0 8px 25px rgba(0,0,0,.4);opacity:0;backdrop-filter:blur(10px)}
 .toast.show{transform:translateX(-50%) translateY(0) scale(1);opacity:1}
+
+/* ==================== NOISE / GRAIN OVERLAY ==================== */
+.noise-overlay{position:absolute;inset:0;z-index:90;pointer-events:none;mix-blend-mode:overlay;opacity:.15;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:128px 128px}
+
+/* ==================== VIGNETTE OVERLAY ==================== */
+.vignette-overlay{position:absolute;inset:0;z-index:91;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.25) 100%)}
+
+/* ==================== SHAPE ELEMENTS ==================== */
+.shape-el{position:absolute;z-index:25;cursor:pointer;transition:outline .15s;box-sizing:border-box}
+.shape-el:hover{outline:1px dashed rgba(201,149,107,.3)}
+.shape-el.sel{outline:2px solid var(--accent)}
+
+/* ==================== ANIMATED BACKGROUND ==================== */
+.ms.anim-bg{animation:bgShift 8s ease-in-out infinite alternate}
+@keyframes bgShift{
+  0%{filter:hue-rotate(0deg) brightness(1)}
+  50%{filter:hue-rotate(15deg) brightness(1.05)}
+  100%{filter:hue-rotate(-10deg) brightness(.98)}
+}
+
+/* ==================== LABEL PRESETS ==================== */
+.lbl-presets{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}

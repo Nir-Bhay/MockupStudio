@@ -52,3 +52,57 @@
 .pat-sw{aspect-ratio:1;background-color:#18181b;background-repeat:repeat;border:1.5px solid transparent;border-radius:5px;cursor:pointer;transition:all .2s var(--ease-out);display:flex;align-items:flex-end;justify-content:center;padding:2px;position:relative}
 .pat-sw:hover{border-color:#27272a;transform:scale(1.05)}.pat-sw.act{border-color:var(--accent)}
 .pat-sw span{font-size:6px;color:var(--muted);text-align:center;line-height:1;background:rgba(0,0,0,.6);padding:1px 3px;border-radius:2px}
+
+/* ==================== ANNOTATIONS ==================== */
+.anno-marker{position:absolute;z-index:85;width:22px;height:22px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);background:rgba(18,18,20,.88);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;user-select:none;backdrop-filter:blur(4px);transition:transform .15s,box-shadow .15s}
+.anno-marker:hover{transform:scale(1.15);box-shadow:0 0 8px rgba(201,149,107,.4)}
+.anno-marker.sel{box-shadow:0 0 0 3px rgba(201,149,107,.35);transform:scale(1.1)}
+
+/* ==================== CANVAS BADGES ==================== */
+.canvas-badge{position:absolute;z-index:86;display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:20px;font-size:9px;font-weight:600;cursor:pointer;user-select:none;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);transition:transform .15s,box-shadow .15s;white-space:nowrap;line-height:1}
+.canvas-badge:hover{transform:scale(1.05)}.canvas-badge.sel{box-shadow:0 0 0 2px var(--accent),0 4px 12px rgba(0,0,0,.4)}
+.bdg-ico{font-size:10px;line-height:1}.bdg-version{background:rgba(99,102,241,.85);color:#fff}
+.bdg-date{background:rgba(16,185,129,.8);color:#fff}
+.bdg-specs{background:rgba(18,18,20,.9);color:var(--accent);border-color:rgba(201,149,107,.3)}
+.bdg-new{background:rgba(245,158,11,.85);color:#fff}.bdg-beta{background:rgba(139,92,246,.8);color:#fff}
+.bdg-custom{background:rgba(30,30,35,.9);color:#fff;border-color:var(--border)}
+.badge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:4px}
+
+/* ==================== BRAND KIT ==================== */
+.bk-colors{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.bk-swatch{width:26px;height:26px;border-radius:5px;cursor:pointer;border:1.5px solid transparent;transition:all .15s;position:relative;flex-shrink:0}
+.bk-swatch:hover{transform:scale(1.1);border-color:rgba(255,255,255,.2)}
+.bk-del{position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:#ef4444;border:none;color:#fff;font-size:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;padding:0;line-height:1;z-index:10}
+.bk-swatch:hover .bk-del{opacity:1}
+.bk-font-list{display:flex;flex-direction:column;gap:3px}
+.bk-font-item{display:flex;align-items:center;gap:4px;padding:3px 5px;background:var(--bg);border:1px solid var(--border);border-radius:4px}
+.bk-font-item span{flex:1}
+
+/* ==================== BACKGROUND PANEL TABS ==================== */
+.bg-tabs{display:flex;gap:2px;margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:3px;flex-shrink:0}
+.bg-tab{flex:1;padding:4px 2px;font-size:8px;border:none;border-radius:4px 4px 0 0;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s}
+.bg-tab:hover{color:var(--text)}.bg-tab.act{background:rgba(201,149,107,.12);color:var(--accent);font-weight:600}
+.bg-tab-body{display:none}.bg-tab-body.act{display:block}
+
+/* ==================== BACKGROUND GALLERY ==================== */
+.bg-img-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:2px}
+.bg-gallery-sw{aspect-ratio:16/9;border-radius:5px;cursor:pointer;border:1.5px solid transparent;transition:all .2s;display:flex;align-items:flex-end;justify-content:center;padding:3px;position:relative}
+.bg-gallery-sw:hover{border-color:var(--accent);transform:scale(1.04)}
+.bg-gallery-sw span{font-size:6px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.8);background:rgba(0,0,0,.4);padding:1px 3px;border-radius:2px;pointer-events:none}
+
+/* ==================== GRADIENT STOP EDITOR ==================== */
+.grad-preview-bar{height:16px;border-radius:4px;margin-bottom:5px;border:1px solid rgba(255,255,255,.06)}
+.grad-stop-row{display:flex;align-items:center;gap:3px;margin-bottom:3px}
+
+/* ==================== DEVICE BEZELS ==================== */
+.device-bezel{position:absolute;inset:0;pointer-events:none;z-index:30}
+.bz-btn{position:absolute;background:rgba(80,80,85,.8);border-radius:2px}
+.bz-vol-1{left:-3px;top:22%;width:3px;height:7%}
+.bz-vol-2{left:-3px;top:31%;width:3px;height:7%}
+.bz-silent{left:-3px;top:14%;width:3px;height:4%;border-radius:2px}
+.bz-power{right:-3px;top:25%;width:3px;height:10%}
+.bz-home-bar{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:28%;height:3px;background:rgba(255,255,255,.25);border-radius:3px}
+.bz-webcam{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:5px;height:5px;background:#333;border-radius:50%;border:1px solid #222}
+.bz-kbhint{position:absolute;bottom:-7px;left:8%;right:8%;height:7px;background:linear-gradient(to bottom,#555,#333);border-radius:0 0 3px 3px}
+.bz-cam-ipad{position:absolute;left:50%;top:4px;transform:translateX(-50%);width:6px;height:6px;background:#333;border-radius:50%;border:1px solid #222}
+.bz-power-ipad{right:-3px;top:15%;width:3px;height:7%}

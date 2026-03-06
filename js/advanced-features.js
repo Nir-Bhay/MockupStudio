@@ -249,3 +249,306 @@ function handleBgImgUpload(e){
   };
   r.readAsDataURL(f);
 }
+
+// ==================== SHAPE TOOLS ====================
+let _shapeIdCounter=0;
+S.shapes=S.shapes||[];
+S.selShape=null;
+
+function addShape(type){
+  pushHistory();
+  const id='shp_'+(++_shapeIdCounter);
+  const obj={id,type,x:50,y:50,w:100,h:type==='line'?4:type==='circle'?100:80,
+    fill:type==='line'?'var(--accent)':'transparent',
+    stroke:'var(--accent)',strokeW:2,radius:type==='circle'?50:0,opacity:100,rotation:0};
+  S.shapes.push(obj);
+
+  const el=document.createElement('div');
+  el.className='shape-el';el.id=id;
+  _applyShapeStyle(el,obj);
+  _makeShapeDraggable(el,id);
+  $('ms').appendChild(el);
+  selectShape(id);
+  toast('✓ Shape added');
+}
+
+function _applyShapeStyle(el,obj){
+  el.style.cssText=`position:absolute;left:${obj.x}px;top:${obj.y}px;width:${obj.w}px;height:${obj.h}px;
+    background:${obj.fill};border:${obj.strokeW}px solid ${obj.stroke};
+    border-radius:${obj.radius}px;opacity:${obj.opacity/100};
+    transform:rotate(${obj.rotation}deg);cursor:pointer;z-index:25;
+    transition:outline .15s;box-sizing:border-box;`;
+}
+
+function _makeShapeDraggable(el,id){
+  el.addEventListener('mousedown',e=>{
+    e.preventDefault();e.stopPropagation();
+    selectShape(id);
+    const msRect=$('ms').getBoundingClientRect();
+    const ox=e.clientX-el.getBoundingClientRect().left;
+    const oy=e.clientY-el.getBoundingClientRect().top;
+    function mv(ev){
+      const x=(ev.clientX-msRect.left)/S.zoom-ox/S.zoom;
+      const y=(ev.clientY-msRect.top)/S.zoom-oy/S.zoom;
+      el.style.left=x+'px';el.style.top=y+'px';
+      const obj=S.shapes.find(s=>s.id===id);
+      if(obj){obj.x=x;obj.y=y}
+    }
+    function up(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up)}
+    document.addEventListener('mousemove',mv);
+    document.addEventListener('mouseup',up);
+  });
+}
+
+function selectShape(id){
+  S.selShape=id;
+  document.querySelectorAll('.shape-el').forEach(e=>e.style.outline=e.id===id?'2px solid var(--accent)':'');
+  const sec=$('shapeEditSec');if(sec)sec.style.display=id?'flex':'none';
+  const obj=S.shapes.find(s=>s.id===id);
+  if(obj){
+    if($('shpFill'))$('shpFill').value=obj.fill==='transparent'?'#000000':obj.fill;
+    if($('shpStroke'))$('shpStroke').value=obj.stroke;
+    if($('shpStrokeW'))$('shpStrokeW').value=obj.strokeW;
+    if($('shpW'))$('shpW').value=obj.w;
+    if($('shpH'))$('shpH').value=obj.h;
+    if($('shpRot'))$('shpRot').value=obj.rotation;
+    if($('shpOp'))$('shpOp').value=obj.opacity;
+  }
+}
+
+function editShapeProp(prop){
+  if(!S.selShape)return;
+  const obj=S.shapes.find(s=>s.id===S.selShape);
+  const el=$(S.selShape);
+  if(!obj||!el)return;
+  if(prop==='fill'){obj.fill=$('shpFill').value;el.style.background=obj.fill}
+  if(prop==='stroke'){obj.stroke=$('shpStroke').value;el.style.borderColor=obj.stroke}
+  if(prop==='strokeW'){obj.strokeW=parseInt($('shpStrokeW').value);el.style.borderWidth=obj.strokeW+'px'}
+  if(prop==='w'){obj.w=parseInt($('shpW').value);el.style.width=obj.w+'px'}
+  if(prop==='h'){obj.h=parseInt($('shpH').value);el.style.height=obj.h+'px'}
+  if(prop==='rotation'){obj.rotation=parseInt($('shpRot').value);el.style.transform='rotate('+obj.rotation+'deg)'}
+  if(prop==='opacity'){obj.opacity=parseInt($('shpOp').value);el.style.opacity=obj.opacity/100}
+}
+
+function deleteShape(){
+  if(!S.selShape)return;
+  const el=$(S.selShape);if(el)el.remove();
+  S.shapes=S.shapes.filter(s=>s.id!==S.selShape);
+  S.selShape=null;
+  const sec=$('shapeEditSec');if(sec)sec.style.display='none';
+  toast('✕ Shape removed');
+}
+
+// ==================== NOISE / GRAIN OVERLAY ====================
+S.noiseEnabled=S.noiseEnabled||false;
+S.noiseIntensity=S.noiseIntensity||15;
+
+function togNoise(){
+  S.noiseEnabled=!S.noiseEnabled;
+  const ms=$('ms');
+  let noiseEl=ms.querySelector('.noise-overlay');
+  if(S.noiseEnabled){
+    if(!noiseEl){
+      noiseEl=document.createElement('div');
+      noiseEl.className='noise-overlay';
+      ms.appendChild(noiseEl);
+    }
+    noiseEl.style.opacity=S.noiseIntensity/100;
+    noiseEl.style.display='block';
+    if($('tNoise'))$('tNoise').classList.add('on');
+  }else{
+    if(noiseEl)noiseEl.style.display='none';
+    if($('tNoise'))$('tNoise').classList.remove('on');
+  }
+  toast(S.noiseEnabled?'✓ Noise ON':'✕ Noise OFF');
+}
+
+function setNoiseIntensity(v){
+  S.noiseIntensity=parseInt(v);
+  const ms=$('ms');
+  const noiseEl=ms.querySelector('.noise-overlay');
+  if(noiseEl)noiseEl.style.opacity=S.noiseIntensity/100;
+  if($('rvNoise'))$('rvNoise').textContent=v+'%';
+}
+
+// ==================== VIGNETTE EFFECT ====================
+S.vignetteEnabled=S.vignetteEnabled||false;
+S.vignetteIntensity=S.vignetteIntensity||40;
+
+function togVignette(){
+  S.vignetteEnabled=!S.vignetteEnabled;
+  _applyVignette();
+  if($('tVig'))$('tVig').classList.toggle('on',S.vignetteEnabled);
+  toast(S.vignetteEnabled?'✓ Vignette ON':'✕ Vignette OFF');
+}
+
+function setVignetteIntensity(v){
+  S.vignetteIntensity=parseInt(v);
+  _applyVignette();
+  if($('rvVig'))$('rvVig').textContent=v+'%';
+}
+
+function _applyVignette(){
+  const ms=$('ms');
+  let vigEl=ms.querySelector('.vignette-overlay');
+  if(S.vignetteEnabled){
+    if(!vigEl){
+      vigEl=document.createElement('div');
+      vigEl.className='vignette-overlay';
+      ms.appendChild(vigEl);
+    }
+    const i=S.vignetteIntensity/100;
+    vigEl.style.background=`radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,${(.6*i).toFixed(2)}) 100%)`;
+    vigEl.style.display='block';
+  }else{
+    if(vigEl)vigEl.style.display='none';
+  }
+}
+
+// ==================== GRADIENT CUSTOMIZER ====================
+S.gradAngle=S.gradAngle||145;
+S.gradType=S.gradType||'linear';
+
+function setGradAngle(v){
+  S.gradAngle=parseInt(v);
+  if($('rvGAngle'))$('rvGAngle').textContent=v+'°';
+  _reapplyGradient();
+}
+
+function setGradType(type){
+  S.gradType=type;
+  _reapplyGradient();
+}
+
+function _reapplyGradient(){
+  if(S.bgCustom||!S.bg||!BGS[S.bg])return;
+  const orig=BGS[S.bg];
+  // Replace gradient direction/type
+  let css=orig;
+  if(S.gradType==='linear'){
+    css=css.replace(/^(linear-gradient|radial-gradient|conic-gradient)\([^,]+,/,`linear-gradient(${S.gradAngle}deg,`);
+  }else if(S.gradType==='radial'){
+    css=css.replace(/^(linear-gradient|radial-gradient|conic-gradient)\([^,]+,/,'radial-gradient(circle,');
+  }else if(S.gradType==='conic'){
+    css=css.replace(/^(linear-gradient|radial-gradient|conic-gradient)\([^,]+,/,`conic-gradient(from ${S.gradAngle}deg,`);
+  }
+  $('ms').style.background=css;
+}
+
+// ==================== ANIMATED BACKGROUND (Subtle) ====================
+S.animBg=S.animBg||false;
+
+function togAnimBg(){
+  S.animBg=!S.animBg;
+  $('ms').classList.toggle('anim-bg',S.animBg);
+  if($('tAnimBg'))$('tAnimBg').classList.toggle('on',S.animBg);
+  toast(S.animBg?'✓ Animated BG ON':'✕ Animated BG OFF');
+}
+
+// ==================== BACKGROUND PANEL TABS ====================
+function swBgTab(tab,btn){
+  document.querySelectorAll('.bg-tab').forEach(b=>b.classList.remove('act'));
+  document.querySelectorAll('.bg-tab-body').forEach(b=>b.classList.remove('act'));
+  if(btn)btn.classList.add('act');
+  const body=$('bgTab'+tab.charAt(0).toUpperCase()+tab.slice(1));
+  if(body)body.classList.add('act');
+}
+
+// ==================== BACKGROUND GALLERY ====================
+const BG_GALLERY=[
+  {n:'Aurora',css:'linear-gradient(135deg,#0f0c29,#302b63,#24243e)'},
+  {n:'Peach',css:'linear-gradient(135deg,#ffecd2,#fcb69f,#ff9a9e)'},
+  {n:'Ocean',css:'linear-gradient(135deg,#2193b0,#6dd5ed,#fff)'},
+  {n:'Forest',css:'linear-gradient(135deg,#11998e,#38ef7d)'},
+  {n:'Candy',css:'linear-gradient(135deg,#f093fb,#f5576c)'},
+  {n:'Night',css:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)'},
+  {n:'Gold',css:'linear-gradient(135deg,#f7971e,#ffd200)'},
+  {n:'Rose',css:'linear-gradient(135deg,#f953c6,#b91d73)'},
+  {n:'Mint',css:'linear-gradient(135deg,#a8edea,#fed6e3)'},
+  {n:'Steel',css:'linear-gradient(135deg,#636fa4,#e8ebf5)'},
+  {n:'Cosmos',css:'radial-gradient(circle at 30% 50%,#1a1a2e,#16213e,#0f3460)'},
+  {n:'Ember',css:'radial-gradient(circle at 70% 30%,#f7971e 0%,#c62828 60%,#1a1a1e 100%)'},
+  {n:'Tropical',css:'linear-gradient(135deg,#a1ffce,#faffd1)'},
+  {n:'Mauve',css:'linear-gradient(135deg,#e0c3fc,#8ec5fc)'},
+  {n:'Carbon',css:'linear-gradient(160deg,#0a0a0a,#1a1a1e,#252525)'},
+  {n:'Citrus',css:'linear-gradient(135deg,#f9d423,#ff4e50)'}
+];
+
+function renderBgGallery(){
+  const gallery=$('bgImgGallery');
+  if(!gallery)return;
+  gallery.innerHTML='';
+  BG_GALLERY.forEach(item=>{
+    const sw=document.createElement('div');
+    sw.className='bg-gallery-sw';
+    sw.style.background=item.css;
+    sw.title=item.n;
+    const lbl=document.createElement('span');
+    lbl.textContent=item.n;
+    sw.appendChild(lbl);
+    sw.onclick=()=>{
+      pushHistory();
+      $('ms').style.background=item.css;
+      S.bgCustom=item.css;S.bg=null;
+      toast('✓ '+item.n);
+    };
+    gallery.appendChild(sw);
+  });
+}
+
+// ==================== GRADIENT COLOR-STOP EDITOR ====================
+S.gradStops=S.gradStops||[{pos:0,color:'#c9956b'},{pos:100,color:'#1a1a1e'}];
+
+function renderGradStopEditor(){
+  const editor=$('gradStopEditor');
+  if(!editor)return;
+  const sorted=[...S.gradStops].sort((a,b)=>a.pos-b.pos);
+  const stops=sorted.map(s=>`${s.color} ${s.pos}%`).join(',');
+  const previewCss=`linear-gradient(90deg,${stops})`;
+  let html=`<div class="grad-preview-bar" style="background:${previewCss}"></div>`;
+  S.gradStops.forEach((stop,i)=>{
+    html+=`<div class="grad-stop-row">
+      <input type="color" value="${stop.color}" oninput="editGradStop(${i},'color',this.value)" style="width:26px;height:22px;border:none;background:none;cursor:pointer;padding:0;flex-shrink:0">
+      <input type="range" min="0" max="100" value="${stop.pos}" oninput="editGradStop(${i},'pos',this.value)" style="flex:1">
+      <span style="font-size:8px;color:var(--muted);width:22px;text-align:right;flex-shrink:0">${stop.pos}%</span>
+      ${S.gradStops.length>2?`<button class="bk-del" style="position:static;opacity:1;width:14px;height:14px" onclick="removeGradStop(${i})">×</button>`:''}
+    </div>`;
+  });
+  editor.innerHTML=html;
+}
+
+function editGradStop(i,prop,val){
+  if(!S.gradStops[i])return;
+  if(prop==='color')S.gradStops[i].color=val;
+  if(prop==='pos')S.gradStops[i].pos=parseInt(val);
+  renderGradStopEditor();
+}
+
+function addGradStop(){
+  if(S.gradStops.length>=6){toast('Max 6 stops');return}
+  S.gradStops.push({pos:50,color:'#888888'});
+  renderGradStopEditor();
+  toast('✓ Stop added');
+}
+
+function removeGradStop(i){
+  if(S.gradStops.length<=2)return;
+  S.gradStops.splice(i,1);
+  renderGradStopEditor();
+}
+
+function _buildGradCSS(){
+  const sorted=[...S.gradStops].sort((a,b)=>a.pos-b.pos);
+  const stops=sorted.map(s=>`${s.color} ${s.pos}%`).join(',');
+  if(S.gradType==='radial')return`radial-gradient(circle,${stops})`;
+  if(S.gradType==='conic')return`conic-gradient(from ${S.gradAngle||145}deg,${stops})`;
+  return`linear-gradient(${S.gradAngle||145}deg,${stops})`;
+}
+
+function applyCustomGradient(){
+  pushHistory();
+  const css=_buildGradCSS();
+  $('ms').style.background=css;
+  S.bgCustom=css;S.bg=null;
+  toast('✓ Custom gradient applied');
+}

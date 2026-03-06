@@ -8,6 +8,20 @@ function doReset(){
   $('rngBl').value=0;setBgBlur(0);
   if(!S.showNav)togNav();if(!S.showIsland)togIsland();
   if(S.showRefl)togRefl();if(!S.showWm)togWm();if(S.showBgOv)togBgOv();
+  if(S.noiseEnabled)togNoise();if(S.vignetteEnabled)togVignette();if(S.animBg)togAnimBg();
+
+  // Remove all shapes
+  S.shapes.forEach(s=>{const e=$(s.id);if(e)e.remove()});
+  S.shapes=[];S.selShape=null;
+  const sec=$('shapeEditSec');if(sec)sec.style.display='none';
+
+  // Remove all badges
+  if(S.badges){S.badges.forEach(b=>{const e=$(b.id);if(e)e.remove()});S.badges=[];S.selBadge=null;}
+  const bsec=$('badgeEditSec');if(bsec)bsec.style.display='none';
+
+  // Remove all annotations
+  if(S.annotations){S.annotations.forEach(a=>{const e=$(a.id);if(e)e.remove()});S.annotations=[];S.selAnno=null;}
+  const asec=$('annoEditSec');if(asec)asec.style.display='none';
 
   // Remove all texts
   S.texts.forEach(t=>{const e=$(t.id);if(e)e.remove()});
@@ -95,6 +109,10 @@ function init(){
   buildRulers();
   renderLayerPanel();
   renderPatternGrid();
+  renderLabelPresets();
+  renderBrandKit();
+  renderBgGallery();
+  renderGradStopEditor();
   setTimeout(zFit,150);
   pushHistory();
 }

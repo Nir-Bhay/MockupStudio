@@ -69,6 +69,9 @@ function addDynamicScreen(type) {
     }
 
     if (typeof toast === 'function') toast('✅ Custom ' + cap(type) + ' added');
+
+    // Update the dynamic screens list in the panel
+    if (typeof _updateDynList === 'function') _updateDynList();
 }
 
 function _remapDynamicIds(el, oldBase, newId, type) {
@@ -149,6 +152,20 @@ function _initDynamicDrag(frameId) {
             const MIN_W = typeof MIN_FRAME_W !== 'undefined' ? MIN_FRAME_W : 80;
             const MIN_H = typeof MIN_FRAME_H !== 'undefined' ? MIN_FRAME_H : 60;
 
+            // Store initial sizes for pattern resize
+            if (S.patternResize) {
+                fr.dataset.startW = startW;
+                fr.dataset.startH = startH;
+                // Store initial sizes for all frames
+                _getAllResizeableFramesDyn().forEach(fId => {
+                    const f = $(fId);
+                    if (f && f !== fr) {
+                        f.dataset.startW = f.offsetWidth;
+                        f.dataset.startH = f.offsetHeight;
+                    }
+                });
+            }
+
             function onResize(ev) {
                 const zoom = S.zoom || 1;
                 const dx = (ev.clientX - startX) / zoom;
@@ -169,6 +186,11 @@ function _initDynamicDrag(frameId) {
                 fr.style.height = nh + 'px';
                 fr.style.left = nl + 'px';
                 fr.style.top = nt + 'px';
+
+                // Apply proportional resize to all other frames if pattern mode is enabled
+                if (S.patternResize && typeof _applyProportionalResizeDyn === 'function') {
+                    _applyProportionalResizeDyn(frameId, nw, nh);
+                }
             }
             function offResize() {
                 document.removeEventListener('mousemove', onResize);
@@ -182,40 +204,35 @@ function _initDynamicDrag(frameId) {
 }
 
 function _injectDynamicUploadZone(id, type) {
-    const container = $('tabImage');
+    // Find the UPLOADS panel to add the upload zone
+    const container = $('panelUploads');
     if (!container) return;
-    // Put it inside the first .sec, right after existing default uploads
-    const secs = container.querySelectorAll('.sec');
-    // Usually the second sec contains the desktop/mobile/tablet uploads, 
-    // or the first one if I'm adding it correctly
-    let targetSec = null;
-    secs.forEach(s => {
-        if (s.querySelector('.up-grid')) targetSec = s;
-    });
 
-    if (!targetSec) return;
-
-    const upGrid = targetSec.querySelector('.up-grid');
-    if (!upGrid) return;
+    // Check if upload zone already exists
+    if ($('up_' + id)) return;
 
     const div = document.createElement('div');
     div.className = 'up-zone';
     div.id = 'up_' + id;
+    div.onclick = function () { $('#f_' + id).click(); };
+
+    const icon = type === 'desktop' ? '🖥' : (type === 'tablet' ? '📋' : '📱');
+    const typeName = type.charAt(0).toUpperCase() + type.slice(1);
+
     div.innerHTML = `
-    <div class="uz-bg"></div>
-    <div class="uz-c">
-      <div class="uz-i">📄</div>
-      <div class="uz-t">Custom ${typeof cap === 'function' ? cap(type) : type}</div>
-      <div class="uz-s">Upload</div>
-    </div>
-    <input type="file" id="f_${id}" accept="image/*">
-    <div class="uz-actions">
-      <button class="uz-btn-rm" onclick="rmDynamicImg('${id}')">✕</button>
-    </div>
-    <div class="uz-pv-c"><img class="uz-pv" id="pv_${id}"></div>
-    <div class="uz-prog"></div>
-  `;
-    upGrid.appendChild(div);
+        <input type="file" id="f_${id}" accept="image/*"><button class="rm-btn"
+        onclick="event.stopPropagation();rmDynamicImg('${id}')">✕</button>
+        <img class="up-prev" id="pv_${id}">
+        <div class="up-info">
+            <div class="up-icon">${icon}</div>
+            <div class="up-txt">
+                <div class="l1">Custom ${typeName}</div>
+                <div class="l2">Custom frame</div>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(div);
 
     const fileInput = div.querySelector('#f_' + id);
     fileInput.addEventListener('change', e => {
@@ -281,4 +298,104 @@ function _removeAllDynamic() {
         if (typeof _layers !== 'undefined' && _layers[f.id]) delete _layers[f.id];
     });
     S.dynamicFrames = [];
+    _updateDynList();
+}
+
+// Update the dynamic screens list in the panel
+function _updateDynList() {
+    const listEl = $('dynList');
+    if (!listEl) return;
+
+    const emptyEl = $('dynEmpty');
+    const frames = S.dynamicFrames || [];
+
+    if (frames.length === 0) {
+        if (emptyEl) emptyEl.style.display = 'block';
+        // Remove all dyn-items
+        listEl.querySelectorAll('.dyn-item').forEach(el => el.remove());
+        return;
+    }
+
+    if (emptyEl) emptyEl.style.display = 'none';
+
+    // Clear existing items
+    listEl.querySelectorAll('.dyn-item').forEach(el => el.remove());
+
+    // Add each frame
+    frames.forEach(f => {
+        const item = document.createElement('div');
+        item.className = 'dyn-item';
+        item.id = 'dynItem_' + f.id;
+        const icon = f.type === 'desktop' ? '💻' : (f.type === 'tablet' ? '📱' : '📱');
+        item.innerHTML = `
+            <div class="dyn-item-info">
+                <span>${icon}</span>
+                <span>${f.type} #${f.id.split('_').pop()}</span>
+            </div>
+            <button class="dyn-item-remove" onclick="removeDynamicFrame('${f.id}')" title="Remove">✕</button>
+        `;
+        listEl.appendChild(item);
+    });
+}
+
+// Wrapper for removing individual dynamic frame
+function removeDynamicFrame(id) {
+    rmDynamicFrame(id);
+    _updateDynList();
+}
+
+// Get all resizeable frames for dynamic screens
+function _getAllResizeableFramesDyn() {
+    const frames = [];
+    // Main frames
+    ['bf', 'pf', 'tf', 'pf2'].forEach(id => {
+        const el = $(id);
+        if (el && !el.classList.contains('hidden')) {
+            frames.push(id);
+        }
+    });
+    // Dynamic frames
+    (S.dynamicFrames || []).forEach(f => {
+        const el = $(f.id);
+        if (el) frames.push(f.id);
+    });
+    return frames;
+}
+
+// Apply proportional resize to all frames for dynamic screens
+function _applyProportionalResizeDyn(mainFrameId, newWidth, newHeight) {
+    const mainFrame = $(mainFrameId);
+    if (!mainFrame) return;
+
+    const startW = parseFloat(mainFrame.dataset.startW) || mainFrame.offsetWidth;
+    const startH = parseFloat(mainFrame.dataset.startH) || mainFrame.offsetHeight;
+
+    if (startW === 0 || startH === 0) return;
+
+    const widthRatio = newWidth / startW;
+    const heightRatio = newHeight / startH;
+
+    const allFrames = _getAllResizeableFramesDyn();
+
+    allFrames.forEach(frameId => {
+        if (frameId === mainFrameId) return;
+        const frame = $(frameId);
+        if (!frame) return;
+
+        const fw = frame.offsetWidth;
+        const fh = frame.offsetHeight;
+
+        // Store initial size if not stored
+        if (!frame.dataset.startW) {
+            frame.dataset.startW = fw;
+            frame.dataset.startH = fh;
+        }
+
+        const initialW = parseFloat(frame.dataset.startW);
+        const initialH = parseFloat(frame.dataset.startH);
+
+        // Apply proportional resize based on the main frame's ratio
+        frame.style.width = (initialW * widthRatio) + 'px';
+        frame.style.height = (initialH * heightRatio) + 'px';
+    });
 }

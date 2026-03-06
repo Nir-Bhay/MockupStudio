@@ -11,6 +11,80 @@ function togFree() {
   if (!S.freeMode) applyLayout();
 }
 
+// ==================== PATTERN RESIZE MODE ====================
+function togPatternResize() {
+  if (!S.freeMode) {
+    toast('Enable free mode first');
+    return;
+  }
+  S.patternResize = !S.patternResize;
+  const btn = $('patternBtn');
+  if (btn) {
+    btn.style.background = S.patternResize ? 'rgba(201,149,107,.2)' : '';
+    btn.style.borderColor = S.patternResize ? 'var(--accent)' : '';
+    btn.title = S.patternResize ? 'Pattern resize ON - resize all scenes proportionally' : 'Pattern resize OFF';
+  }
+  toast(S.patternResize ? 'Pattern resize ON - resize all scenes together' : 'Pattern resize OFF');
+}
+
+// Get all visible frames for proportional resize
+function _getAllResizeableFrames() {
+  const frames = [];
+  // Main frames
+  ['bf', 'pf', 'tf', 'pf2'].forEach(id => {
+    const el = $(id);
+    if (el && !el.classList.contains('hidden')) {
+      frames.push(id);
+    }
+  });
+  // Dynamic frames
+  (S.dynamicFrames || []).forEach(f => {
+    const el = $(f.id);
+    if (el) frames.push(f.id);
+  });
+  return frames;
+}
+
+// Apply proportional resize to all frames
+function _applyProportionalResize(mainFrameId, newWidth, newHeight) {
+  const mainFrame = $(mainFrameId);
+  if (!mainFrame) return;
+
+  const startW = parseFloat(mainFrame.dataset.startW) || mainFrame.offsetWidth;
+  const startH = parseFloat(mainFrame.dataset.startH) || mainFrame.offsetHeight;
+
+  if (startW === 0 || startH === 0) return;
+
+  const widthRatio = newWidth / startW;
+  const heightRatio = newHeight / startH;
+
+  const allFrames = _getAllResizeableFrames();
+
+  allFrames.forEach(frameId => {
+    if (frameId === mainFrameId) return;
+    const frame = $(frameId);
+    if (!frame) return;
+
+    const fw = frame.offsetWidth;
+    const fh = frame.offsetHeight;
+    const fl = frame.offsetLeft;
+    const ft = frame.offsetTop;
+
+    // Store initial size if not stored
+    if (!frame.dataset.startW) {
+      frame.dataset.startW = fw;
+      frame.dataset.startH = fh;
+    }
+
+    const initialW = parseFloat(frame.dataset.startW);
+    const initialH = parseFloat(frame.dataset.startH);
+
+    // Apply proportional resize based on the main frame's ratio
+    frame.style.width = (initialW * widthRatio) + 'px';
+    frame.style.height = (initialH * heightRatio) + 'px';
+  });
+}
+
 function initDrag() {
   const handles = ['bfDrag', 'pfDrag', 'tfDrag', 'pf2Drag'];
   const frames = ['bf', 'pf', 'tf', 'pf2'];
@@ -65,6 +139,20 @@ function initDrag() {
       const startY = e.clientY;
       const ar = startW / startH;
 
+      // Store initial sizes for pattern resize
+      if (S.patternResize) {
+        fr.dataset.startW = startW;
+        fr.dataset.startH = startH;
+        // Store initial sizes for all frames
+        _getAllResizeableFrames().forEach(fId => {
+          const f = $(fId);
+          if (f && f !== fr) {
+            f.dataset.startW = f.offsetWidth;
+            f.dataset.startH = f.offsetHeight;
+          }
+        });
+      }
+
       function onResize(ev) {
         const dx = (ev.clientX - startX) / S.zoom;
         const dy = (ev.clientY - startY) / S.zoom;
@@ -85,6 +173,11 @@ function initDrag() {
         fr.style.height = nh + 'px';
         fr.style.left = nl + 'px';
         fr.style.top = nt + 'px';
+        
+        // Apply proportional resize to all other frames if pattern mode is enabled
+        if (S.patternResize) {
+          _applyProportionalResize(frameId, nw, nh);
+        }
       }
       function offResize() {
         document.removeEventListener('mousemove', onResize);

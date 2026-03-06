@@ -141,7 +141,7 @@ function swTab(name) {
 }
 
 // ==================== LEFT PANEL SWITCHING ====================
-const _panelNames = { uploads: 'Upload Assets', layouts: 'Layouts', templates: 'Templates', themes: 'Frame Theme', backgrounds: 'Background', labels: 'Labels', brand: 'Brand Kit' };
+const _panelNames = { uploads: 'Upload Assets', layouts: 'Layouts', templates: 'Templates', themes: 'Frame Theme', backgrounds: 'Background', labels: 'Labels', brand: 'Brand Kit', dynamic: 'Custom Screens' };
 let _activePanel = 'uploads';
 
 function togPanel(name) {

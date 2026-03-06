@@ -590,6 +590,70 @@ input[type="range"]::-webkit-slider-thumb:active {
     box-shadow: var(--shadow-xs)
 }
 
+/* Dynamic Screens Panel */
+.dyn-add-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.dyn-add-btns .btn-s {
+    flex: 1;
+    min-width: 80px;
+    font-size: 10px;
+}
+
+.dyn-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dyn-empty {
+    color: var(--text-muted);
+    font-size: 11px;
+    text-align: center;
+    padding: 12px;
+}
+
+.dyn-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+}
+
+.dyn-item-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dyn-item-remove {
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: var(--danger-soft);
+    color: var(--danger);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dyn-item-remove:hover {
+    background: var(--danger);
+    color: white;
+}
+
 .btn-d:active {
     transform: scale(.97)
 }

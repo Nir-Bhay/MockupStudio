@@ -1,5 +1,6 @@
 // ==================== TEXT ON STAGE ====================
 let txtIdCounter=0;
+const SNAP_THRESHOLD=8;
 
 function addText(){
   const txt=$('newTxtVal').value||'Your Text';
@@ -9,9 +10,10 @@ function addText(){
   const color=$('newTxtCol').value;
   const opacity=parseInt($('newTxtOp').value)/100;
   const ls=parseInt($('newTxtLs').value);
+  const align=$('newTxtAlign')?$('newTxtAlign').value:'center';
 
   const id='txt_'+(++txtIdCounter);
-  const obj={id,text:txt,font,size:parseInt(size),weight:parseInt(weight),color,opacity,ls,x:50,y:50};
+  const obj={id,text:txt,font,size:parseInt(size),weight:parseInt(weight),color,opacity,ls,align,x:50,y:50};
   S.texts.push(obj);
 
   const el=document.createElement('div');
@@ -24,11 +26,12 @@ function addText(){
   el.style.color=color;
   el.style.opacity=opacity;
   el.style.letterSpacing=ls+'px';
+  el.style.textAlign=align;
   el.style.left='50%';
   el.style.top='50%';
   el.style.transform='translate(-50%,-50%)';
 
-  // Draggable
+  // Draggable with snap guides
   el.addEventListener('mousedown',e=>{
     e.preventDefault();
     selectText(id);
@@ -37,10 +40,33 @@ function addText(){
     const ox=e.clientX-rect.left;
     const oy=e.clientY-rect.top;
     el.classList.add('dragging');
+    
+    // Create snap guides
+    const ms=$('ms');
+    let guideH=ms.querySelector('.snap-guide.h');
+    let guideV=ms.querySelector('.snap-guide.v');
+    if(!guideH){guideH=document.createElement('div');guideH.className='snap-guide h';guideH.style.opacity='0';ms.appendChild(guideH)}
+    if(!guideV){guideV=document.createElement('div');guideV.className='snap-guide v';guideV.style.opacity='0';ms.appendChild(guideV)}
 
     function mv(ev){
-      const x=(ev.clientX-msRect.left)/S.zoom-ox/S.zoom;
-      const y=(ev.clientY-msRect.top)/S.zoom-oy/S.zoom;
+      let x=(ev.clientX-msRect.left)/S.zoom-ox/S.zoom;
+      let y=(ev.clientY-msRect.top)/S.zoom-oy/S.zoom;
+      
+      // Snap to center
+      const msW=960,msH=600;
+      const elW=el.offsetWidth,elH=el.offsetHeight;
+      const cx=x+elW/2,cy=y+elH/2;
+      
+      if(Math.abs(cx-msW/2)<SNAP_THRESHOLD){
+        x=msW/2-elW/2;
+        guideV.style.left='50%';guideV.style.opacity='1';
+      }else{guideV.style.opacity='0'}
+      
+      if(Math.abs(cy-msH/2)<SNAP_THRESHOLD){
+        y=msH/2-elH/2;
+        guideH.style.top='50%';guideH.style.opacity='1';
+      }else{guideH.style.opacity='0'}
+      
       el.style.left=x+'px';
       el.style.top=y+'px';
       el.style.transform='none';
@@ -49,6 +75,7 @@ function addText(){
     }
     function up(){
       el.classList.remove('dragging');
+      guideH.style.opacity='0';guideV.style.opacity='0';
       document.removeEventListener('mousemove',mv);
       document.removeEventListener('mouseup',up);
     }
@@ -85,6 +112,7 @@ function editTxtProp(prop){
   if(prop==='text'){obj.text=$('edTxtVal').value;el.textContent=obj.text;renderTextList()}
   if(prop==='size'){obj.size=parseInt($('edTxtSz').value);el.style.fontSize=obj.size+'px'}
   if(prop==='color'){obj.color=$('edTxtCol').value;el.style.color=obj.color}
+  if(prop==='align'){const a=$('edTxtAlign').value;obj.align=a;el.style.textAlign=a}
 }
 
 function deleteTxt(){

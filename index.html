@@ -136,7 +136,14 @@
 
       <div class="bf" id="bf">
         <div class="drag-h" id="bfDrag"></div>
-        <div class="resize-h" id="bfResize"></div>
+        <div class="resize-h br" data-frame="bf" data-dir="br"></div>
+        <div class="resize-h bl" data-frame="bf" data-dir="bl"></div>
+        <div class="resize-h tr" data-frame="bf" data-dir="tr"></div>
+        <div class="resize-h tl" data-frame="bf" data-dir="tl"></div>
+        <div class="resize-h tm" data-frame="bf" data-dir="tm"></div>
+        <div class="resize-h bm" data-frame="bf" data-dir="bm"></div>
+        <div class="resize-h ml" data-frame="bf" data-dir="ml"></div>
+        <div class="resize-h mr" data-frame="bf" data-dir="mr"></div>
         <div class="b-bar" id="bBar">
           <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
           <div class="b-ctrl"><span>‹</span><span>›</span></div>
@@ -151,7 +158,14 @@
 
       <div class="pf hidden" id="pf">
         <div class="drag-h" id="pfDrag"></div>
-        <div class="resize-h" id="pfResize"></div>
+        <div class="resize-h br" data-frame="pf" data-dir="br"></div>
+        <div class="resize-h bl" data-frame="pf" data-dir="bl"></div>
+        <div class="resize-h tr" data-frame="pf" data-dir="tr"></div>
+        <div class="resize-h tl" data-frame="pf" data-dir="tl"></div>
+        <div class="resize-h tm" data-frame="pf" data-dir="tm"></div>
+        <div class="resize-h bm" data-frame="pf" data-dir="bm"></div>
+        <div class="resize-h ml" data-frame="pf" data-dir="ml"></div>
+        <div class="resize-h mr" data-frame="pf" data-dir="mr"></div>
         <div class="p-scr">
           <div class="p-isl" id="pIsl"></div><div class="p-hb"></div>
           <div class="ph" id="phM"><div class="ph-n" style="font-size:24px" id="phMN">01</div><div class="ph-t" style="font-size:8px" id="phMT">Phone</div><div class="ph-s" style="font-size:5px">Mock UP.</div></div>
@@ -161,7 +175,14 @@
 
       <div class="tf hidden" id="tf">
         <div class="drag-h" id="tfDrag"></div>
-        <div class="resize-h" id="tfResize"></div>
+        <div class="resize-h br" data-frame="tf" data-dir="br"></div>
+        <div class="resize-h bl" data-frame="tf" data-dir="bl"></div>
+        <div class="resize-h tr" data-frame="tf" data-dir="tr"></div>
+        <div class="resize-h tl" data-frame="tf" data-dir="tl"></div>
+        <div class="resize-h tm" data-frame="tf" data-dir="tm"></div>
+        <div class="resize-h bm" data-frame="tf" data-dir="bm"></div>
+        <div class="resize-h ml" data-frame="tf" data-dir="ml"></div>
+        <div class="resize-h mr" data-frame="tf" data-dir="mr"></div>
         <div class="t-scr">
           <div class="ph" id="phTb"><div class="ph-n" style="font-size:32px" id="phTN">01</div><div class="ph-t" style="font-size:10px" id="phTT">Tablet</div><div class="ph-s" style="font-size:5px">Mock UP.</div></div>
           <img id="imgTb" style="display:none">
@@ -169,6 +190,20 @@
       </div>
 
       <div class="wm" id="wm">mockupstudio.pro</div>
+
+      <!-- Canvas Toolbar (appears below selected frame) -->
+      <div class="canvas-toolbar" id="canvasToolbar">
+        <span class="ct-label" id="ctLabel">Desktop</span>
+        <button class="ct-btn" onclick="ctFit('cover')" id="ctCover">Cover</button>
+        <button class="ct-btn" onclick="ctFit('contain')" id="ctContain">Contain</button>
+        <button class="ct-btn" onclick="ctFit('fill')" id="ctFill">Fill</button>
+        <span class="ct-sep"></span>
+        <button class="ct-btn" onclick="ctFlipH()">↔</button>
+        <button class="ct-btn" onclick="ctFlipV()">↕</button>
+        <span class="ct-sep"></span>
+        <button class="ct-btn" onclick="ctAutoFit()">✦ Auto</button>
+        <button class="ct-btn" onclick="ctResetPos()">↺ Reset</button>
+      </div>
     </div>
   </div>
 </div>
@@ -249,6 +284,22 @@
       <input type="range" min="-50" max="50" value="0" oninput="setImgOff('desktop','y',this.value)"></div>
     <div class="rng-g"><div class="rng-h"><span>Border Radius</span><span class="rv" id="rvDR">0</span></div>
       <input type="range" min="0" max="20" value="0" oninput="setImgRad('desktop',this.value)"></div>
+    <div class="rng-g"><div class="rng-h"><span>Rotation</span><span class="rv" id="rvDRot">0°</span></div>
+      <input type="range" min="0" max="360" value="0" oninput="setImgRotation('desktop',this.value)"></div>
+    <div class="rng-g"><div class="rng-h"><span>Opacity</span><span class="rv" id="rvDOp">100%</span></div>
+      <input type="range" min="0" max="100" value="100" oninput="setImgOpacity('desktop',this.value)"></div>
+    <div class="rng-g"><div class="rng-h"><span>Brightness</span><span class="rv" id="rvDBr">100%</span></div>
+      <input type="range" min="0" max="200" value="100" oninput="setImgFilter('desktop','brightness',this.value);$('rvDBr').textContent=this.value+'%'"></div>
+    <div class="rng-g"><div class="rng-h"><span>Contrast</span><span class="rv" id="rvDCo">100%</span></div>
+      <input type="range" min="0" max="200" value="100" oninput="setImgFilter('desktop','contrast',this.value);$('rvDCo').textContent=this.value+'%'"></div>
+    <div class="rng-g"><div class="rng-h"><span>Saturation</span><span class="rv" id="rvDSa">100%</span></div>
+      <input type="range" min="0" max="200" value="100" oninput="setImgFilter('desktop','saturation',this.value);$('rvDSa').textContent=this.value+'%'"></div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="flipImg('desktop','h')">↔ Flip H</button>
+      <button class="btn-s" onclick="flipImg('desktop','v')">↕ Flip V</button>
+      <button class="btn-s" onclick="autoFitImg('desktop')">✦ Auto</button>
+      <button class="btn-d" onclick="resetImgControls('desktop')">↺</button>
+    </div>
   </div>
   <div class="img-ctrl">
     <div class="img-ctrl-h">📱 Mobile Image</div>
@@ -263,6 +314,16 @@
       <input type="range" min="-50" max="50" value="0" oninput="setImgOff('mobile','x',this.value)"></div>
     <div class="rng-g"><div class="rng-h"><span>Offset Y</span><span class="rv" id="rvMY">0</span></div>
       <input type="range" min="-50" max="50" value="0" oninput="setImgOff('mobile','y',this.value)"></div>
+    <div class="rng-g"><div class="rng-h"><span>Rotation</span><span class="rv" id="rvMRot">0°</span></div>
+      <input type="range" min="0" max="360" value="0" oninput="setImgRotation('mobile',this.value)"></div>
+    <div class="rng-g"><div class="rng-h"><span>Opacity</span><span class="rv" id="rvMOp">100%</span></div>
+      <input type="range" min="0" max="100" value="100" oninput="setImgOpacity('mobile',this.value)"></div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="flipImg('mobile','h')">↔ Flip H</button>
+      <button class="btn-s" onclick="flipImg('mobile','v')">↕ Flip V</button>
+      <button class="btn-s" onclick="autoFitImg('mobile')">✦ Auto</button>
+      <button class="btn-d" onclick="resetImgControls('mobile')">↺</button>
+    </div>
   </div>
   <div class="img-ctrl">
     <div class="img-ctrl-h">📋 Tablet Image</div>
@@ -277,6 +338,16 @@
       <input type="range" min="-50" max="50" value="0" oninput="setImgOff('tablet','x',this.value)"></div>
     <div class="rng-g"><div class="rng-h"><span>Offset Y</span><span class="rv" id="rvTY">0</span></div>
       <input type="range" min="-50" max="50" value="0" oninput="setImgOff('tablet','y',this.value)"></div>
+    <div class="rng-g"><div class="rng-h"><span>Rotation</span><span class="rv" id="rvTRot">0°</span></div>
+      <input type="range" min="0" max="360" value="0" oninput="setImgRotation('tablet',this.value)"></div>
+    <div class="rng-g"><div class="rng-h"><span>Opacity</span><span class="rv" id="rvTOp">100%</span></div>
+      <input type="range" min="0" max="100" value="100" oninput="setImgOpacity('tablet',this.value)"></div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="flipImg('tablet','h')">↔ Flip H</button>
+      <button class="btn-s" onclick="flipImg('tablet','v')">↕ Flip V</button>
+      <button class="btn-s" onclick="autoFitImg('tablet')">✦ Auto</button>
+      <button class="btn-d" onclick="resetImgControls('tablet')">↺</button>
+    </div>
   </div>
 </div>
 
@@ -317,6 +388,11 @@
       <input type="range" id="newTxtOp" min="5" max="100" value="100" oninput="$('rvTO').textContent=this.value+'%'"></div>
     <div class="rng-g"><div class="rng-h"><span>Letter Spacing</span><span class="rv" id="rvTL">0</span></div>
       <input type="range" id="newTxtLs" min="-5" max="20" value="0" oninput="$('rvTL').textContent=this.value+'px'"></div>
+    <div class="inp-g"><label>Alignment</label>
+      <select id="newTxtAlign">
+        <option value="left">Left</option><option value="center" selected>Center</option><option value="right">Right</option>
+      </select>
+    </div>
     <button class="btn-p" onclick="addText()">+ Add Text to Stage</button>
   </div>
   <div class="divider"></div>
@@ -330,6 +406,11 @@
     <div class="inp-row">
       <div class="inp-g"><label>Size</label><input type="range" id="edTxtSz" min="8" max="80" value="18" oninput="editTxtProp('size')"></div>
       <div class="inp-g"><label>Color</label><input type="color" id="edTxtCol" oninput="editTxtProp('color')" style="width:100%;height:22px;border-radius:3px;border:1px solid var(--border);background:none;cursor:pointer"></div>
+    </div>
+    <div class="inp-g"><label>Alignment</label>
+      <select id="edTxtAlign" onchange="editTxtProp('align')">
+        <option value="left">Left</option><option value="center" selected>Center</option><option value="right">Right</option>
+      </select>
     </div>
     <div class="btn-row">
       <button class="btn-s" onclick="duplicateTxt()">Duplicate</button>
@@ -349,6 +430,10 @@
   <div class="sec">
     <div class="sec-t" style="margin-bottom:3px">Saved Presets</div>
     <div class="preset-list" id="presetList"><div style="font-size:9px;color:var(--muted);text-align:center;padding:10px">No presets saved</div></div>
+    <div class="btn-row" style="margin-top:4px">
+      <button class="btn-o" onclick="exportPresets()">📦 Export</button>
+      <button class="btn-o" onclick="importPresets()">📥 Import</button>
+    </div>
   </div>
 </div>
 

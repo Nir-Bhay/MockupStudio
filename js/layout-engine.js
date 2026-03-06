@@ -1,5 +1,6 @@
 // ==================== LAYOUT ENGINE ====================
 function setLayout(k){
+  pushHistory();
   S.layout=k;
   document.querySelectorAll('.lay-opt').forEach(el=>el.classList.toggle('act',el.dataset.lay===k));
   $('layName').textContent=LAYS[k].n;

@@ -1,10 +1,10 @@
 /* ==================== MOCKUP CONTAINER ==================== */
-.ms{width:960px;height:600px;border-radius:12px;position:relative;overflow:hidden;transition:background .4s}
+.ms{width:960px;height:600px;border-radius:12px;position:relative;overflow:hidden;transition:background .5s var(--ease-out)}
 .ms-bg-img{position:absolute;inset:0;z-index:0;object-fit:cover;border-radius:12px;display:none}
 .ms-bg-overlay{position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:12px}
 
 /* ==================== BROWSER FRAME ==================== */
-.bf{position:absolute;background:#fff;border-radius:10px;overflow:hidden;transition:all .35s ease;box-shadow:0 20px 50px rgba(0,0,0,.15);z-index:10}
+.bf{position:absolute;background:#fff;border-radius:10px;overflow:hidden;transition:all .4s var(--ease-out);box-shadow:0 20px 50px rgba(0,0,0,.15);z-index:10}
 .bf.dragging{transition:none!important;z-index:100}
 .drag-h{position:absolute;cursor:grab;z-index:15}
 .bf .drag-h{top:0;left:0;right:0;height:30px}
@@ -24,7 +24,7 @@
 .ph-t{font-weight:700;color:rgba(180,140,100,.25)}.ph-s{font-weight:500;color:rgba(180,140,100,.15);letter-spacing:2px;text-transform:uppercase}
 
 /* ==================== PHONE FRAME ==================== */
-.pf{position:absolute;background:#fff;border-radius:24px;padding:6px;transition:all .35s ease;z-index:20;box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.pf{position:absolute;background:#fff;border-radius:24px;padding:6px;transition:all .4s var(--ease-out);z-index:20;box-shadow:0 20px 50px rgba(0,0,0,.2)}
 .pf.dragging{transition:none!important;z-index:100}
 .pf .drag-h{inset:0;border-radius:24px}
 .p-scr{width:100%;height:100%;border-radius:19px;overflow:hidden;position:relative;background:#f5f0eb}
@@ -33,22 +33,51 @@
 .p-hb{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:30%;height:3px;background:rgba(0,0,0,.15);border-radius:3px;z-index:3}
 
 /* ==================== TABLET FRAME ==================== */
-.tf{position:absolute;background:#fff;border-radius:14px;padding:7px;transition:all .35s ease;z-index:15;box-shadow:0 20px 50px rgba(0,0,0,.15)}
+.tf{position:absolute;background:#fff;border-radius:14px;padding:7px;transition:all .4s var(--ease-out);z-index:15;box-shadow:0 20px 50px rgba(0,0,0,.15)}
 .tf.dragging{transition:none!important;z-index:100}
 .tf .drag-h{inset:0;border-radius:14px}
 .t-scr{width:100%;height:100%;border-radius:8px;overflow:hidden;position:relative;background:#f5f0eb}
 .t-scr img{width:100%;height:100%;display:block}
 
 /* ==================== TEXT ELEMENTS ==================== */
-.txt-el{position:absolute;cursor:grab;user-select:none;z-index:30;padding:3px 6px;transition:outline .1s;white-space:nowrap}
+.txt-el{position:absolute;cursor:grab;user-select:none;z-index:30;padding:3px 6px;transition:outline .15s,opacity .2s;white-space:nowrap}
 .txt-el:hover{outline:1px dashed rgba(201,149,107,.4);outline-offset:2px}
-.txt-el.sel{outline:1.5px solid var(--accent);outline-offset:2px}
+.txt-el.sel{outline:1.5px solid var(--accent);outline-offset:2px;filter:drop-shadow(0 0 4px rgba(201,149,107,.2))}
 .txt-el.dragging{cursor:grabbing;transition:none}
 
-/* ==================== RESIZE HANDLE ==================== */
-.resize-h{position:absolute;bottom:-4px;right:-4px;width:12px;height:12px;cursor:nwse-resize;z-index:20;opacity:0;transition:opacity .15s}
+/* ==================== SNAP GUIDES ==================== */
+.snap-guide{position:absolute;background:rgba(201,149,107,.5);z-index:35;pointer-events:none;transition:opacity .1s}
+.snap-guide.h{height:1px;left:0;right:0}
+.snap-guide.v{width:1px;top:0;bottom:0}
+
+/* ==================== RESIZE HANDLES ==================== */
+.resize-h{position:absolute;width:10px;height:10px;cursor:nwse-resize;z-index:20;opacity:0;transition:opacity .15s}
 .bf:hover .resize-h,.pf:hover .resize-h,.tf:hover .resize-h{opacity:1}
-.resize-h::after{content:'';position:absolute;bottom:2px;right:2px;width:6px;height:6px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);border-radius:0 0 2px 0}
+.resize-h::after{content:'';position:absolute;inset:2px;background:var(--accent);border-radius:2px;border:1px solid rgba(255,255,255,.3)}
+/* Corner handles */
+.resize-h.br{bottom:-5px;right:-5px;cursor:nwse-resize}
+.resize-h.bl{bottom:-5px;left:-5px;cursor:nesw-resize}
+.resize-h.tr{top:-5px;right:-5px;cursor:nesw-resize}
+.resize-h.tl{top:-5px;left:-5px;cursor:nwse-resize}
+/* Edge handles */
+.resize-h.tm{top:-5px;left:50%;transform:translateX(-50%);cursor:ns-resize}
+.resize-h.bm{bottom:-5px;left:50%;transform:translateX(-50%);cursor:ns-resize}
+.resize-h.ml{left:-5px;top:50%;transform:translateY(-50%);cursor:ew-resize}
+.resize-h.mr{right:-5px;top:50%;transform:translateY(-50%);cursor:ew-resize}
+
+/* ==================== FRAME SNAP GUIDES ==================== */
+.frame-snap-guide{position:absolute;background:rgba(201,149,107,.6);z-index:90;pointer-events:none}
+.frame-snap-guide.fh{height:1px;left:0;right:0}
+.frame-snap-guide.fv{width:1px;top:0;bottom:0}
+
+/* ==================== CANVAS TOOLBAR ==================== */
+.canvas-toolbar{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(30,30,30,.92);backdrop-filter:blur(12px);border-radius:8px;border:1px solid rgba(255,255,255,.08);z-index:80;opacity:0;pointer-events:none;transition:opacity .2s var(--ease-out),transform .2s var(--ease-out);box-shadow:0 4px 20px rgba(0,0,0,.25);white-space:nowrap}
+.canvas-toolbar.visible{opacity:1;pointer-events:auto}
+.canvas-toolbar .ct-label{font-size:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);padding-right:4px;border-right:1px solid rgba(255,255,255,.1)}
+.canvas-toolbar .ct-btn{font-size:9px;color:rgba(255,255,255,.7);background:rgba(255,255,255,.06);border:none;border-radius:4px;padding:3px 7px;cursor:pointer;transition:all .15s var(--ease-out);font-family:inherit}
+.canvas-toolbar .ct-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.canvas-toolbar .ct-btn.active{background:rgba(201,149,107,.2);color:var(--accent)}
+.canvas-toolbar .ct-sep{width:1px;height:14px;background:rgba(255,255,255,.1)}
 
 /* ==================== WATERMARK ==================== */
 .wm{position:absolute;bottom:10px;right:14px;font-size:7px;color:rgba(255,255,255,.1);letter-spacing:1px;font-weight:500;z-index:50}

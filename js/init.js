@@ -23,10 +23,23 @@ function doReset(){
 }
 
 // ==================== DRAG & DROP ON STAGE ====================
-$('stageArea').addEventListener('dragover',e=>{e.preventDefault();$('stageArea').style.outline='2px dashed var(--accent)';$('stageArea').style.outlineOffset='-3px'});
-$('stageArea').addEventListener('dragleave',()=>{$('stageArea').style.outline='none'});
+$('stageArea').addEventListener('dragover',e=>{
+  e.preventDefault();
+  const sa=$('stageArea');
+  sa.style.outline='2px dashed var(--accent)';
+  sa.style.outlineOffset='-3px';
+  sa.style.background='rgba(201,149,107,.03)';
+});
+$('stageArea').addEventListener('dragleave',()=>{
+  const sa=$('stageArea');
+  sa.style.outline='none';
+  sa.style.background='';
+});
 $('stageArea').addEventListener('drop',e=>{
-  e.preventDefault();$('stageArea').style.outline='none';
+  e.preventDefault();
+  const sa=$('stageArea');
+  sa.style.outline='none';
+  sa.style.background='';
   const f=e.dataTransfer.files[0];
   if(!f||!f.type.startsWith('image/'))return;
   if(!S.desktopImg){const dt=new DataTransfer();dt.items.add(f);$('fD').files=dt.files;handleUpload({target:{files:[f]}},'desktop')}
@@ -36,7 +49,8 @@ $('stageArea').addEventListener('drop',e=>{
 });
 
 // ==================== WINDOW RESIZE ====================
-window.addEventListener('resize',()=>{clearTimeout(window._rz);window._rz=setTimeout(zFit,200)});
+const _debouncedZFit=debounce(zFit,200);
+window.addEventListener('resize',_debouncedZFit);
 
 // ==================== CLICK STAGE TO DESELECT TEXT ====================
 $('ms').addEventListener('click',e=>{
@@ -76,6 +90,8 @@ function init(){
   setBg('sahara');
   applyLayout();
   initDrag();
+  initCanvasToolbar();
   setTimeout(zFit,150);
+  pushHistory();
 }
 init();

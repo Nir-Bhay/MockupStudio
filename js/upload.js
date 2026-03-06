@@ -4,27 +4,33 @@ $('fM').addEventListener('change',e=>handleUpload(e,'mobile'));
 $('fT').addEventListener('change',e=>handleUpload(e,'tablet'));
 $('fBg').addEventListener('change',e=>{
   const f=e.target.files[0];if(!f)return;
+  $('upBg').classList.add('uploading');
   const r=new FileReader();
   r.onload=ev=>{
     S.bgImgUrl=ev.target.result;
     $('pvBg').src=ev.target.result;
-    $('upBg').classList.add('has');
+    $('upBg').classList.remove('uploading');
+    $('upBg').classList.add('has','just-uploaded');
     $('msBgImg').src=ev.target.result;
     $('msBgImg').style.display='block';
+    setTimeout(()=>$('upBg').classList.remove('just-uploaded'),400);
     toast('✓ Background image set');
   };r.readAsDataURL(f);
 });
 
 function handleUpload(e,type){
   const f=e.target.files[0];if(!f)return;
+  const upId={desktop:'upD',mobile:'upM',tablet:'upT'}[type];
+  $(upId).classList.add('uploading');
   const r=new FileReader();
   r.onload=ev=>{
     const url=ev.target.result;
     S[type+'Img']=url;
     const pvId={desktop:'pvD',mobile:'pvM',tablet:'pvT'}[type];
-    const upId={desktop:'upD',mobile:'upM',tablet:'upT'}[type];
     $(pvId).src=url;
-    $(upId).classList.add('has');
+    $(upId).classList.remove('uploading');
+    $(upId).classList.add('has','just-uploaded');
+    setTimeout(()=>$(upId).classList.remove('just-uploaded'),400);
     const imgId={desktop:'imgD',mobile:'imgM',tablet:'imgTb'}[type];
     const phId={desktop:'phD',mobile:'phM',tablet:'phTb'}[type];
     $(imgId).src=url;

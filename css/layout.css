@@ -32,10 +32,10 @@
 .stage-bar-r{display:flex;align-items:center;gap:4px}
 
 .stage{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden;background-image:radial-gradient(#141416 1px,transparent 1px);background-size:18px 18px}
-.stage-cv{position:relative;transition:transform .25s ease}
+.stage-cv{position:relative;transition:transform .3s var(--ease-out)}
 
 /* ==================== TABS ==================== */
 .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:2px}
-.tab{flex:1;padding:6px 2px;font-size:7px;font-weight:600;text-align:center;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.3px;text-transform:uppercase}
+.tab{flex:1;padding:6px 2px;font-size:7px;font-weight:600;text-align:center;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s var(--ease-out);letter-spacing:.3px;text-transform:uppercase}
 .tab:hover{color:var(--dim)}.tab.act{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-body{display:none}.tab-body.act{display:flex;flex-direction:column;gap:8px}

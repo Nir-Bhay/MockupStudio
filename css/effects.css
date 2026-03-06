@@ -6,5 +6,5 @@
 .exp-t{font-size:10px;color:var(--dim)}
 
 /* ==================== TOAST ==================== */
-.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(50px);background:var(--card2);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:7px;font-size:10px;z-index:2000;transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:0 8px 25px rgba(0,0,0,.4)}
-.toast.show{transform:translateX(-50%) translateY(0)}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(50px) scale(.95);background:var(--card2);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:7px;font-size:10px;z-index:2000;transition:transform .35s var(--ease-spring),opacity .3s;box-shadow:0 8px 25px rgba(0,0,0,.4);opacity:0;backdrop-filter:blur(10px)}
+.toast.show{transform:translateX(-50%) translateY(0) scale(1);opacity:1}

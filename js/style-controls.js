@@ -1,5 +1,6 @@
 // ==================== BACKGROUND ====================
 function setBg(k){
+  pushHistory();
   S.bg=k;S.bgCustom=null;
   document.querySelectorAll('.bg-sw').forEach(el=>el.classList.toggle('act',el.dataset.bg===k));
   $('ms').style.background=BGS[k];
@@ -13,6 +14,7 @@ function setBgCustom(v){
 
 // ==================== THEME ====================
 function setTheme(id){
+  pushHistory();
   S.theme=id;
   document.querySelectorAll('.theme-card').forEach(el=>el.classList.toggle('act',el.dataset.theme===id));
   const ms=$('ms');
@@ -22,6 +24,7 @@ function setTheme(id){
 
 // ==================== TEMPLATE ====================
 function applyTemplate(i){
+  pushHistory();
   const t=TPLS[i];
   setLayout(t.lay);
   setBg(t.bg);
@@ -52,8 +55,19 @@ function setBgBlur(v){S.bgBlur=v;$('rvBl').textContent=v+'px';$('msBgImg').style
 
 function applyShadow(){
   const i=S.shadow/100;
-  const bs=`0 ${Math.round(25*i)}px ${Math.round(60*i)}px rgba(0,0,0,${(.18*i).toFixed(2)}), 0 ${Math.round(8*i)}px ${Math.round(20*i)}px rgba(0,0,0,${(.1*i).toFixed(2)})`;
-  const ps=`0 ${Math.round(25*i)}px ${Math.round(55*i)}px rgba(0,0,0,${(.22*i).toFixed(2)}), 0 ${Math.round(8*i)}px ${Math.round(20*i)}px rgba(0,0,0,${(.12*i).toFixed(2)})`;
+  // Premium multi-layer diffused shadow
+  const bs=[
+    `0 ${Math.round(2*i)}px ${Math.round(4*i)}px rgba(0,0,0,${(.04*i).toFixed(3)})`,
+    `0 ${Math.round(8*i)}px ${Math.round(16*i)}px rgba(0,0,0,${(.06*i).toFixed(3)})`,
+    `0 ${Math.round(20*i)}px ${Math.round(48*i)}px rgba(0,0,0,${(.1*i).toFixed(3)})`,
+    `0 ${Math.round(32*i)}px ${Math.round(72*i)}px rgba(0,0,0,${(.14*i).toFixed(3)})`
+  ].join(',');
+  const ps=[
+    `0 ${Math.round(2*i)}px ${Math.round(4*i)}px rgba(0,0,0,${(.05*i).toFixed(3)})`,
+    `0 ${Math.round(10*i)}px ${Math.round(20*i)}px rgba(0,0,0,${(.08*i).toFixed(3)})`,
+    `0 ${Math.round(24*i)}px ${Math.round(52*i)}px rgba(0,0,0,${(.14*i).toFixed(3)})`,
+    `0 ${Math.round(36*i)}px ${Math.round(80*i)}px rgba(0,0,0,${(.18*i).toFixed(3)})`
+  ].join(',');
   $('bf').style.boxShadow=bs;
   $('pf').style.boxShadow=ps;
   $('tf').style.boxShadow=bs;

@@ -1,5 +1,6 @@
 // ==================== FREE POSITION MODE ====================
 let dragTarget=null,dragOff={x:0,y:0};
+let _activeZIndex=100;
 
 function togFree(){
   S.freeMode=!S.freeMode;
@@ -22,43 +23,66 @@ function initDrag(){
       if(!S.freeMode)return;
       e.preventDefault();
       dragTarget=fr;
+      // Bring to front on click
+      fr.style.zIndex=++_activeZIndex;
       const rect=fr.getBoundingClientRect();
-      const msRect=$('ms').getBoundingClientRect();
-      const scale=S.zoom;
       dragOff.x=e.clientX-rect.left;
       dragOff.y=e.clientY-rect.top;
       fr.classList.add('dragging');
+      
+      // Create snap guides for frames
+      _initFrameSnapGuides();
+      
       document.addEventListener('mousemove',onDrag);
       document.addEventListener('mouseup',offDrag);
     });
   });
 
-  // Resize handles
-  const resizes=['bfResize','pfResize','tfResize'];
-  resizes.forEach((rId,i)=>{
-    const rh=$(rId);const fr=$(frames[i]);
-    if(!rh||!fr)return;
-
+  // 8-point resize handles
+  document.querySelectorAll('.resize-h').forEach(rh=>{
     rh.addEventListener('mousedown',e=>{
       if(!S.freeMode)return;
       e.preventDefault();e.stopPropagation();
+      
+      const frameId=rh.dataset.frame;
+      const dir=rh.dataset.dir;
+      const fr=$(frameId);
+      if(!fr)return;
+      
+      fr.style.zIndex=++_activeZIndex;
       const startW=fr.offsetWidth;
       const startH=fr.offsetHeight;
+      const startL=fr.offsetLeft;
+      const startT=fr.offsetTop;
       const startX=e.clientX;
       const startY=e.clientY;
       const ar=startW/startH;
-
+      
       function onResize(ev){
         const dx=(ev.clientX-startX)/S.zoom;
         const dy=(ev.clientY-startY)/S.zoom;
-        const nw=Math.max(80,startW+dx);
-        const nh=nw/ar;
+        let nw=startW,nh=startH,nl=startL,nt=startT;
+        
+        const keepAR=!ev.shiftKey;
+        
+        if(dir==='br'){nw=Math.max(80,startW+dx);nh=keepAR?nw/ar:Math.max(60,startH+dy)}
+        else if(dir==='bl'){nw=Math.max(80,startW-dx);nl=startL+(startW-nw);nh=keepAR?nw/ar:Math.max(60,startH+dy)}
+        else if(dir==='tr'){nw=Math.max(80,startW+dx);nh=keepAR?nw/ar:Math.max(60,startH-dy);if(!keepAR)nt=startT+(startH-nh)}
+        else if(dir==='tl'){nw=Math.max(80,startW-dx);nl=startL+(startW-nw);nh=keepAR?nw/ar:Math.max(60,startH-dy);if(!keepAR)nt=startT+(startH-nh);else nt=startT-(nh-startH)}
+        else if(dir==='tm'){nh=Math.max(60,startH-dy);nt=startT+(startH-nh);if(keepAR)nw=nh*ar}
+        else if(dir==='bm'){nh=Math.max(60,startH+dy);if(keepAR)nw=nh*ar}
+        else if(dir==='ml'){nw=Math.max(80,startW-dx);nl=startL+(startW-nw);if(keepAR)nh=nw/ar}
+        else if(dir==='mr'){nw=Math.max(80,startW+dx);if(keepAR)nh=nw/ar}
+        
         fr.style.width=nw+'px';
         fr.style.height=nh+'px';
+        fr.style.left=nl+'px';
+        fr.style.top=nt+'px';
       }
       function offResize(){
         document.removeEventListener('mousemove',onResize);
         document.removeEventListener('mouseup',offResize);
+        pushHistory();
       }
       document.addEventListener('mousemove',onResize);
       document.addEventListener('mouseup',offResize);
@@ -66,22 +90,167 @@ function initDrag(){
   });
 }
 
+// ==================== FRAME SNAP GUIDES ====================
+const FRAME_SNAP_THRESHOLD=6;
+
+function _initFrameSnapGuides(){
+  const ms=$('ms');
+  if(!ms.querySelector('.frame-snap-guide.fh')){
+    const gh=document.createElement('div');gh.className='frame-snap-guide fh';gh.style.opacity='0';ms.appendChild(gh);
+    const gv=document.createElement('div');gv.className='frame-snap-guide fv';gv.style.opacity='0';ms.appendChild(gv);
+  }
+}
+
 function onDrag(e){
+  if(!dragTarget)return;
+  _rafDrag(e);
+}
+
+const _rafDrag=rafThrottle(function(e){
   if(!dragTarget)return;
   const msRect=$('ms').getBoundingClientRect();
   const scale=S.zoom;
-  const x=(e.clientX-msRect.left)/scale-dragOff.x/scale;
-  const y=(e.clientY-msRect.top)/scale-dragOff.y/scale;
-  dragTarget.style.left=Math.max(0,x)+'px';
-  dragTarget.style.top=Math.max(0,y)+'px';
+  let x=(e.clientX-msRect.left)/scale-dragOff.x/scale;
+  let y=(e.clientY-msRect.top)/scale-dragOff.y/scale;
+  
+  // Snap to canvas center
+  const ms=$('ms');
+  const msW=960,msH=600;
+  const fw=dragTarget.offsetWidth,fh=dragTarget.offsetHeight;
+  const cx=x+fw/2,cy=y+fh/2;
+  
+  const gh=ms.querySelector('.frame-snap-guide.fh');
+  const gv=ms.querySelector('.frame-snap-guide.fv');
+  
+  if(Math.abs(cx-msW/2)<FRAME_SNAP_THRESHOLD){
+    x=msW/2-fw/2;
+    if(gv){gv.style.left='50%';gv.style.opacity='1'}
+  }else{if(gv)gv.style.opacity='0'}
+  
+  if(Math.abs(cy-msH/2)<FRAME_SNAP_THRESHOLD){
+    y=msH/2-fh/2;
+    if(gh){gh.style.top='50%';gh.style.opacity='1'}
+  }else{if(gh)gh.style.opacity='0'}
+  
+  // Clamp to canvas bounds
+  x=Math.max(0,Math.min(x,msW-fw));
+  y=Math.max(0,Math.min(y,msH-fh));
+  
+  dragTarget.style.left=x+'px';
+  dragTarget.style.top=y+'px';
   dragTarget.style.right='auto';
   dragTarget.style.bottom='auto';
   dragTarget.style.transform='none';
-}
+});
 
 function offDrag(){
   if(dragTarget)dragTarget.classList.remove('dragging');
   dragTarget=null;
   document.removeEventListener('mousemove',onDrag);
   document.removeEventListener('mouseup',offDrag);
+  
+  // Hide snap guides
+  const ms=$('ms');
+  const gh=ms.querySelector('.frame-snap-guide.fh');
+  const gv=ms.querySelector('.frame-snap-guide.fv');
+  if(gh)gh.style.opacity='0';
+  if(gv)gv.style.opacity='0';
+  
+  pushHistory();
+}
+
+// ==================== CANVAS TOOLBAR ====================
+let _selectedFrame=null;
+const _frameTypeMap={bf:'desktop',pf:'mobile',tf:'tablet'};
+const _frameLabelMap={bf:'Desktop',pf:'Mobile',tf:'Tablet'};
+
+function initCanvasToolbar(){
+  const frames=['bf','pf','tf'];
+  frames.forEach(fId=>{
+    const fr=$(fId);
+    if(!fr)return;
+    fr.addEventListener('click',e=>{
+      // Don't select on resize handle clicks
+      if(e.target.classList.contains('resize-h'))return;
+      selectFrame(fId);
+    });
+  });
+  // Click on stage (but not on a frame) deselects
+  $('ms').addEventListener('click',e=>{
+    if(e.target.id==='ms'||e.target.classList.contains('ms-bg-img')||e.target.classList.contains('ms-bg-overlay'))deselectFrame();
+  });
+}
+
+function selectFrame(fId){
+  _selectedFrame=fId;
+  // Highlight selected frame
+  ['bf','pf','tf'].forEach(id=>{
+    const el=$(id);if(el)el.style.outline=id===fId?'2px solid var(--accent)':'';
+  });
+  _showCanvasToolbar(fId);
+}
+
+function deselectFrame(){
+  _selectedFrame=null;
+  ['bf','pf','tf'].forEach(id=>{
+    const el=$(id);if(el)el.style.outline='';
+  });
+  _hideCanvasToolbar();
+}
+
+function _showCanvasToolbar(fId){
+  const tb=$('canvasToolbar');
+  const fr=$(fId);
+  if(!tb||!fr)return;
+  
+  // Set label
+  $('ctLabel').textContent=_frameLabelMap[fId]||'Frame';
+  
+  // Highlight active fit mode
+  const type=_frameTypeMap[fId];
+  const fit=S.imgFit[type]||'cover';
+  ['ctCover','ctContain','ctFill'].forEach(id=>{
+    const btn=$(id);if(btn)btn.classList.remove('active');
+  });
+  const fitBtnMap={cover:'ctCover',contain:'ctContain',fill:'ctFill'};
+  if(fitBtnMap[fit])$(fitBtnMap[fit]).classList.add('active');
+  
+  // Position below frame
+  const top=fr.offsetTop+fr.offsetHeight+8;
+  const left=fr.offsetLeft+fr.offsetWidth/2;
+  tb.style.top=top+'px';
+  tb.style.left=left+'px';
+  tb.classList.add('visible');
+}
+
+function _hideCanvasToolbar(){
+  const tb=$('canvasToolbar');
+  if(tb)tb.classList.remove('visible');
+}
+
+// Toolbar action helpers
+function ctFit(mode){
+  if(!_selectedFrame)return;
+  setImgFit(_frameTypeMap[_selectedFrame],mode);
+  _showCanvasToolbar(_selectedFrame);
+}
+function ctFlipH(){
+  if(!_selectedFrame)return;
+  flipImg(_frameTypeMap[_selectedFrame],'h');
+}
+function ctFlipV(){
+  if(!_selectedFrame)return;
+  flipImg(_frameTypeMap[_selectedFrame],'v');
+}
+function ctAutoFit(){
+  if(!_selectedFrame)return;
+  autoFitImg(_frameTypeMap[_selectedFrame]);
+}
+function ctResetPos(){
+  if(!_selectedFrame)return;
+  resetImgControls(_frameTypeMap[_selectedFrame]);
+  if(!S.freeMode)return;
+  // Reset position in free mode
+  applyLayout();
+  pushHistory();
 }

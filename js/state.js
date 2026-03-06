@@ -9,9 +9,71 @@ const S={
   imgScale:{desktop:100,mobile:100,tablet:100},
   imgOff:{desktop:{x:0,y:0},mobile:{x:0,y:0},tablet:{x:0,y:0}},
   imgRad:{desktop:0,mobile:0,tablet:0},
+  imgRotation:{desktop:0,mobile:0,tablet:0},
+  imgOpacity:{desktop:100,mobile:100,tablet:100},
+  imgFlip:{desktop:{h:false,v:false},mobile:{h:false,v:false},tablet:{h:false,v:false}},
+  imgFilters:{desktop:{brightness:100,contrast:100,saturation:100,blur:0},mobile:{brightness:100,contrast:100,saturation:100,blur:0},tablet:{brightness:100,contrast:100,saturation:100,blur:0}},
   texts:[],selTxt:null,
-  presets:JSON.parse(localStorage.getItem('mp_presets')||'[]')
+  presets:JSON.parse(localStorage.getItem('mp_presets')||'[]'),
+  // Artboard system
+  artboards:[],
+  activeArtboard:0,
+  _abCounter:1
 };
+
+// ==================== UNDO/REDO ====================
+const _history=[];
+let _histIdx=-1;
+const _maxHistory=40;
+
+function _snapshotState(){
+  return JSON.stringify({
+    layout:S.layout,bg:S.bg,bgCustom:S.bgCustom,theme:S.theme,
+    frameColor:S.frameColor,round:S.round,shadow:S.shadow,
+    phoneScale:S.phoneScale,pad:S.pad,bgBlur:S.bgBlur,
+    showNav:S.showNav,showIsland:S.showIsland,showRefl:S.showRefl,showWm:S.showWm,showBgOv:S.showBgOv,
+    imgFit:{...S.imgFit},imgScale:{...S.imgScale},
+    imgOff:{desktop:{...S.imgOff.desktop},mobile:{...S.imgOff.mobile},tablet:{...S.imgOff.tablet}},
+    imgRad:{...S.imgRad}
+  });
+}
+
+function pushHistory(){
+  const snap=_snapshotState();
+  if(_histIdx>=0&&_history[_histIdx]===snap)return;
+  _history.splice(_histIdx+1);
+  _history.push(snap);
+  if(_history.length>_maxHistory)_history.shift();
+  _histIdx=_history.length-1;
+}
+
+function undo(){
+  if(_histIdx<=0)return;
+  _histIdx--;
+  _restoreState(JSON.parse(_history[_histIdx]));
+  toast('↩ Undo');
+}
+
+function redo(){
+  if(_histIdx>=_history.length-1)return;
+  _histIdx++;
+  _restoreState(JSON.parse(_history[_histIdx]));
+  toast('↪ Redo');
+}
+
+function _restoreState(snap){
+  Object.assign(S,snap);
+  // Re-apply visuals
+  setLayout(S.layout);
+  if(S.bgCustom)setBgCustom(S.bgCustom);else setBg(S.bg);
+  setTheme(S.theme);
+  setFrmCol(S.frameColor);
+  $('rngR').value=S.round;setRnd(S.round);
+  $('rngS').value=S.shadow;setShd(S.shadow);
+  $('rngP').value=S.phoneScale;setPSc(S.phoneScale);
+  $('rngPd').value=S.pad;setPad(S.pad);
+  $('rngBl').value=S.bgBlur;setBgBlur(S.bgBlur);
+}
 
 // ==================== BACKGROUNDS ====================
 const BGS={

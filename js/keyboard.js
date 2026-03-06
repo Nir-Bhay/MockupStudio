@@ -7,7 +7,9 @@ document.addEventListener('keydown',e=>{
     if(e.key==='0'){e.preventDefault();zFit()}
     if(e.key==='s'){e.preventDefault();doExport()}
     if(e.key==='c'){e.preventDefault();doCopy()}
-    if(e.key==='z'){e.preventDefault();doReset()}
+    if(e.key==='z'&&!e.shiftKey){e.preventDefault();undo()}
+    if(e.key==='z'&&e.shiftKey){e.preventDefault();redo()}
+    if(e.key==='y'){e.preventDefault();redo()}
   }
   if(e.key==='Delete'||e.key==='Backspace'){if(S.selTxt)deleteTxt()}
   if(e.key==='Escape'){

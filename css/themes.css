@@ -1,83 +1,435 @@
 /* ==================== GLASS THEME ==================== */
-.ms.th-glass .bf{background:rgba(255,255,255,.1)!important;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12)}
-.ms.th-glass .b-bar{background:rgba(255,255,255,.06)!important}
-.ms.th-glass .b-bar::after{background:rgba(255,255,255,.05)!important}
-.ms.th-glass .b-nav{background:rgba(255,255,255,.04)!important}
-.ms.th-glass .addr{background:rgba(255,255,255,.06)!important}
-.ms.th-glass .b-ctrl span,.ms.th-glass .addr span,.ms.th-glass .b-nav span{color:rgba(255,255,255,.35)!important}
-.ms.th-glass .pf,.ms.th-glass .tf{background:rgba(255,255,255,.08)!important;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1)}
-.ms.th-glass .dot-r,.ms.th-glass .dot-y,.ms.th-glass .dot-g{opacity:.6}
+.ms.th-glass .bf {
+    background: rgba(255, 255, 255, .1) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, .12)
+}
+
+.ms.th-glass .b-bar {
+    background: rgba(255, 255, 255, .06) !important
+}
+
+.ms.th-glass .b-bar::after {
+    background: rgba(255, 255, 255, .05) !important
+}
+
+.ms.th-glass .b-nav {
+    background: rgba(255, 255, 255, .04) !important
+}
+
+.ms.th-glass .addr {
+    background: rgba(255, 255, 255, .06) !important
+}
+
+.ms.th-glass .b-ctrl span,
+.ms.th-glass .addr span,
+.ms.th-glass .b-nav span {
+    color: rgba(255, 255, 255, .35) !important
+}
+
+.ms.th-glass .pf,
+.ms.th-glass .tf {
+    background: rgba(255, 255, 255, .08) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, .1)
+}
+
+.ms.th-glass .dot-r,
+.ms.th-glass .dot-y,
+.ms.th-glass .dot-g {
+    opacity: .6
+}
 
 /* ==================== DARK THEME ==================== */
-.ms.th-dark .bf{background:#1a1a1e!important}
-.ms.th-dark .b-bar{background:#222!important}.ms.th-dark .b-nav{background:#1e1e22!important}
-.ms.th-dark .b-bar::after{background:rgba(255,255,255,.05)!important}
-.ms.th-dark .addr{background:rgba(255,255,255,.05)!important}
-.ms.th-dark .b-ctrl span,.ms.th-dark .addr span,.ms.th-dark .b-nav span{color:#555!important}
-.ms.th-dark .pf,.ms.th-dark .tf{background:#1a1a1e!important}
-.ms.th-dark .b-body,.ms.th-dark .p-scr,.ms.th-dark .t-scr{background:#262628!important}
-.ms.th-dark .ph-n,.ms.th-dark .ph-t,.ms.th-dark .ph-s{color:rgba(255,255,255,.08)!important}
+.ms.th-dark .bf {
+    background: #1a1a1e !important
+}
+
+.ms.th-dark .b-bar {
+    background: #222 !important
+}
+
+.ms.th-dark .b-nav {
+    background: #1e1e22 !important
+}
+
+.ms.th-dark .b-bar::after {
+    background: rgba(255, 255, 255, .05) !important
+}
+
+.ms.th-dark .addr {
+    background: rgba(255, 255, 255, .05) !important
+}
+
+.ms.th-dark .b-ctrl span,
+.ms.th-dark .addr span,
+.ms.th-dark .b-nav span {
+    color: #555 !important
+}
+
+.ms.th-dark .pf,
+.ms.th-dark .tf {
+    background: #1a1a1e !important
+}
+
+.ms.th-dark .b-body,
+.ms.th-dark .p-scr,
+.ms.th-dark .t-scr {
+    background: #262628 !important
+}
+
+.ms.th-dark .ph-n,
+.ms.th-dark .ph-t,
+.ms.th-dark .ph-s {
+    color: rgba(255, 255, 255, .08) !important
+}
 
 /* ==================== MINIMAL THEME ==================== */
-.ms.th-minimal .bf{box-shadow:0 1px 4px rgba(0,0,0,.05)!important;border:1px solid rgba(0,0,0,.06)}
-.ms.th-minimal .pf,.ms.th-minimal .tf{box-shadow:0 1px 4px rgba(0,0,0,.05)!important;border:1px solid rgba(0,0,0,.06)}
+.ms.th-minimal .bf {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .05) !important;
+    border: 1px solid rgba(0, 0, 0, .06)
+}
+
+.ms.th-minimal .pf,
+.ms.th-minimal .tf {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .05) !important;
+    border: 1px solid rgba(0, 0, 0, .06)
+}
 
 /* ==================== NEO/NEON THEME ==================== */
-.ms.th-neo .bf{border:2px solid rgba(201,149,107,.25)!important;box-shadow:0 0 30px rgba(201,149,107,.08),0 20px 50px rgba(0,0,0,.12)!important}
-.ms.th-neo .pf,.ms.th-neo .tf{border:2px solid rgba(201,149,107,.25)!important;box-shadow:0 0 25px rgba(201,149,107,.08),0 15px 40px rgba(0,0,0,.15)!important}
+.ms.th-neo .bf {
+    border: 2px solid rgba(201, 149, 107, .25) !important;
+    box-shadow: 0 0 30px rgba(201, 149, 107, .08), 0 20px 50px rgba(0, 0, 0, .12) !important
+}
+
+.ms.th-neo .pf,
+.ms.th-neo .tf {
+    border: 2px solid rgba(201, 149, 107, .25) !important;
+    box-shadow: 0 0 25px rgba(201, 149, 107, .08), 0 15px 40px rgba(0, 0, 0, .15) !important
+}
 
 /* ==================== BENTO THEME ==================== */
-.ms.th-bento .bf{border-radius:16px!important}
-.ms.th-bento .pf{border-radius:28px!important}
-.ms.th-bento .tf{border-radius:18px!important}
-.ms.th-bento .bf,.ms.th-bento .pf,.ms.th-bento .tf{box-shadow:0 2px 8px rgba(0,0,0,.06)!important;border:1px solid rgba(0,0,0,.04)}
+.ms.th-bento .bf {
+    border-radius: 16px !important
+}
+
+.ms.th-bento .pf {
+    border-radius: 28px !important
+}
+
+.ms.th-bento .tf {
+    border-radius: 18px !important
+}
+
+.ms.th-bento .bf,
+.ms.th-bento .pf,
+.ms.th-bento .tf {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .06) !important;
+    border: 1px solid rgba(0, 0, 0, .04)
+}
 
 /* ==================== REFLECTION EFFECT ==================== */
-.ms.reflection::after{content:'';position:absolute;bottom:0;left:0;right:0;height:20%;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.02));pointer-events:none;z-index:40}
+.ms.reflection::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, .02));
+    pointer-events: none;
+    z-index: 40
+}
 
 /* ==================== NEUMORPHISM THEME ==================== */
-.ms.th-neumorphism .bf{background:#e0e5ec!important;box-shadow:8px 8px 16px #b8bec7,-8px -8px 16px #fff!important;border:none!important}
-.ms.th-neumorphism .b-bar{background:#e0e5ec!important}.ms.th-neumorphism .b-nav{background:#d8dde4!important}
-.ms.th-neumorphism .b-bar::after{background:rgba(0,0,0,.03)!important}
-.ms.th-neumorphism .addr{background:rgba(0,0,0,.04)!important;box-shadow:inset 2px 2px 4px #b8bec7,inset -2px -2px 4px #fff}
-.ms.th-neumorphism .pf,.ms.th-neumorphism .tf{background:#e0e5ec!important;box-shadow:6px 6px 12px #b8bec7,-6px -6px 12px #fff!important;border:none!important}
+.ms.th-neumorphism .bf {
+    background: #e0e5ec !important;
+    box-shadow: 8px 8px 16px #b8bec7, -8px -8px 16px #fff !important;
+    border: none !important
+}
+
+.ms.th-neumorphism .b-bar {
+    background: #e0e5ec !important
+}
+
+.ms.th-neumorphism .b-nav {
+    background: #d8dde4 !important
+}
+
+.ms.th-neumorphism .b-bar::after {
+    background: rgba(0, 0, 0, .03) !important
+}
+
+.ms.th-neumorphism .addr {
+    background: rgba(0, 0, 0, .04) !important;
+    box-shadow: inset 2px 2px 4px #b8bec7, inset -2px -2px 4px #fff
+}
+
+.ms.th-neumorphism .pf,
+.ms.th-neumorphism .tf {
+    background: #e0e5ec !important;
+    box-shadow: 6px 6px 12px #b8bec7, -6px -6px 12px #fff !important;
+    border: none !important
+}
 
 /* ==================== BRUTALIST THEME ==================== */
-.ms.th-brutalist .bf{border:3px solid #000!important;border-radius:0!important;box-shadow:6px 6px 0 #000!important}
-.ms.th-brutalist .b-bar{background:#fff!important;border-bottom:2px solid #000!important}
-.ms.th-brutalist .b-nav{background:#f5f5f0!important;border-bottom:2px solid #000!important}
-.ms.th-brutalist .pf,.ms.th-brutalist .tf{border:3px solid #000!important;border-radius:0!important;box-shadow:4px 4px 0 #000!important}
-.ms.th-brutalist .dot-r,.ms.th-brutalist .dot-y,.ms.th-brutalist .dot-g{border-radius:0!important;border:1px solid #000!important}
+.ms.th-brutalist .bf {
+    border: 3px solid #000 !important;
+    border-radius: 0 !important;
+    box-shadow: 6px 6px 0 #000 !important
+}
+
+.ms.th-brutalist .b-bar {
+    background: #fff !important;
+    border-bottom: 2px solid #000 !important
+}
+
+.ms.th-brutalist .b-nav {
+    background: #f5f5f0 !important;
+    border-bottom: 2px solid #000 !important
+}
+
+.ms.th-brutalist .pf,
+.ms.th-brutalist .tf {
+    border: 3px solid #000 !important;
+    border-radius: 0 !important;
+    box-shadow: 4px 4px 0 #000 !important
+}
+
+.ms.th-brutalist .dot-r,
+.ms.th-brutalist .dot-y,
+.ms.th-brutalist .dot-g {
+    border-radius: 0 !important;
+    border: 1px solid #000 !important
+}
 
 /* ==================== RETRO THEME ==================== */
-.ms.th-retro .bf{background:#f4e9d9!important;border:2px solid #b8956a!important;border-radius:8px!important;box-shadow:0 4px 0 #b8956a!important}
-.ms.th-retro .b-bar{background:#e8d5c0!important;border-bottom:1px solid rgba(184,149,106,.3)!important}
-.ms.th-retro .pf,.ms.th-retro .tf{background:#f4e9d9!important;border:2px solid #b8956a!important;box-shadow:0 3px 0 #b8956a!important}
+.ms.th-retro .bf {
+    background: #f4e9d9 !important;
+    border: 2px solid #b8956a !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 0 #b8956a !important
+}
+
+.ms.th-retro .b-bar {
+    background: #e8d5c0 !important;
+    border-bottom: 1px solid rgba(184, 149, 106, .3) !important
+}
+
+.ms.th-retro .pf,
+.ms.th-retro .tf {
+    background: #f4e9d9 !important;
+    border: 2px solid #b8956a !important;
+    box-shadow: 0 3px 0 #b8956a !important
+}
 
 /* ==================== PASTEL THEME ==================== */
-.ms.th-pastel .bf{background:rgba(255,255,255,.9)!important;border:1.5px solid rgba(180,160,220,.25)!important;box-shadow:0 8px 32px rgba(180,160,220,.12)!important}
-.ms.th-pastel .b-bar{background:rgba(240,230,246,.6)!important}
-.ms.th-pastel .pf,.ms.th-pastel .tf{background:rgba(255,255,255,.9)!important;border:1.5px solid rgba(180,160,220,.25)!important;box-shadow:0 6px 24px rgba(180,160,220,.1)!important}
+.ms.th-pastel .bf {
+    background: rgba(255, 255, 255, .9) !important;
+    border: 1.5px solid rgba(180, 160, 220, .25) !important;
+    box-shadow: 0 8px 32px rgba(180, 160, 220, .12) !important
+}
+
+.ms.th-pastel .b-bar {
+    background: rgba(240, 230, 246, .6) !important
+}
+
+.ms.th-pastel .pf,
+.ms.th-pastel .tf {
+    background: rgba(255, 255, 255, .9) !important;
+    border: 1.5px solid rgba(180, 160, 220, .25) !important;
+    box-shadow: 0 6px 24px rgba(180, 160, 220, .1) !important
+}
 
 /* ==================== CYBERPUNK THEME ==================== */
-.ms.th-cyberpunk .bf{background:#0d0221!important;border:1px solid rgba(0,255,255,.3)!important;box-shadow:0 0 20px rgba(0,255,255,.1),0 0 40px rgba(255,0,128,.05)!important}
-.ms.th-cyberpunk .b-bar{background:rgba(0,255,255,.06)!important;border-bottom:1px solid rgba(0,255,255,.15)!important}
-.ms.th-cyberpunk .b-ctrl span,.ms.th-cyberpunk .addr span,.ms.th-cyberpunk .b-nav span{color:rgba(0,255,255,.4)!important}
-.ms.th-cyberpunk .pf,.ms.th-cyberpunk .tf{background:#0d0221!important;border:1px solid rgba(255,0,128,.3)!important;box-shadow:0 0 15px rgba(255,0,128,.1)!important}
-.ms.th-cyberpunk .dot-r{background:#ff0080!important}.ms.th-cyberpunk .dot-y{background:#00ffc8!important}.ms.th-cyberpunk .dot-g{background:#00d4ff!important}
+.ms.th-cyberpunk .bf {
+    background: #0d0221 !important;
+    border: 1px solid rgba(0, 255, 255, .3) !important;
+    box-shadow: 0 0 20px rgba(0, 255, 255, .1), 0 0 40px rgba(255, 0, 128, .05) !important
+}
+
+.ms.th-cyberpunk .b-bar {
+    background: rgba(0, 255, 255, .06) !important;
+    border-bottom: 1px solid rgba(0, 255, 255, .15) !important
+}
+
+.ms.th-cyberpunk .b-ctrl span,
+.ms.th-cyberpunk .addr span,
+.ms.th-cyberpunk .b-nav span {
+    color: rgba(0, 255, 255, .4) !important
+}
+
+.ms.th-cyberpunk .pf,
+.ms.th-cyberpunk .tf {
+    background: #0d0221 !important;
+    border: 1px solid rgba(255, 0, 128, .3) !important;
+    box-shadow: 0 0 15px rgba(255, 0, 128, .1) !important
+}
+
+.ms.th-cyberpunk .dot-r {
+    background: #ff0080 !important
+}
+
+.ms.th-cyberpunk .dot-y {
+    background: #00ffc8 !important
+}
+
+.ms.th-cyberpunk .dot-g {
+    background: #00d4ff !important
+}
 
 /* ==================== FROSTED THEME ==================== */
-.ms.th-frosted .bf{background:rgba(255,255,255,.5)!important;backdrop-filter:blur(30px) saturate(180%);border:1px solid rgba(255,255,255,.6)!important;box-shadow:0 8px 32px rgba(0,0,0,.06)!important}
-.ms.th-frosted .b-bar{background:rgba(255,255,255,.4)!important}
-.ms.th-frosted .pf,.ms.th-frosted .tf{background:rgba(255,255,255,.45)!important;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.5)!important}
+.ms.th-frosted .bf {
+    background: rgba(255, 255, 255, .5) !important;
+    backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, .6) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .06) !important
+}
+
+.ms.th-frosted .b-bar {
+    background: rgba(255, 255, 255, .4) !important
+}
+
+.ms.th-frosted .pf,
+.ms.th-frosted .tf {
+    background: rgba(255, 255, 255, .45) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, .5) !important
+}
 
 /* ==================== OUTLINE THEME ==================== */
-.ms.th-outline .bf{background:transparent!important;border:2px solid rgba(0,0,0,.1)!important;box-shadow:none!important}
-.ms.th-outline .b-bar{background:transparent!important;border-bottom:1px solid rgba(0,0,0,.06)!important}
-.ms.th-outline .pf,.ms.th-outline .tf{background:transparent!important;border:2px solid rgba(0,0,0,.1)!important;box-shadow:none!important}
+.ms.th-outline .bf {
+    background: transparent !important;
+    border: 2px solid rgba(0, 0, 0, .1) !important;
+    box-shadow: none !important
+}
+
+.ms.th-outline .b-bar {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(0, 0, 0, .06) !important
+}
+
+.ms.th-outline .pf,
+.ms.th-outline .tf {
+    background: transparent !important;
+    border: 2px solid rgba(0, 0, 0, .1) !important;
+    box-shadow: none !important
+}
 
 /* ==================== GRADIENT THEME ==================== */
-.ms.th-gradient .bf{background:linear-gradient(135deg,#667eea,#764ba2)!important;border:none!important;box-shadow:0 20px 60px rgba(102,126,234,.2)!important}
-.ms.th-gradient .b-bar{background:rgba(255,255,255,.1)!important}
-.ms.th-gradient .b-ctrl span,.ms.th-gradient .addr span,.ms.th-gradient .b-nav span{color:rgba(255,255,255,.4)!important}
-.ms.th-gradient .pf,.ms.th-gradient .tf{background:linear-gradient(135deg,#764ba2,#667eea)!important;border:none!important;box-shadow:0 15px 40px rgba(118,75,162,.2)!important}
+.ms.th-gradient .bf {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: none !important;
+    box-shadow: 0 20px 60px rgba(102, 126, 234, .2) !important
+}
+
+.ms.th-gradient .b-bar {
+    background: rgba(255, 255, 255, .1) !important
+}
+
+.ms.th-gradient .b-ctrl span,
+.ms.th-gradient .addr span,
+.ms.th-gradient .b-nav span {
+    color: rgba(255, 255, 255, .4) !important
+}
+
+.ms.th-gradient .pf,
+.ms.th-gradient .tf {
+    background: linear-gradient(135deg, #764ba2, #667eea) !important;
+    border: none !important;
+    box-shadow: 0 15px 40px rgba(118, 75, 162, .2) !important
+}
+
+/* ==================== CLAY THEME ==================== */
+.ms.th-clay .bf {
+    background: #f4f0ea !important;
+    border: none !important;
+    border-radius: 24px !important;
+    box-shadow: 8px 16px 32px rgba(200, 190, 180, .4), inset -4px -4px 12px rgba(0, 0, 0, .05), inset 4px 4px 12px rgba(255, 255, 255, .8) !important
+}
+
+.ms.th-clay .b-bar {
+    background: #eee9e0 !important;
+    border-bottom: none !important
+}
+
+.ms.th-clay .pf {
+    background: #f4f0ea !important;
+    border: none !important;
+    border-radius: 36px !important;
+    box-shadow: 6px 12px 24px rgba(200, 190, 180, .4), inset -3px -3px 10px rgba(0, 0, 0, .04), inset 3px 3px 10px rgba(255, 255, 255, .9) !important
+}
+
+.ms.th-clay .tf {
+    background: #f4f0ea !important;
+    border: none !important;
+    border-radius: 24px !important;
+    box-shadow: 6px 12px 24px rgba(200, 190, 180, .4), inset -3px -3px 10px rgba(0, 0, 0, .04), inset 3px 3px 10px rgba(255, 255, 255, .9) !important
+}
+
+/* ==================== EDITORIAL THEME ==================== */
+.ms.th-editorial .bf {
+    background: #fcfcfc !important;
+    border: 1px solid #111 !important;
+    border-radius: 0 !important;
+    box-shadow: 12px 12px 0 rgba(0, 0, 0, .05) !important
+}
+
+.ms.th-editorial .b-bar {
+    background: #fcfcfc !important;
+    border-bottom: 1px solid #111 !important
+}
+
+.ms.th-editorial .addr {
+    background: #fff !important;
+    border: 1px solid #111 !important;
+    border-radius: 0 !important;
+    font-family: 'Playfair Display', serif !important
+}
+
+.ms.th-editorial .pf,
+.ms.th-editorial .tf {
+    background: #fcfcfc !important;
+    border: 1px solid #111 !important;
+    border-radius: 0 !important;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, .05) !important
+}
+
+/* ==================== WIREFRAME THEME ==================== */
+.ms.th-wireframe .bf {
+    background: #fff !important;
+    border: 2px solid #2563eb !important;
+    border-radius: 4px !important;
+    box-shadow: none !important
+}
+
+.ms.th-wireframe .b-bar {
+    background: #fff !important;
+    border-bottom: 2px solid #2563eb !important
+}
+
+.ms.th-wireframe .addr {
+    background: #eff6ff !important;
+    border: 1px dashed #2563eb !important;
+    color: #1d4ed8 !important
+}
+
+.ms.th-wireframe .b-nav {
+    background: #fff !important;
+    border-bottom: 2px solid #2563eb !important
+}
+
+.ms.th-wireframe .pf,
+.ms.th-wireframe .tf {
+    background: #fff !important;
+    border: 2px solid #2563eb !important;
+    border-radius: 12px !important;
+    box-shadow: none !important
+}
+
+.ms.th-wireframe .dot-r,
+.ms.th-wireframe .dot-y,
+.ms.th-wireframe .dot-g {
+    background: transparent !important;
+    border: 1.5px solid #2563eb !important
+}

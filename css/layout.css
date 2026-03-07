@@ -114,6 +114,19 @@
     color: var(--accent)
 }
 
+.rail-spacer {
+    flex: 1
+}
+
+#panelToggleBtn .ri-ico svg {
+    transition: transform var(--duration-normal) var(--ease-out)
+}
+
+.sb-panel.collapsed~.icon-rail #panelToggleBtn .ri-ico svg,
+.sb.left .sb-panel.collapsed+.icon-rail #panelToggleBtn .ri-ico svg {
+    transform: rotate(180deg)
+}
+
 /* ==================== CONTENT PANEL ==================== */
 .sb-panel {
     width: 220px;

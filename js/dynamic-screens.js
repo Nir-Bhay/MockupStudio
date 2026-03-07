@@ -172,6 +172,7 @@ function _initDynamicDrag(frameId) {
                 const dy = (ev.clientY - startY) / zoom;
                 let nw = startW, nh = startH, nl = startL, nt = startT;
                 const keepAR = !ev.shiftKey;
+                const symmetric = ev.altKey || S.patternResize;
 
                 if (dir === 'br') { nw = Math.max(MIN_W, startW + dx); nh = keepAR ? nw / ar : Math.max(MIN_H, startH + dy) }
                 else if (dir === 'bl') { nw = Math.max(MIN_W, startW - dx); nl = startL + (startW - nw); nh = keepAR ? nw / ar : Math.max(MIN_H, startH + dy) }
@@ -181,6 +182,14 @@ function _initDynamicDrag(frameId) {
                 else if (dir === 'bm') { nh = Math.max(MIN_H, startH + dy); if (keepAR) nw = nh * ar }
                 else if (dir === 'ml') { nw = Math.max(MIN_W, startW - dx); nl = startL + (startW - nw); if (keepAR) nh = nw / ar }
                 else if (dir === 'mr') { nw = Math.max(MIN_W, startW + dx); if (keepAR) nh = nw / ar }
+
+                // Symmetric resize: keep center fixed
+                if (symmetric) {
+                    const cxOrig = startL + startW / 2;
+                    const cyOrig = startT + startH / 2;
+                    nl = cxOrig - nw / 2;
+                    nt = cyOrig - nh / 2;
+                }
 
                 fr.style.width = nw + 'px';
                 fr.style.height = nh + 'px';
@@ -340,7 +349,7 @@ function _updateDynList() {
 
 // Wrapper for removing individual dynamic frame
 function removeDynamicFrame(id) {
-    rmDynamicFrame(id);
+    deleteDynamicFrame(id);
     _updateDynList();
 }
 
@@ -382,20 +391,28 @@ function _applyProportionalResizeDyn(mainFrameId, newWidth, newHeight) {
         const frame = $(frameId);
         if (!frame) return;
 
-        const fw = frame.offsetWidth;
-        const fh = frame.offsetHeight;
-
         // Store initial size if not stored
         if (!frame.dataset.startW) {
-            frame.dataset.startW = fw;
-            frame.dataset.startH = fh;
+            frame.dataset.startW = frame.offsetWidth;
+            frame.dataset.startH = frame.offsetHeight;
+            frame.dataset.startL = frame.offsetLeft;
+            frame.dataset.startT = frame.offsetTop;
         }
 
         const initialW = parseFloat(frame.dataset.startW);
         const initialH = parseFloat(frame.dataset.startH);
+        const initialL = parseFloat(frame.dataset.startL);
+        const initialT = parseFloat(frame.dataset.startT);
+        const cx = initialL + initialW / 2;
+        const cy = initialT + initialH / 2;
 
-        // Apply proportional resize based on the main frame's ratio
-        frame.style.width = (initialW * widthRatio) + 'px';
-        frame.style.height = (initialH * heightRatio) + 'px';
+        const newW = initialW * widthRatio;
+        const newH = initialH * heightRatio;
+
+        // Symmetric: keep each frame's center fixed
+        frame.style.width = newW + 'px';
+        frame.style.height = newH + 'px';
+        frame.style.left = (cx - newW / 2) + 'px';
+        frame.style.top = (cy - newH / 2) + 'px';
     });
 }

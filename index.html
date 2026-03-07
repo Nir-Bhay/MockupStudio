@@ -94,6 +94,12 @@
             <line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2" />
           </svg></span><span class="ri-txt">Custom</span>
       </div>
+      <div class="rail-spacer"></div>
+      <div class="rail-icon" id="panelToggleBtn" onclick="togPanelCollapse()" title="Toggle panel">
+        <span class="ri-ico"><svg class="icon" viewBox="0 0 24 24">
+            <polyline points="15 18 9 12 15 6" />
+          </svg></span><span class="ri-txt">Hide</span>
+      </div>
     </div>
 
     <!-- Content Panel -->
@@ -143,6 +149,18 @@
               </div>
             </div>
           </div>
+          <div class="up-zone" id="upM2" onclick="$('fM2').click()">
+            <input type="file" id="fM2" accept="image/*"><button class="rm-btn"
+              onclick="event.stopPropagation();rmImg('mobile2')">✕</button>
+            <img class="up-prev" id="pvM2">
+            <div class="up-info">
+              <div class="up-icon">📱</div>
+              <div class="up-txt">
+                <div class="l1">Phone 2</div>
+                <div class="l2">Second phone frame</div>
+              </div>
+            </div>
+          </div>
           <div class="up-zone" id="upBg" onclick="$('fBg').click()">
             <input type="file" id="fBg" accept="image/*"><button class="rm-btn"
               onclick="event.stopPropagation();rmBgImg()">✕</button>
@@ -184,7 +202,8 @@
           </div>
           <!-- Gradients Tab -->
           <div class="bg-tab-body act" id="bgTabGradients">
-            <div class="bg-grid" id="bgGrid"></div>
+            <button class="btn-none" onclick="clearGradient()">✕ None</button>
+            <div id="bgCatGrid"></div>
             <div class="sec" style="margin-top:6px">
               <div class="sec-hdr" onclick="togSec(this)"><span>Customize</span><span class="sec-arrow">▾</span></div>
               <div class="sec-body">
@@ -213,17 +232,39 @@
           </div>
           <!-- Patterns Tab -->
           <div class="bg-tab-body" id="bgTabPatterns">
+            <button class="btn-none" onclick="clearPattern()">✕ None</button>
             <div class="pat-grid" id="patGrid"></div>
+            <div class="sec" style="margin-top:6px">
+              <div class="sec-hdr" onclick="togSec(this)"><span>Customize Pattern</span><span class="sec-arrow">▾</span></div>
+              <div class="sec-body">
+                <div class="inp-row">
+                  <div class="inp-g"><label>Color</label>
+                    <input type="color" id="patColor" value="#969696" oninput="setPatColor(this.value)">
+                  </div>
+                  <div class="inp-g"><label>Opacity <span class="rv" id="rvPatOp">15%</span></label>
+                    <input type="range" id="patOpacity" min="1" max="80" value="15" oninput="setPatOpacity(this.value)">
+                  </div>
+                </div>
+                <div class="inp-row">
+                  <div class="inp-g"><label>Scale <span class="rv" id="rvPatSc">100%</span></label>
+                    <input type="range" id="patScale" min="50" max="300" value="100" oninput="setPatScale(this.value)">
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- Solid Tab -->
           <div class="bg-tab-body" id="bgTabSolid">
+            <button class="btn-none" onclick="clearGradient()">✕ None</button>
             <div class="color-row">
               <input type="color" id="custBg" value="#c9956b" oninput="setBgCustom(this.value)">
               <label>Pick Color</label>
             </div>
+            <div class="solid-presets" id="solidPresets"></div>
           </div>
           <!-- Images Tab -->
           <div class="bg-tab-body" id="bgTabImages">
+            <button class="btn-none" onclick="clearBgImage()">✕ None</button>
             <div class="inp-row" style="margin-bottom:5px">
               <div class="inp-g"><label>Upload Image</label><input type="file" accept="image/*" id="bgImgUp"
                   onchange="handleBgImgUpload(event)" style="font-size:9px"></div>
@@ -493,6 +534,7 @@
         <div class="stage-cv" id="stageCv">
           <div class="ms" id="ms">
             <img class="ms-bg-img" id="msBgImg">
+            <div class="ms-pat-overlay" id="msPatOv"></div>
             <div class="ms-bg-overlay" id="msBgOv"></div>
 
             <div class="bf" id="bf">
@@ -893,6 +935,44 @@
               <button class="btn-d" onclick="resetImgControls('tablet')">↺</button>
             </div>
           </div>
+          <div class="img-ctrl">
+            <div class="img-ctrl-h">📱 Phone 2 Image</div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Fit Mode</span></div>
+              <select id="m2Fit" onchange="setImgFit('mobile2',this.value)">
+                <option value="cover">Cover</option>
+                <option value="contain">Contain</option>
+                <option value="fill">Stretch</option>
+                <option value="none">Original</option>
+              </select>
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Scale</span><span class="rv" id="rvM2S">100%</span></div>
+              <input type="range" min="50" max="200" value="100" oninput="setImgScale('mobile2',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset X</span><span class="rv" id="rvM2X">0</span></div>
+              <input type="range" min="-50" max="50" value="0" oninput="setImgOff('mobile2','x',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset Y</span><span class="rv" id="rvM2Y">0</span></div>
+              <input type="range" min="-50" max="50" value="0" oninput="setImgOff('mobile2','y',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Rotation</span><span class="rv" id="rvM2Rot">0°</span></div>
+              <input type="range" min="0" max="360" value="0" oninput="setImgRotation('mobile2',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Opacity</span><span class="rv" id="rvM2Op">100%</span></div>
+              <input type="range" min="0" max="100" value="100" oninput="setImgOpacity('mobile2',this.value)">
+            </div>
+            <div class="btn-row">
+              <button class="btn-s" onclick="flipImg('mobile2','h')">↔ Flip H</button>
+              <button class="btn-s" onclick="flipImg('mobile2','v')">↕ Flip V</button>
+              <button class="btn-s" onclick="autoFitImg('mobile2')">✦ Auto</button>
+              <button class="btn-d" onclick="resetImgControls('mobile2')">↺</button>
+            </div>
+          </div>
         </div>
 
         <!-- TEXT TAB -->
@@ -1157,7 +1237,6 @@
     <script src="js/brand-kit.js"></script>
     <script src="js/bezel-renderer.js"></script>
     <script src="js/keyboard.js"></script>
-    <script src="js/undo-redo.js"></script>
     <script src="js/dynamic-screens.js"></script>
     <script src="js/init.js"></script>
 </body>

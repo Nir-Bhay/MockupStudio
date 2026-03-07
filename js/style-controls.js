@@ -77,7 +77,7 @@ function applyShadow() {
 
 // ==================== TOGGLES ====================
 function togNav() { S.showNav = !S.showNav; $('tN').classList.toggle('on'); $('bNav').style.display = S.showNav ? 'flex' : 'none'; const h = S.showNav ? 48 : 28; $('bBody').style.height = 'calc(100% - ' + h + 'px)' }
-function togIsland() { S.showIsland = !S.showIsland; $('tI').classList.toggle('on'); $('pIsl').style.display = S.showIsland ? 'block' : 'none' }
+function togIsland() { S.showIsland = !S.showIsland; $('tI').classList.toggle('on'); $('pIsl').style.display = S.showIsland ? 'block' : 'none'; if ($('pIsl2')) $('pIsl2').style.display = S.showIsland ? 'block' : 'none' }
 function togRefl() { S.showRefl = !S.showRefl; $('tR').classList.toggle('on'); $('ms').classList.toggle('reflection') }
 function togWm() { S.showWm = !S.showWm; $('tW').classList.toggle('on'); $('wm').style.display = S.showWm ? 'block' : 'none' }
 function togBgOv() { S.showBgOv = !S.showBgOv; $('tOv').classList.toggle('on'); $('msBgOv').style.background = S.showBgOv ? 'rgba(0,0,0,.3)' : 'none' }

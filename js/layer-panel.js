@@ -4,7 +4,8 @@
 const _layers = {
   bf: { z: 10, locked: false, visible: true, name: 'Desktop' },
   pf: { z: 20, locked: false, visible: true, name: 'Phone' },
-  tf: { z: 15, locked: false, visible: true, name: 'Tablet' }
+  tf: { z: 15, locked: false, visible: true, name: 'Tablet' },
+  pf2: { z: 25, locked: false, visible: true, name: 'Phone 2' }
 };
 
 let _draggedLayerId = null;

@@ -2,7 +2,11 @@
 function doReset() {
   confirmAction('Are you sure you want to reset everything? All unsaved work will be lost.', () => {
     pushHistory();
-    rmImg('desktop'); rmImg('mobile'); rmImg('tablet'); rmBgImg();
+    rmImg('desktop'); rmImg('mobile'); rmImg('tablet'); rmImg('mobile2'); rmBgImg();
+    // Clear BG image layer
+    if (typeof clearBgImage === 'function') clearBgImage();
+    // Clear pattern overlay
+    if (typeof clearPattern === 'function') clearPattern();
     setLayout('hero'); setBg('sahara'); setTheme('default');
     $('frmCol').value = '#ffffff'; setFrmCol('#ffffff');
     $('rngR').value = 10; setRnd(10); $('rngS').value = 50; setShd(50);
@@ -13,6 +17,7 @@ function doReset() {
     if (S.noiseEnabled) togNoise(); if (S.vignetteEnabled) togVignette(); if (S.animBg) togAnimBg();
 
     // Remove all dynamic elements
+    _removeAllDynamicElements();
     _removeAllDynamic();
     S.shapes = []; S.selShape = null;
     S.badges = []; S.selBadge = null;
@@ -67,7 +72,7 @@ window.addEventListener('resize', _debouncedZFit);
 
 // ==================== CLICK STAGE TO DESELECT ALL ====================
 $('ms').addEventListener('click', e => {
-  if (e.target === $('ms') || e.target.classList.contains('ms-bg-overlay')) {
+  if (e.target === $('ms') || e.target.classList.contains('ms-bg-overlay') || e.target.classList.contains('ms-pat-overlay')) {
     S.selTxt = null;
     document.querySelectorAll('.txt-el').forEach(el => el.classList.remove('sel'));
     $('txtEditSec').style.display = 'none';

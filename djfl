@@ -1,0 +1,137 @@
+[33mcommit 63032b6815a067183b08989f9e02e347eaab6f31[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Nir-Bhay <nirbhayhiwse37@gmail.com>
+Date:   Sat Mar 7 00:46:16 2026 +0530
+
+     addd
+
+[33mcommit 5736630d4283f85adc6bcd18742a02ff9317e6ec[m
+Author: Nir-Bhay <nirbhayhiwse37@gmail.com>
+Date:   Sat Mar 7 00:02:49 2026 +0530
+
+    solve some bugs
+
+[33mcommit c6edc95a7fcc865a2a7a30822a6c1b367a7e7c88[m
+Author: Nirbhay <149897613+Nir-Bhay@users.noreply.github.com>
+Date:   Fri Mar 6 08:17:31 2026 +0000
+
+    Per-label visibility
+
+[33mcommit 1721d72ef839ef59c7e76a7981682261e296387b[m
+Author: Nirbhay <149897613+Nir-Bhay@users.noreply.github.com>
+Date:   Fri Mar 6 07:01:21 2026 +0000
+
+    phase
+
+[33mcommit a97dce315e434b16d884b85a7acfdecf4807430c[m
+Author: Nirbhay <149897613+Nir-Bhay@users.noreply.github.com>
+Date:   Fri Mar 6 05:04:46 2026 +0000
+
+    al
+
+[33mcommit 8bc988476ce869568ebe5c66baa7ab17dd7bc9e9[m
+Author: Nirbhay <149897613+Nir-Bhay@users.noreply.github.com>
+Date:   Thu Mar 5 18:47:53 2026 +0000
+
+    read utiliy
+
+[33mcommit 83885a065a64b9b98342deb8db83081c66b3dd75[m
+Author: Nirbhay <149897613+Nir-Bhay@users.noreply.github.com>
+Date:   Thu Mar 5 17:08:15 2026 +0000
+
+    e600e03cac1dad22c15c7eb2f94b6e3f573a6694
+
+[33mcommit 9232e95406c643429237a6632e0ba4335849f3fb[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 15:02:15 2026 +0000
+
+    feat: implement Batch Processing and Mobile Studio Responsive UI ✨
+
+[33mcommit 7cfeec2c5ba83c6e4d3d53b927af6fcdd0f37472[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 14:57:31 2026 +0000
+
+    docs: add Final Phase Execution Plan (V2.0 Phase 4) 🚀
+
+[33mcommit 22483f4b058d3f46e213577bd8685d250d564822[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 14:55:17 2026 +0000
+
+    feat: implement Phase 7 - Smart Background Color Detection ✨
+
+[33mcommit cc337597724740c744f85fe4254984e8276a24e8[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 14:53:29 2026 +0000
+
+    feat: implement Phase 6 - Device-Level Zoom and Corner Sync ✨
+
+[33mcommit 5c81109daf3e169a6b0a71f1466188b8c50f8cf0[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 14:44:55 2026 +0000
+
+    feat: implement V2 Layout Expansion and Interactive Image Control ✨
+
+[33mcommit 8bb6257cb2c59b993283d916e095df81eb29257b[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 14:41:24 2026 +0000
+
+    docs: add detailed V2 Phase 2 planning for layouts and image precision ✨
+
+[33mcommit 6b63f4eba7ea6ad2428787baf8611737dd1595cd[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 14:23:45 2026 +0000
+
+    docs: add comprehensive V2.0 layout and image control plan 🎨
+
+[33mcommit 1c3a57e88573bc8202deb6e6c14b0e43b20224a8[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 14:17:08 2026 +0000
+
+    feat: implement Phase 3 - 2.5D Isometric Perspective ✨
+
+[33mcommit de49fdceaeed8399b9afbd100ca7c18dc7071989[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 14:08:15 2026 +0000
+
+    feat: implement V2.0 Phase 2 - Glassmorphism, Dynamic Glow, and UI updates ✨
+
+[33mcommit 2a06119ac95815d18fcafc1b6424cf456b18eb81[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 14:04:38 2026 +0000
+
+    feat: implement V2.0 Adaptive Scaling, Proxy State, and Modern UI ✨
+
+[33mcommit dc7fc83853e67968ba7ac1f28ecabc60bcbc40d1[m[33m ([m[1;31morigin/production-v1[m[33m)[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 13:47:57 2026 +0000
+
+    docs: complete technical audit and V2.0 strategy report ✨
+
+[33mcommit 8b7ff1c988320836646b416f2cedd8dd01902424[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 13:44:39 2026 +0000
+
+    docs: add detailed feature roadmap and responsive strategy (V2.0 Planning) 🚀
+
+[33mcommit 32aad733279f70d973bd0bc85736a27bdebf7b45[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 13:37:15 2026 +0000
+
+    refactor: modularize Mockup Studio Pro (split into HTML/CSS/JS) ✨
+
+[33mcommit b5fbab2766bcd1fc58056142aaa1253c32f529a5[m
+Author: Nirbhay <149897613+Nir-Bhay@users.noreply.github.com>
+Date:   Thu Mar 5 16:04:55 2026 +0530
+
+    Update index.html
+
+[33mcommit e600e03cac1dad22c15c7eb2f94b6e3f573a6694[m
+Author: Nir-Bhay <nirbhay@example.com>
+Date:   Thu Mar 5 09:22:29 2026 +0000
+
+    docs: create professional README for Mockup Studio Pro ✨
+
+[33mcommit cca703b7d2e662caab5c84ed5269b4accb7b2bc3[m
+Author: Nirbhay <149897613+Nir-Bhay@users.noreply.github.com>
+Date:   Thu Mar 5 14:50:34 2026 +0530
+
+    Add files via upload

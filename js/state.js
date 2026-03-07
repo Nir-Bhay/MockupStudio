@@ -1,18 +1,18 @@
 // ==================== STATE ====================
 const S = {
   layout: 'hero', bg: 'sahara', bgCustom: null, bgImgUrl: null, theme: 'default',
-  desktopImg: null, mobileImg: null, tabletImg: null,
+  desktopImg: null, mobileImg: null, tabletImg: null, mobile2Img: null,
   frameColor: '#ffffff', round: 10, shadow: 50, phoneScale: 100, pad: 5, bgBlur: 0,
   showNav: true, showIsland: true, showRefl: false, showWm: true, showBgOv: false,
   freeMode: false, patternResize: false, zoom: 1,
-  imgFit: { desktop: 'cover', mobile: 'cover', tablet: 'cover' },
-  imgScale: { desktop: 100, mobile: 100, tablet: 100 },
-  imgOff: { desktop: { x: 0, y: 0 }, mobile: { x: 0, y: 0 }, tablet: { x: 0, y: 0 } },
-  imgRad: { desktop: 0, mobile: 0, tablet: 0 },
-  imgRotation: { desktop: 0, mobile: 0, tablet: 0 },
-  imgOpacity: { desktop: 100, mobile: 100, tablet: 100 },
-  imgFlip: { desktop: { h: false, v: false }, mobile: { h: false, v: false }, tablet: { h: false, v: false } },
-  imgFilters: { desktop: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, mobile: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, tablet: { brightness: 100, contrast: 100, saturation: 100, blur: 0 } },
+  imgFit: { desktop: 'cover', mobile: 'cover', tablet: 'cover', mobile2: 'cover' },
+  imgScale: { desktop: 100, mobile: 100, tablet: 100, mobile2: 100 },
+  imgOff: { desktop: { x: 0, y: 0 }, mobile: { x: 0, y: 0 }, tablet: { x: 0, y: 0 }, mobile2: { x: 0, y: 0 } },
+  imgRad: { desktop: 0, mobile: 0, tablet: 0, mobile2: 0 },
+  imgRotation: { desktop: 0, mobile: 0, tablet: 0, mobile2: 0 },
+  imgOpacity: { desktop: 100, mobile: 100, tablet: 100, mobile2: 100 },
+  imgFlip: { desktop: { h: false, v: false }, mobile: { h: false, v: false }, tablet: { h: false, v: false }, mobile2: { h: false, v: false } },
+  imgFilters: { desktop: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, mobile: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, tablet: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, mobile2: { brightness: 100, contrast: 100, saturation: 100, blur: 0 } },
   texts: [], selTxt: null,
   presets: JSON.parse(localStorage.getItem('mp_presets') || '[]'),
   // Artboard system
@@ -46,7 +46,9 @@ function _snapshotState() {
     vignetteEnabled: S.vignetteEnabled || false, vignetteIntensity: S.vignetteIntensity || 40,
     gradStops: _deepClone(S.gradStops || [{ pos: 0, color: '#c9956b' }, { pos: 100, color: '#1a1a1e' }]),
     gradType: S.gradType || 'linear', gradAngle: S.gradAngle || 145,
-    animBg: S.animBg || false, bgPattern: S.bgPattern || null
+    animBg: S.animBg || false, bgPattern: S.bgPattern || null,
+    bgImage: S.bgImage || null,
+    patColor: S.patColor || '#969696', patOpacity: S.patOpacity != null ? S.patOpacity : 15, patScale: S.patScale || 100
   });
 }
 
@@ -75,13 +77,16 @@ function redo() {
 
 function _restoreState(snap) {
   // Remove existing dynamic elements from canvas before restoring
+  _removeAllDynamicElements();
   if (typeof _removeAllDynamic === 'function') _removeAllDynamic();
 
   Object.assign(S, snap);
 
   // Re-apply visuals
   setLayout(S.layout);
-  if (S.bgCustom) setBgCustom(S.bgCustom); else if (S.bg) setBg(S.bg);
+  if (S.bgCustom) setBgCustom(S.bgCustom);
+  else if (S.bg && BGS[S.bg]) setBg(S.bg);
+  else $('ms').style.background = 'transparent';
   setTheme(S.theme);
   setFrmCol(S.frameColor);
   $('rngR').value = S.round; setRnd(S.round);
@@ -90,12 +95,38 @@ function _restoreState(snap) {
   $('rngPd').value = S.pad; setPad(S.pad);
   $('rngBl').value = S.bgBlur; setBgBlur(S.bgBlur);
 
+  // Restore background image layer
+  const bgImg = $('msBgImg');
+  if (S.bgImage) {
+    bgImg.src = S.bgImage; bgImg.style.display = 'block';
+  } else {
+    bgImg.src = ''; bgImg.style.display = 'none';
+  }
+
+  // Restore pattern overlay
+  if (S.bgPattern && typeof _renderPatternOverlay === 'function') {
+    _renderPatternOverlay();
+  } else {
+    const patOv = $('msPatOv');
+    if (patOv) { patOv.style.backgroundImage = ''; patOv.style.backgroundSize = '' }
+  }
+
+  // Restore gradient editor controls
+  if (typeof renderGradStopEditor === 'function') renderGradStopEditor();
+  if ($('gradType')) $('gradType').value = S.gradType || 'linear';
+  if ($('gradAngle')) $('gradAngle').value = S.gradAngle || 145;
+  if ($('rvGAngle')) $('rvGAngle').textContent = (S.gradAngle || 145) + '°';
+  // Restore pattern controls
+  if ($('patColor')) $('patColor').value = S.patColor || '#969696';
+  if ($('patOpacity')) $('patOpacity').value = S.patOpacity != null ? S.patOpacity : 15;
+  if ($('patScale')) $('patScale').value = S.patScale || 100;
+
   // Restore image styles
-  ['desktop', 'mobile', 'tablet'].forEach(t => applyImgStyle(t));
+  ['desktop', 'mobile', 'tablet', 'mobile2'].forEach(t => applyImgStyle(t));
 
   // Restore toggles
   $('tN').classList.toggle('on', S.showNav); $('bNav').style.display = S.showNav ? 'flex' : 'none';
-  $('tI').classList.toggle('on', S.showIsland); $('pIsl').style.display = S.showIsland ? 'block' : 'none';
+  $('tI').classList.toggle('on', S.showIsland); $('pIsl').style.display = S.showIsland ? 'block' : 'none'; if ($('pIsl2')) $('pIsl2').style.display = S.showIsland ? 'block' : 'none';
   $('tR').classList.toggle('on', S.showRefl); $('ms').classList.toggle('reflection', S.showRefl);
   $('tW').classList.toggle('on', S.showWm); $('wm').style.display = S.showWm ? 'block' : 'none';
 
@@ -107,7 +138,7 @@ function _restoreState(snap) {
   $('freeBtn').style.borderColor = S.freeMode ? 'var(--accent)' : '';
 }
 
-function _removeAllDynamic() {
+function _removeAllDynamicElements() {
   // Remove texts
   (S.texts || []).forEach(t => { const e = $(t.id); if (e) e.remove() });
   // Remove shapes

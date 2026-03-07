@@ -186,15 +186,33 @@ function alignFrames(alignment) {
 
 // ==================== SVG PATTERN BACKGROUNDS ====================
 const BG_PATTERNS = {
-  dots: { n: 'Dots', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><circle cx='10' cy='10' r='1.5' fill='${c}'/></svg>` },
-  grid: { n: 'Grid', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M20 0H0v20' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
-  diag: { n: 'Diagonal', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><path d='M-1 1l4-4M0 10l10-10M9 11l2-2' stroke='${c}' stroke-width='.5'/></svg>` },
-  cross: { n: 'Crosses', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M10 6v8M6 10h8' stroke='${c}' stroke-width='.6' fill='none'/></svg>` },
-  waves: { n: 'Waves', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='10'><path d='M0 5c10-7 20 7 40 0' stroke='${c}' stroke-width='.6' fill='none'/></svg>` },
-  hex: { n: 'Hexagons', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='49'><path d='M14 0l14 8v16l-14 8L0 24V8z' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
-  zigzag: { n: 'Zigzag', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='10'><path d='M0 10L5 0l5 10l5-10l5 10' stroke='${c}' stroke-width='.6' fill='none'/></svg>` },
-  diamond: { n: 'Diamonds', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path d='M8 0l8 8-8 8-8-8z' fill='none' stroke='${c}' stroke-width='.5'/></svg>` }
+  dots: { n: 'Dots', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><circle cx='10' cy='10' r='1.5' fill='${c}'/></svg>` },
+  grid: { n: 'Grid', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M20 0H0v20' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  diag: { n: 'Diagonal', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><path d='M-1 1l4-4M0 10l10-10M9 11l2-2' stroke='${c}' stroke-width='.5'/></svg>` },
+  cross: { n: 'Crosses', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M10 6v8M6 10h8' stroke='${c}' stroke-width='.6' fill='none'/></svg>` },
+  waves: { n: 'Waves', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='10'><path d='M0 5c10-7 20 7 40 0' stroke='${c}' stroke-width='.6' fill='none'/></svg>` },
+  hex: { n: 'Hexagons', cat: 'geo', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='49'><path d='M14 0l14 8v16l-14 8L0 24V8z' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  zigzag: { n: 'Zigzag', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='10'><path d='M0 10L5 0l5 10l5-10l5 10' stroke='${c}' stroke-width='.6' fill='none'/></svg>` },
+  diamond: { n: 'Diamonds', cat: 'geo', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path d='M8 0l8 8-8 8-8-8z' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  // Additional patterns
+  triangles: { n: 'Triangles', cat: 'geo', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='18'><path d='M10 0l10 18H0z' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  circles: { n: 'Circles', cat: 'geo', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><circle cx='12' cy='12' r='8' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  squares: { n: 'Squares', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><rect x='3' y='3' width='10' height='10' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  stars: { n: 'Stars', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M12 2l2.5 5.5L20 8.5l-4 4 1 5.5-5-2.8-5 2.8 1-5.5-4-4 5.5-1z' fill='none' stroke='${c}' stroke-width='.4'/></svg>` },
+  hatch: { n: 'Hatch', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><path d='M-1 1l4-4M0 10l10-10M9 11l2-2M-1 9l4 4M0 0l10 10M9-1l2 2' stroke='${c}' stroke-width='.3'/></svg>` },
+  brick: { n: 'Brick', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='16'><path d='M0 8h32M16 0v8M0 8v8M32 8v8' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  chevron: { n: 'Chevron', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='12'><path d='M0 12l10-12 10 12' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  confetti: { n: 'Confetti', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><rect x='5' y='3' width='3' height='3' rx='0.5' fill='${c}' transform='rotate(25 6 4)'/><rect x='18' y='14' width='3' height='3' rx='0.5' fill='${c}' transform='rotate(-15 19 15)'/><rect x='10' y='22' width='3' height='3' rx='0.5' fill='${c}' transform='rotate(40 11 23)'/></svg>` },
+  plusses: { n: 'Plus', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M12 8v8M8 12h8' stroke='${c}' stroke-width='1.2' stroke-linecap='round' fill='none'/></svg>` },
+  arrows: { n: 'Arrows', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M10 4v12M6 8l4-4 4 4' stroke='${c}' stroke-width='.5' fill='none'/></svg>` },
+  leaf: { n: 'Leaf', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M6 18Q6 6 18 6Q18 18 6 18z' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  trellis: { n: 'Trellis', cat: 'geo', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M0 0l20 20M20 0L0 20' stroke='${c}' stroke-width='.4'/></svg>` }
 };
+
+// Pattern state defaults
+S.patColor = S.patColor || '#969696';
+S.patOpacity = S.patOpacity != null ? S.patOpacity : 15;
+S.patScale = S.patScale || 100;
 
 function renderPatternGrid() {
   const pg = $('patGrid');
@@ -203,7 +221,7 @@ function renderPatternGrid() {
   Object.keys(BG_PATTERNS).forEach(k => {
     const pat = BG_PATTERNS[k];
     const d = document.createElement('div');
-    d.className = 'pat-sw';
+    d.className = 'pat-sw' + (S.bgPattern === k ? ' act' : '');
     d.title = pat.n;
     const encoded = encodeURIComponent(pat.svg('rgba(150,150,150,.4)'));
     d.style.backgroundImage = `url("data:image/svg+xml,${encoded}")`;
@@ -217,20 +235,55 @@ function applyPattern(k) {
   const pat = BG_PATTERNS[k];
   if (!pat) return;
   pushHistory();
-  const ms = $('ms');
-  const encoded = encodeURIComponent(pat.svg('rgba(150,150,150,.15)'));
-  ms.style.backgroundImage = ms.style.background ?
-    `url("data:image/svg+xml,${encoded}"),${ms.style.background}`
-    : `url("data:image/svg+xml,${encoded}")`;
   S.bgPattern = k;
+  _renderPatternOverlay();
+  // Update active state in grid
+  document.querySelectorAll('.pat-sw').forEach(el => el.classList.remove('act'));
+  const idx = Object.keys(BG_PATTERNS).indexOf(k);
+  const swatches = document.querySelectorAll('.pat-sw');
+  if (swatches[idx]) swatches[idx].classList.add('act');
   toast('✓ Pattern: ' + pat.n);
 }
 
+function _renderPatternOverlay() {
+  const ov = $('msPatOv');
+  if (!ov) return;
+  const pat = BG_PATTERNS[S.bgPattern];
+  if (!pat) { ov.style.backgroundImage = ''; return }
+  const hex = S.patColor || '#969696';
+  const op = (S.patOpacity != null ? S.patOpacity : 15) / 100;
+  // Convert hex to rgba
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  const rgba = `rgba(${r},${g},${b},${op})`;
+  const encoded = encodeURIComponent(pat.svg(rgba));
+  const scale = S.patScale || 100;
+  ov.style.backgroundImage = `url("data:image/svg+xml,${encoded}")`;
+  ov.style.backgroundSize = scale === 100 ? '' : `${scale}%`;
+  ov.style.backgroundRepeat = 'repeat';
+}
+
 function clearPattern() {
-  const ms = $('ms');
+  pushHistory();
   S.bgPattern = null;
-  setBg(S.bg);
+  const ov = $('msPatOv');
+  if (ov) { ov.style.backgroundImage = ''; ov.style.backgroundSize = '' }
+  document.querySelectorAll('.pat-sw').forEach(el => el.classList.remove('act'));
   toast('✓ Pattern cleared');
+}
+
+function setPatColor(v) {
+  S.patColor = v;
+  if (S.bgPattern) _renderPatternOverlay();
+}
+function setPatOpacity(v) {
+  S.patOpacity = parseInt(v);
+  if ($('rvPatOp')) $('rvPatOp').textContent = v + '%';
+  if (S.bgPattern) _renderPatternOverlay();
+}
+function setPatScale(v) {
+  S.patScale = parseInt(v);
+  if ($('rvPatSc')) $('rvPatSc').textContent = v + '%';
+  if (S.bgPattern) _renderPatternOverlay();
 }
 
 // ==================== BACKGROUND IMAGE UPLOAD ====================
@@ -240,14 +293,33 @@ function handleBgImgUpload(e) {
   const r = new FileReader();
   r.onload = function (ev) {
     pushHistory();
-    const ms = $('ms');
-    ms.style.backgroundImage = `url("${ev.target.result}")`;
-    ms.style.backgroundSize = 'cover';
-    ms.style.backgroundPosition = 'center';
+    const img = $('msBgImg');
+    img.src = ev.target.result;
+    img.style.display = 'block';
     S.bgImage = ev.target.result;
     toast('✓ BG image set');
   };
   r.readAsDataURL(f);
+}
+
+function clearBgImage() {
+  pushHistory();
+  const img = $('msBgImg');
+  img.src = '';
+  img.style.display = 'none';
+  S.bgImage = null;
+  S.bgImgUrl = null;
+  if ($('bgImgUp')) $('bgImgUp').value = '';
+  toast('✓ BG image cleared');
+}
+
+function clearGradient() {
+  pushHistory();
+  S.bg = null;
+  S.bgCustom = null;
+  $('ms').style.background = 'transparent';
+  document.querySelectorAll('.bg-sw').forEach(el => el.classList.remove('act'));
+  toast('✓ Background cleared');
 }
 
 // ==================== SHAPE TOOLS ====================
@@ -278,7 +350,7 @@ function _applyShapeStyle(el, obj) {
   el.style.cssText = `position:absolute;left:${obj.x}px;top:${obj.y}px;width:${obj.w}px;height:${obj.h}px;
     background:${obj.fill};border:${obj.strokeW}px solid ${obj.stroke};
     border-radius:${obj.radius}px;opacity:${obj.opacity / 100};
-    transform:rotate(${obj.rotation}deg);cursor:pointer;z-index:25;
+    transform:rotate(${obj.rotation}deg);cursor:pointer;z-index:30;
     transition:outline .15s;box-sizing:border-box;`;
 }
 
@@ -458,22 +530,33 @@ function swBgTab(tab, btn) {
 
 // ==================== BACKGROUND GALLERY ====================
 const BG_GALLERY = [
-  { n: 'Aurora', css: 'linear-gradient(135deg,#0f0c29,#302b63,#24243e)' },
-  { n: 'Peach', css: 'linear-gradient(135deg,#ffecd2,#fcb69f,#ff9a9e)' },
-  { n: 'Ocean', css: 'linear-gradient(135deg,#2193b0,#6dd5ed,#fff)' },
-  { n: 'Forest', css: 'linear-gradient(135deg,#11998e,#38ef7d)' },
-  { n: 'Candy', css: 'linear-gradient(135deg,#f093fb,#f5576c)' },
-  { n: 'Night', css: 'linear-gradient(135deg,#0f2027,#203a43,#2c5364)' },
-  { n: 'Gold', css: 'linear-gradient(135deg,#f7971e,#ffd200)' },
-  { n: 'Rose', css: 'linear-gradient(135deg,#f953c6,#b91d73)' },
-  { n: 'Mint', css: 'linear-gradient(135deg,#a8edea,#fed6e3)' },
-  { n: 'Steel', css: 'linear-gradient(135deg,#636fa4,#e8ebf5)' },
-  { n: 'Cosmos', css: 'radial-gradient(circle at 30% 50%,#1a1a2e,#16213e,#0f3460)' },
-  { n: 'Ember', css: 'radial-gradient(circle at 70% 30%,#f7971e 0%,#c62828 60%,#1a1a1e 100%)' },
-  { n: 'Tropical', css: 'linear-gradient(135deg,#a1ffce,#faffd1)' },
-  { n: 'Mauve', css: 'linear-gradient(135deg,#e0c3fc,#8ec5fc)' },
-  { n: 'Carbon', css: 'linear-gradient(160deg,#0a0a0a,#1a1a1e,#252525)' },
-  { n: 'Citrus', css: 'linear-gradient(135deg,#f9d423,#ff4e50)' }
+  // Abstract gradients
+  { n: 'Aurora', css: 'linear-gradient(135deg,#0f0c29,#302b63,#24243e)', cat: 'abstract' },
+  { n: 'Peach', css: 'linear-gradient(135deg,#ffecd2,#fcb69f,#ff9a9e)', cat: 'abstract' },
+  { n: 'Ocean', css: 'linear-gradient(135deg,#2193b0,#6dd5ed,#fff)', cat: 'abstract' },
+  { n: 'Forest', css: 'linear-gradient(135deg,#11998e,#38ef7d)', cat: 'abstract' },
+  { n: 'Candy', css: 'linear-gradient(135deg,#f093fb,#f5576c)', cat: 'abstract' },
+  { n: 'Night', css: 'linear-gradient(135deg,#0f2027,#203a43,#2c5364)', cat: 'abstract' },
+  { n: 'Gold', css: 'linear-gradient(135deg,#f7971e,#ffd200)', cat: 'abstract' },
+  { n: 'Rose', css: 'linear-gradient(135deg,#f953c6,#b91d73)', cat: 'abstract' },
+  { n: 'Mint', css: 'linear-gradient(135deg,#a8edea,#fed6e3)', cat: 'abstract' },
+  { n: 'Steel', css: 'linear-gradient(135deg,#636fa4,#e8ebf5)', cat: 'abstract' },
+  // Mesh
+  { n: 'Cosmos', css: 'radial-gradient(circle at 30% 50%,#1a1a2e,#16213e,#0f3460)', cat: 'mesh' },
+  { n: 'Ember', css: 'radial-gradient(circle at 70% 30%,#f7971e 0%,#c62828 60%,#1a1a1e 100%)', cat: 'mesh' },
+  { n: 'Tropical', css: 'linear-gradient(135deg,#a1ffce,#faffd1)', cat: 'mesh' },
+  { n: 'Mauve', css: 'linear-gradient(135deg,#e0c3fc,#8ec5fc)', cat: 'mesh' },
+  { n: 'Carbon', css: 'linear-gradient(160deg,#0a0a0a,#1a1a1e,#252525)', cat: 'mesh' },
+  { n: 'Citrus', css: 'linear-gradient(135deg,#f9d423,#ff4e50)', cat: 'mesh' },
+  // Vivid
+  { n: 'Flamingo', css: 'linear-gradient(135deg,#ee9ca7,#ffdde1)', cat: 'vivid' },
+  { n: 'Lagoon', css: 'linear-gradient(135deg,#43cea2,#185a9d)', cat: 'vivid' },
+  { n: 'Velvet', css: 'linear-gradient(135deg,#bc4e9c,#f80759)', cat: 'vivid' },
+  { n: 'Sunrise', css: 'linear-gradient(135deg,#ff6a00,#ee0979)', cat: 'vivid' },
+  { n: 'Mystic', css: 'linear-gradient(135deg,#757f9a,#d7dde8)', cat: 'vivid' },
+  { n: 'Dusk', css: 'linear-gradient(135deg,#2c3e50,#fd746c)', cat: 'vivid' },
+  { n: 'Berry', css: 'linear-gradient(135deg,#8360c3,#2ebf91)', cat: 'vivid' },
+  { n: 'Lava', css: 'linear-gradient(135deg,#f12711,#f5af19)', cat: 'vivid' }
 ];
 
 function renderBgGallery() {
@@ -492,6 +575,7 @@ function renderBgGallery() {
       pushHistory();
       $('ms').style.background = item.css;
       S.bgCustom = item.css; S.bg = null;
+      document.querySelectorAll('.bg-sw').forEach(el => el.classList.remove('act'));
       toast('✓ ' + item.n);
     };
     gallery.appendChild(sw);

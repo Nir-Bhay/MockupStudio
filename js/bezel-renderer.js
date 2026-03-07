@@ -5,11 +5,12 @@ function toggleBezels(){
   _bezelsEnabled=!_bezelsEnabled;
   if(_bezelsEnabled){
     _applyBezel('pf','iphone');
+    _applyBezel('pf2','iphone');
     _applyBezel('tf','ipad');
     _applyBezel('bf','macbook');
     if($('bezelsBtn'))$('bezelsBtn').classList.add('act');
   }else{
-    ['bf','pf','tf'].forEach(id=>{
+    ['bf','pf','tf','pf2'].forEach(id=>{
       const el=$(id);if(!el)return;
       const b=el.querySelector('.device-bezel');if(b)b.remove();
     });

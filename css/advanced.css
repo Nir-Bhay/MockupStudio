@@ -264,6 +264,54 @@
   border-radius: 2px
 }
 
+/* ==================== NONE / CLEAR BUTTON ==================== */
+.btn-none {
+  width: 100%;
+  padding: 4px 0;
+  margin-bottom: 5px;
+  font-size: 9px;
+  color: var(--fg-muted);
+  background: var(--bg-secondary);
+  border: 1.5px dashed var(--border-primary);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out)
+}
+.btn-none:hover {
+  background: var(--danger, #f44);
+  color: #fff;
+  border-color: var(--danger, #f44)
+}
+
+/* ==================== GRADIENT CATEGORY ==================== */
+.bg-cat-label {
+  font-size: 8px;
+  font-weight: 600;
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  padding: 5px 0 2px;
+  margin-top: 3px
+}
+.bg-cat-label:first-child { margin-top: 0 }
+
+/* ==================== SOLID COLOR PRESETS ==================== */
+.solid-presets {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+  margin-top: 5px
+}
+.solid-sw {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all var(--duration-fast) var(--ease-out)
+}
+.solid-sw:hover { transform: scale(1.15); box-shadow: var(--shadow-sm) }
+.solid-sw.act { border-color: var(--fg-primary) }
+
 /* ==================== ANNOTATIONS ==================== */
 .anno-marker {
   position: absolute;

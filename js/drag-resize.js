@@ -65,23 +65,29 @@ function _applyProportionalResize(mainFrameId, newWidth, newHeight) {
     const frame = $(frameId);
     if (!frame) return;
 
-    const fw = frame.offsetWidth;
-    const fh = frame.offsetHeight;
-    const fl = frame.offsetLeft;
-    const ft = frame.offsetTop;
-
     // Store initial size if not stored
     if (!frame.dataset.startW) {
-      frame.dataset.startW = fw;
-      frame.dataset.startH = fh;
+      frame.dataset.startW = frame.offsetWidth;
+      frame.dataset.startH = frame.offsetHeight;
+      frame.dataset.startL = frame.offsetLeft;
+      frame.dataset.startT = frame.offsetTop;
     }
 
     const initialW = parseFloat(frame.dataset.startW);
     const initialH = parseFloat(frame.dataset.startH);
+    const initialL = parseFloat(frame.dataset.startL);
+    const initialT = parseFloat(frame.dataset.startT);
+    const cx = initialL + initialW / 2;
+    const cy = initialT + initialH / 2;
 
-    // Apply proportional resize based on the main frame's ratio
-    frame.style.width = (initialW * widthRatio) + 'px';
-    frame.style.height = (initialH * heightRatio) + 'px';
+    const newW = initialW * widthRatio;
+    const newH = initialH * heightRatio;
+
+    // Symmetric: keep each frame's center fixed
+    frame.style.width = newW + 'px';
+    frame.style.height = newH + 'px';
+    frame.style.left = (cx - newW / 2) + 'px';
+    frame.style.top = (cy - newH / 2) + 'px';
   });
 }
 
@@ -143,12 +149,16 @@ function initDrag() {
       if (S.patternResize) {
         fr.dataset.startW = startW;
         fr.dataset.startH = startH;
+        fr.dataset.startL = startL;
+        fr.dataset.startT = startT;
         // Store initial sizes for all frames
         _getAllResizeableFrames().forEach(fId => {
           const f = $(fId);
           if (f && f !== fr) {
             f.dataset.startW = f.offsetWidth;
             f.dataset.startH = f.offsetHeight;
+            f.dataset.startL = f.offsetLeft;
+            f.dataset.startT = f.offsetTop;
           }
         });
       }
@@ -159,6 +169,8 @@ function initDrag() {
         let nw = startW, nh = startH, nl = startL, nt = startT;
 
         const keepAR = !ev.shiftKey;
+        // Symmetric resize: Alt key or pattern resize mode — resize from center
+        const symmetric = ev.altKey || S.patternResize;
 
         if (dir === 'br') { nw = Math.max(MIN_FRAME_W, startW + dx); nh = keepAR ? nw / ar : Math.max(MIN_FRAME_H, startH + dy) }
         else if (dir === 'bl') { nw = Math.max(MIN_FRAME_W, startW - dx); nl = startL + (startW - nw); nh = keepAR ? nw / ar : Math.max(MIN_FRAME_H, startH + dy) }
@@ -168,6 +180,14 @@ function initDrag() {
         else if (dir === 'bm') { nh = Math.max(MIN_FRAME_H, startH + dy); if (keepAR) nw = nh * ar }
         else if (dir === 'ml') { nw = Math.max(MIN_FRAME_W, startW - dx); nl = startL + (startW - nw); if (keepAR) nh = nw / ar }
         else if (dir === 'mr') { nw = Math.max(MIN_FRAME_W, startW + dx); if (keepAR) nh = nw / ar }
+
+        // Symmetric resize: adjust position to keep center fixed
+        if (symmetric) {
+          const cxOrig = startL + startW / 2;
+          const cyOrig = startT + startH / 2;
+          nl = cxOrig - nw / 2;
+          nt = cyOrig - nh / 2;
+        }
 
         fr.style.width = nw + 'px';
         fr.style.height = nh + 'px';
@@ -263,11 +283,11 @@ function offDrag() {
 
 // ==================== CANVAS TOOLBAR ====================
 let _selectedFrame = null;
-const _frameTypeMap = { bf: 'desktop', pf: 'mobile', tf: 'tablet' };
-const _frameLabelMap = { bf: 'Desktop', pf: 'Mobile', tf: 'Tablet' };
+const _frameTypeMap = { bf: 'desktop', pf: 'mobile', tf: 'tablet', pf2: 'mobile2' };
+const _frameLabelMap = { bf: 'Desktop', pf: 'Mobile', tf: 'Tablet', pf2: 'Phone 2' };
 
 function initCanvasToolbar() {
-  const frames = ['bf', 'pf', 'tf'];
+  const frames = ['bf', 'pf', 'tf', 'pf2'];
   frames.forEach(fId => {
     const fr = $(fId);
     if (!fr) return;
@@ -286,7 +306,7 @@ function initCanvasToolbar() {
 function selectFrame(fId) {
   _selectedFrame = fId;
   // Highlight selected frame
-  ['bf', 'pf', 'tf'].forEach(id => {
+  ['bf', 'pf', 'tf', 'pf2'].forEach(id => {
     const el = $(id); if (el) el.style.outline = id === fId ? '2px solid var(--accent)' : '';
   });
   _showCanvasToolbar(fId);
@@ -294,7 +314,7 @@ function selectFrame(fId) {
 
 function deselectFrame() {
   _selectedFrame = null;
-  ['bf', 'pf', 'tf'].forEach(id => {
+  ['bf', 'pf', 'tf', 'pf2'].forEach(id => {
     const el = $(id); if (el) el.style.outline = '';
   });
   _hideCanvasToolbar();

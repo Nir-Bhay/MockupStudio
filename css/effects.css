@@ -89,7 +89,7 @@
 /* ==================== SHAPE ELEMENTS ==================== */
 .shape-el {
   position: absolute;
-  z-index: 25;
+  z-index: 30;
   cursor: pointer;
   transition: outline var(--duration-fast);
   box-sizing: border-box

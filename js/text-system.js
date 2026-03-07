@@ -7,7 +7,7 @@ function addText() {
   const size = $('newTxtSize').value;
   const weight = $('newTxtW').value;
   const color = $('newTxtCol').value;
-  const opacity = parseInt($('newTxtOp').value) / 100;
+  const opacity = parseInt($('newTxtOp').value);
   const ls = parseInt($('newTxtLs').value);
   const lh = parseFloat($('newTxtLh') ? $('newTxtLh').value : 1.2);
   const shadow = parseInt($('newTxtSh') ? $('newTxtSh').value : 0);
@@ -25,7 +25,7 @@ function addText() {
   el.style.fontSize = size + 'px';
   el.style.fontWeight = weight;
   el.style.color = color;
-  el.style.opacity = opacity;
+  el.style.opacity = opacity / 100;
   el.style.letterSpacing = ls + 'px';
   el.style.lineHeight = lh;
   el.style.textShadow = shadow > 0 ? `0 2px ${shadow}px rgba(0,0,0,0.5)` : 'none';

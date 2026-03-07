@@ -6,7 +6,7 @@ function _snapshotArtboard() {
     id: 'ab_' + (S._abCounter),
     name: 'Artboard ' + S._abCounter,
     layout: S.layout, bg: S.bg, bgCustom: S.bgCustom, bgImgUrl: S.bgImgUrl, theme: S.theme,
-    desktopImg: S.desktopImg, mobileImg: S.mobileImg, tabletImg: S.tabletImg,
+    desktopImg: S.desktopImg, mobileImg: S.mobileImg, tabletImg: S.tabletImg, mobile2Img: S.mobile2Img,
     frameColor: S.frameColor, round: S.round, shadow: S.shadow,
     phoneScale: S.phoneScale, pad: S.pad, bgBlur: S.bgBlur,
     showNav: S.showNav, showIsland: S.showIsland, showRefl: S.showRefl, showWm: S.showWm, showBgOv: S.showBgOv,
@@ -27,17 +27,18 @@ function _snapshotArtboard() {
     vignetteEnabled: S.vignetteEnabled || false, vignetteIntensity: S.vignetteIntensity || 40,
     gradStops: _deepClone(S.gradStops || [{ pos: 0, color: '#c9956b' }, { pos: 100, color: '#1a1a1e' }]),
     gradType: S.gradType || 'linear', gradAngle: S.gradAngle || 145,
-    animBg: S.animBg || false, bgPattern: S.bgPattern || null
+    animBg: S.animBg || false, bgPattern: S.bgPattern || null,
+    patColor: S.patColor || '#969696', patOpacity: S.patOpacity != null ? S.patOpacity : 15, patScale: S.patScale || 100
   };
 }
 
 // Load artboard into active state and re-render canvas
 function _loadArtboard(ab) {
   // Remove all dynamic elements from current state first
-  _removeAllDynamic();
+  if (typeof _removeAllDynamic === 'function') _removeAllDynamic();
 
   S.layout = ab.layout; S.bg = ab.bg; S.bgCustom = ab.bgCustom; S.bgImgUrl = ab.bgImgUrl; S.theme = ab.theme;
-  S.desktopImg = ab.desktopImg; S.mobileImg = ab.mobileImg; S.tabletImg = ab.tabletImg;
+  S.desktopImg = ab.desktopImg; S.mobileImg = ab.mobileImg; S.tabletImg = ab.tabletImg; S.mobile2Img = ab.mobile2Img || null;
   S.frameColor = ab.frameColor; S.round = ab.round; S.shadow = ab.shadow;
   S.phoneScale = ab.phoneScale; S.pad = ab.pad; S.bgBlur = ab.bgBlur;
   S.showNav = ab.showNav; S.showIsland = ab.showIsland; S.showRefl = ab.showRefl; S.showWm = ab.showWm; S.showBgOv = ab.showBgOv;
@@ -59,6 +60,7 @@ function _loadArtboard(ab) {
   S.gradStops = _deepClone(ab.gradStops || [{ pos: 0, color: '#c9956b' }, { pos: 100, color: '#1a1a1e' }]);
   S.gradType = ab.gradType || 'linear'; S.gradAngle = ab.gradAngle || 145;
   S.animBg = ab.animBg || false; S.bgPattern = ab.bgPattern || null;
+  S.patColor = ab.patColor || '#969696'; S.patOpacity = ab.patOpacity != null ? ab.patOpacity : 15; S.patScale = ab.patScale || 100;
   S.selTxt = null; S.selShape = null; S.selAnno = null; S.selBadge = null;
 
   // Re-render entire canvas
@@ -98,6 +100,7 @@ function _renderArtboardVisuals() {
   _restoreImage('desktop', 'imgD', 'phD', 'pvD', 'upD');
   _restoreImage('mobile', 'imgM', 'phM', 'pvM', 'upM');
   _restoreImage('tablet', 'imgTb', 'phTb', 'pvT', 'upT');
+  _restoreImage('mobile2', 'imgM2', 'phM2', 'pvM2', 'upM2');
 
   // Free mode
   $('freeBtn').style.background = S.freeMode ? 'rgba(201,149,107,.2)' : '';
@@ -147,22 +150,23 @@ function addArtboard() {
   const ab = {
     id: 'ab_' + S._abCounter, name: 'Artboard ' + S._abCounter,
     layout: 'hero', bg: 'sahara', bgCustom: null, bgImgUrl: null, theme: 'default',
-    desktopImg: null, mobileImg: null, tabletImg: null,
+    desktopImg: null, mobileImg: null, tabletImg: null, mobile2Img: null,
     frameColor: '#ffffff', round: 10, shadow: 50, phoneScale: 100, pad: 5, bgBlur: 0,
     showNav: true, showIsland: true, showRefl: false, showWm: true, showBgOv: false,
     freeMode: false,
-    imgFit: { desktop: 'cover', mobile: 'cover', tablet: 'cover' },
-    imgScale: { desktop: 100, mobile: 100, tablet: 100 },
-    imgOff: { desktop: { x: 0, y: 0 }, mobile: { x: 0, y: 0 }, tablet: { x: 0, y: 0 } },
-    imgRad: { desktop: 0, mobile: 0, tablet: 0 },
-    imgRotation: { desktop: 0, mobile: 0, tablet: 0 },
-    imgOpacity: { desktop: 100, mobile: 100, tablet: 100 },
-    imgFlip: { desktop: { h: false, v: false }, mobile: { h: false, v: false }, tablet: { h: false, v: false } },
-    imgFilters: { desktop: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, mobile: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, tablet: { brightness: 100, contrast: 100, saturation: 100, blur: 0 } },
+    imgFit: { desktop: 'cover', mobile: 'cover', tablet: 'cover', mobile2: 'cover' },
+    imgScale: { desktop: 100, mobile: 100, tablet: 100, mobile2: 100 },
+    imgOff: { desktop: { x: 0, y: 0 }, mobile: { x: 0, y: 0 }, tablet: { x: 0, y: 0 }, mobile2: { x: 0, y: 0 } },
+    imgRad: { desktop: 0, mobile: 0, tablet: 0, mobile2: 0 },
+    imgRotation: { desktop: 0, mobile: 0, tablet: 0, mobile2: 0 },
+    imgOpacity: { desktop: 100, mobile: 100, tablet: 100, mobile2: 100 },
+    imgFlip: { desktop: { h: false, v: false }, mobile: { h: false, v: false }, tablet: { h: false, v: false }, mobile2: { h: false, v: false } },
+    imgFilters: { desktop: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, mobile: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, tablet: { brightness: 100, contrast: 100, saturation: 100, blur: 0 }, mobile2: { brightness: 100, contrast: 100, saturation: 100, blur: 0 } },
     texts: [], shapes: [], annotations: [], badges: [],
     noiseEnabled: false, noiseIntensity: 15, vignetteEnabled: false, vignetteIntensity: 40,
     gradStops: [{ pos: 0, color: '#c9956b' }, { pos: 100, color: '#1a1a1e' }], gradType: 'linear', gradAngle: 145,
-    animBg: false, bgPattern: null
+    animBg: false, bgPattern: null,
+    patColor: '#969696', patOpacity: 15, patScale: 100
   };
   S.artboards.push(ab);
   S.activeArtboard = S.artboards.length - 1;

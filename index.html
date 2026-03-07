@@ -199,6 +199,7 @@
             <button class="bg-tab" onclick="swBgTab('Patterns',this)">Patterns</button>
             <button class="bg-tab" onclick="swBgTab('Solid',this)">Solid</button>
             <button class="bg-tab" onclick="swBgTab('Images',this)">Images</button>
+            <button class="bg-tab" onclick="swBgTab('Scenes',this)">Scenes</button>
           </div>
           <!-- Gradients Tab -->
           <div class="bg-tab-body act" id="bgTabGradients">
@@ -235,7 +236,8 @@
             <button class="btn-none" onclick="clearPattern()">✕ None</button>
             <div class="pat-grid" id="patGrid"></div>
             <div class="sec" style="margin-top:6px">
-              <div class="sec-hdr" onclick="togSec(this)"><span>Customize Pattern</span><span class="sec-arrow">▾</span></div>
+              <div class="sec-hdr" onclick="togSec(this)"><span>Customize Pattern</span><span class="sec-arrow">▾</span>
+              </div>
               <div class="sec-body">
                 <div class="inp-row">
                   <div class="inp-g"><label>Color</label>
@@ -269,7 +271,37 @@
               <div class="inp-g"><label>Upload Image</label><input type="file" accept="image/*" id="bgImgUp"
                   onchange="handleBgImgUpload(event)" style="font-size:9px"></div>
             </div>
+            <div class="inp-row" style="margin-bottom:5px">
+              <div class="inp-g"><label>BG Fit</label>
+                <div class="btn-row">
+                  <button class="btn-s bg-fit-btn act" data-fit="cover" onclick="setBgFit('cover')">Cover</button>
+                  <button class="btn-s bg-fit-btn" data-fit="contain" onclick="setBgFit('contain')">Contain</button>
+                  <button class="btn-s bg-fit-btn" data-fit="fill" onclick="setBgFit('fill')">Fill</button>
+                </div>
+              </div>
+            </div>
             <div class="bg-img-gallery" id="bgImgGallery"></div>
+          </div>
+          <!-- Scenes Tab (Shadow overlays) -->
+          <div class="bg-tab-body" id="bgTabScenes">
+            <button class="btn-none" onclick="clearShadowScene()">✕ None</button>
+            <div class="shadow-scene-grid" id="shadowSceneGrid"></div>
+            <div class="sec" style="margin-top:6px">
+              <div class="sec-hdr" onclick="togSec(this)"><span>Shadow Settings</span><span class="sec-arrow">▾</span>
+              </div>
+              <div class="sec-body">
+                <div class="inp-row">
+                  <div class="inp-g"><label>Opacity <span class="rv" id="rvShadowOp">30%</span></label>
+                    <input type="range" id="shadowSceneOp" min="5" max="80" value="30"
+                      oninput="setShadowOpacity(this.value)">
+                  </div>
+                  <div class="inp-g"><label>Blur <span class="rv" id="rvShadowBl">0px</span></label>
+                    <input type="range" id="shadowSceneBl" min="0" max="20" value="0"
+                      oninput="setShadowSceneBlur(this.value)">
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -447,6 +479,26 @@
             <option value="1080x1080">Insta Square (1080×1080)</option>
             <option value="1080x1350">Insta Portrait (1080×1350)</option>
             <option value="1920x1080">FHD (1920×1080)</option>
+            <option value="1600x1200">Behance (1600×1200)</option>
+            <option value="1200x900">Product Hunt (1200×900)</option>
+            <option value="1200x628">LinkedIn (1200×628)</option>
+            <option value="1200x675">Facebook (1200×675)</option>
+            <option value="1080x1920">Story (1080×1920)</option>
+            <option value="1280x720">HD 720p (1280×720)</option>
+            <option value="2560x1440">QHD (2560×1440)</option>
+            <option value="800x600">Small (800×600)</option>
+            <option value="1440x900">MacBook (1440×900)</option>
+            <option value="2048x1536">iPad (2048×1536)</option>
+            <option value="3840x2160">4K UHD (3840×2160)</option>
+            <option value="1500x500">Twitter Header (1500×500)</option>
+            <option value="820x312">Facebook Cover (820×312)</option>
+            <option value="2560x1080">Ultrawide (2560×1080)</option>
+            <option value="750x1334">iPhone 8 (750×1334)</option>
+            <option value="1170x2532">iPhone 14 (1170×2532)</option>
+            <option value="1290x2796">iPhone 15 Pro (1290×2796)</option>
+            <option value="1440x3200">Android FHD+ (1440×3200)</option>
+            <option value="396x484">Apple Watch (396×484)</option>
+            <option value="1024x768">Presentation (1024×768)</option>
           </select>
           <span class="si" id="layName" style="color:var(--accent)">Hero</span>
         </div>
@@ -699,6 +751,14 @@
                 points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg></span><span class="ri-txt">Presets</span>
         </div>
+        <div class="rail-icon" data-tab="scenes" onclick="swTab('scenes')" title="Scenes">
+          <span class="ri-ico"><svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M12 3C7 3 3 7 3 12s4 9 9 9 9-4 9-9-4-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z" />
+              <path
+                d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
+            </svg></span><span class="ri-txt">Scenes</span>
+        </div>
       </div>
       <div class="sb-inner" style="flex:1">
 
@@ -714,6 +774,29 @@
                 <option value="#c0c0c0">Silver</option>
                 <option value="#f5e6d3">Gold</option>
                 <option value="#e8d5c4">Rose Gold</option>
+                <option value="#2d3436">Graphite</option>
+                <option value="#1e272e">Midnight</option>
+                <option value="#dfe6e9">Platinum</option>
+                <option value="#636e72">Titanium</option>
+                <option value="#b8860b">Dark Gold</option>
+                <option value="#8b4513">Copper</option>
+                <option value="#4a69bd">Blue</option>
+                <option value="#eb4d4b">Red</option>
+                <option value="#6c5ce7">Purple</option>
+                <option value="#00b894">Green</option>
+                <option value="#e84393">Pink</option>
+                <option value="#fdcb6e">Yellow</option>
+                <option value="#00cec9">Teal</option>
+                <option value="#a29bfe">Lavender</option>
+                <option value="#2c2c2e">Jet Black</option>
+                <option value="#3d3d3d">Charcoal</option>
+                <option value="#f8edeb">Cream</option>
+                <option value="#d4a373">Bronze</option>
+                <option value="#264653">Deep Teal</option>
+                <option value="#e76f51">Coral</option>
+                <option value="#606c38">Olive</option>
+                <option value="#fefae0">Ivory</option>
+                <option value="transparent">Transparent</option>
               </select>
             </div>
           </div>
@@ -721,10 +804,12 @@
             <div class="rng-h"><span>Browser Radius</span><span class="rv" id="rvR">10</span></div>
             <input type="range" id="rngR" min="0" max="28" value="10" oninput="setRnd(this.value)">
           </div>
+          <div class="corner-presets" id="cornerPresets"></div>
           <div class="rng-g">
             <div class="rng-h"><span>Shadow Depth</span><span class="rv" id="rvS">50%</span></div>
             <input type="range" id="rngS" min="0" max="100" value="50" oninput="setShd(this.value)">
           </div>
+          <div class="shadow-presets" id="shadowPresets"></div>
           <div class="rng-g">
             <div class="rng-h"><span>Phone Scale</span><span class="rv" id="rvP">100%</span></div>
             <input type="range" id="rngP" min="50" max="150" value="100" oninput="setPSc(this.value)">
@@ -1203,6 +1288,184 @@
           </div>
         </div>
 
+        <!-- SCENES TAB (per-frame shadows) -->
+        <div class="tab-body" id="tabScenes">
+          <!-- Desktop / Browser Shadow -->
+          <div class="sec scene-sec">
+            <div class="sec-t scene-sec-t" style="margin-bottom:6px">
+              <svg viewBox="0 0 24 24" width="14" height="14"
+                style="vertical-align:-2px;margin-right:4px;fill:none;stroke:var(--accent);stroke-width:1.5">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+              Desktop Shadow
+            </div>
+            <div class="scene-presets" id="desktopScenePresets"></div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Shadow Depth</span><span class="rv" id="rvFsBf">50%</span></div>
+              <input type="range" min="0" max="100" value="50" oninput="setFrameShadow('bf','depth',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset X</span><span class="rv" id="rvFsXBf">0</span></div>
+              <input type="range" min="-40" max="40" value="0" oninput="setFrameShadow('bf','x',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset Y</span><span class="rv" id="rvFsYBf">0</span></div>
+              <input type="range" min="-40" max="40" value="0" oninput="setFrameShadow('bf','y',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Blur</span><span class="rv" id="rvFsBlBf">0</span></div>
+              <input type="range" min="0" max="80" value="0" oninput="setFrameShadow('bf','blur',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Spread</span><span class="rv" id="rvFsSpBf">0</span></div>
+              <input type="range" min="-20" max="30" value="0" oninput="setFrameShadow('bf','spread',this.value)">
+            </div>
+            <div class="inp-row">
+              <div class="inp-g"><label>Color</label><input type="color" id="fsBfCol" value="#000000"
+                  oninput="setFrameShadow('bf','color',this.value)"></div>
+              <div class="inp-g"><label>Opacity</label><input type="range" id="fsBfOp" min="0" max="100" value="20"
+                  oninput="setFrameShadow('bf','opacity',this.value)" style="width:100%"></div>
+            </div>
+            <button class="btn-s" onclick="resetFrameShadow('bf')" style="margin-top:2px">↺ Reset</button>
+          </div>
+          <div class="divider"></div>
+          <!-- Mobile / Phone Shadow -->
+          <div class="sec scene-sec">
+            <div class="sec-t scene-sec-t" style="margin-bottom:6px">
+              <svg viewBox="0 0 24 24" width="14" height="14"
+                style="vertical-align:-2px;margin-right:4px;fill:none;stroke:var(--accent);stroke-width:1.5">
+                <rect x="7" y="2" width="10" height="20" rx="2" />
+                <line x1="10" y1="18" x2="14" y2="18" />
+              </svg>
+              Mobile Shadow
+            </div>
+            <div class="scene-presets" id="mobileScenePresets"></div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Shadow Depth</span><span class="rv" id="rvFsPf">50%</span></div>
+              <input type="range" min="0" max="100" value="50" oninput="setFrameShadow('pf','depth',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset X</span><span class="rv" id="rvFsXPf">0</span></div>
+              <input type="range" min="-40" max="40" value="0" oninput="setFrameShadow('pf','x',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset Y</span><span class="rv" id="rvFsYPf">0</span></div>
+              <input type="range" min="-40" max="40" value="0" oninput="setFrameShadow('pf','y',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Blur</span><span class="rv" id="rvFsBlPf">0</span></div>
+              <input type="range" min="0" max="80" value="0" oninput="setFrameShadow('pf','blur',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Spread</span><span class="rv" id="rvFsSpPf">0</span></div>
+              <input type="range" min="-20" max="30" value="0" oninput="setFrameShadow('pf','spread',this.value)">
+            </div>
+            <div class="inp-row">
+              <div class="inp-g"><label>Color</label><input type="color" id="fsPfCol" value="#000000"
+                  oninput="setFrameShadow('pf','color',this.value)"></div>
+              <div class="inp-g"><label>Opacity</label><input type="range" id="fsPfOp" min="0" max="100" value="25"
+                  oninput="setFrameShadow('pf','opacity',this.value)" style="width:100%"></div>
+            </div>
+            <button class="btn-s" onclick="resetFrameShadow('pf')" style="margin-top:2px">↺ Reset</button>
+          </div>
+          <div class="divider"></div>
+          <!-- Tablet Shadow -->
+          <div class="sec scene-sec">
+            <div class="sec-t scene-sec-t" style="margin-bottom:6px">
+              <svg viewBox="0 0 24 24" width="14" height="14"
+                style="vertical-align:-2px;margin-right:4px;fill:none;stroke:var(--accent);stroke-width:1.5">
+                <rect x="4" y="2" width="16" height="20" rx="2" />
+                <line x1="10" y1="18" x2="14" y2="18" />
+              </svg>
+              Tablet Shadow
+            </div>
+            <div class="scene-presets" id="tabletScenePresets"></div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Shadow Depth</span><span class="rv" id="rvFsTf">50%</span></div>
+              <input type="range" min="0" max="100" value="50" oninput="setFrameShadow('tf','depth',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset X</span><span class="rv" id="rvFsXTf">0</span></div>
+              <input type="range" min="-40" max="40" value="0" oninput="setFrameShadow('tf','x',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset Y</span><span class="rv" id="rvFsYTf">0</span></div>
+              <input type="range" min="-40" max="40" value="0" oninput="setFrameShadow('tf','y',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Blur</span><span class="rv" id="rvFsBlTf">0</span></div>
+              <input type="range" min="0" max="80" value="0" oninput="setFrameShadow('tf','blur',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Spread</span><span class="rv" id="rvFsSpTf">0</span></div>
+              <input type="range" min="-20" max="30" value="0" oninput="setFrameShadow('tf','spread',this.value)">
+            </div>
+            <div class="inp-row">
+              <div class="inp-g"><label>Color</label><input type="color" id="fsTfCol" value="#000000"
+                  oninput="setFrameShadow('tf','color',this.value)"></div>
+              <div class="inp-g"><label>Opacity</label><input type="range" id="fsTfOp" min="0" max="100" value="20"
+                  oninput="setFrameShadow('tf','opacity',this.value)" style="width:100%"></div>
+            </div>
+            <button class="btn-s" onclick="resetFrameShadow('tf')" style="margin-top:2px">↺ Reset</button>
+          </div>
+          <div class="divider"></div>
+          <!-- Phone 2 Shadow -->
+          <div class="sec scene-sec">
+            <div class="sec-t scene-sec-t" style="margin-bottom:6px">
+              <svg viewBox="0 0 24 24" width="14" height="14"
+                style="vertical-align:-2px;margin-right:4px;fill:none;stroke:var(--accent);stroke-width:1.5">
+                <rect x="7" y="2" width="10" height="20" rx="2" />
+                <circle cx="12" cy="18" r="1" />
+              </svg>
+              Phone 2 Shadow
+            </div>
+            <div class="scene-presets" id="phone2ScenePresets"></div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Shadow Depth</span><span class="rv" id="rvFsPf2">50%</span></div>
+              <input type="range" min="0" max="100" value="50" oninput="setFrameShadow('pf2','depth',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset X</span><span class="rv" id="rvFsXPf2">0</span></div>
+              <input type="range" min="-40" max="40" value="0" oninput="setFrameShadow('pf2','x',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Offset Y</span><span class="rv" id="rvFsYPf2">0</span></div>
+              <input type="range" min="-40" max="40" value="0" oninput="setFrameShadow('pf2','y',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Blur</span><span class="rv" id="rvFsBlPf2">0</span></div>
+              <input type="range" min="0" max="80" value="0" oninput="setFrameShadow('pf2','blur',this.value)">
+            </div>
+            <div class="rng-g">
+              <div class="rng-h"><span>Spread</span><span class="rv" id="rvFsSpPf2">0</span></div>
+              <input type="range" min="-20" max="30" value="0" oninput="setFrameShadow('pf2','spread',this.value)">
+            </div>
+            <div class="inp-row">
+              <div class="inp-g"><label>Color</label><input type="color" id="fsPf2Col" value="#000000"
+                  oninput="setFrameShadow('pf2','color',this.value)"></div>
+              <div class="inp-g"><label>Opacity</label><input type="range" id="fsPf2Op" min="0" max="100" value="25"
+                  oninput="setFrameShadow('pf2','opacity',this.value)" style="width:100%"></div>
+            </div>
+            <button class="btn-s" onclick="resetFrameShadow('pf2')" style="margin-top:2px">↺ Reset</button>
+          </div>
+          <div class="divider"></div>
+          <!-- Shadow Presets Grid -->
+          <div class="sec scene-sec">
+            <div class="sec-t scene-sec-t" style="margin-bottom:6px">
+              <svg viewBox="0 0 24 24" width="14" height="14"
+                style="vertical-align:-2px;margin-right:4px;fill:none;stroke:var(--accent);stroke-width:1.5">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
+              Shadow Presets
+            </div>
+            <div class="scene-preset-grid" id="scenePresetGrid"></div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1216,29 +1479,29 @@
     <div class="toast" id="toast"></div>
 
     <!-- JS Modules (load order matters) -->
-    <script src="js/utils.js"></script>
-    <script src="js/state.js"></script>
-    <script src="js/theme-toggle.js"></script>
-    <script src="js/ui-builder.js"></script>
-    <script src="js/upload.js"></script>
-    <script src="js/layout-engine.js"></script>
-    <script src="js/style-controls.js"></script>
-    <script src="js/image-controls.js"></script>
-    <script src="js/text-system.js"></script>
-    <script src="js/zoom.js"></script>
-    <script src="js/artboard-manager.js"></script>
-    <script src="js/layer-panel.js"></script>
-    <script src="js/advanced-features.js"></script>
-    <script src="js/drag-resize.js"></script>
-    <script src="js/presets.js"></script>
-    <script src="js/export.js"></script>
-    <script src="js/labels.js"></script>
-    <script src="js/annotations.js"></script>
-    <script src="js/brand-kit.js"></script>
-    <script src="js/bezel-renderer.js"></script>
-    <script src="js/keyboard.js"></script>
-    <script src="js/dynamic-screens.js"></script>
-    <script src="js/init.js"></script>
+    <script src="js/utils.js?v=2"></script>
+    <script src="js/state.js?v=2"></script>
+    <script src="js/theme-toggle.js?v=2"></script>
+    <script src="js/ui-builder.js?v=2"></script>
+    <script src="js/upload.js?v=2"></script>
+    <script src="js/layout-engine.js?v=2"></script>
+    <script src="js/style-controls.js?v=2"></script>
+    <script src="js/image-controls.js?v=2"></script>
+    <script src="js/text-system.js?v=2"></script>
+    <script src="js/zoom.js?v=2"></script>
+    <script src="js/artboard-manager.js?v=2"></script>
+    <script src="js/layer-panel.js?v=2"></script>
+    <script src="js/advanced-features.js?v=2"></script>
+    <script src="js/drag-resize.js?v=2"></script>
+    <script src="js/presets.js?v=2"></script>
+    <script src="js/export.js?v=2"></script>
+    <script src="js/labels.js?v=2"></script>
+    <script src="js/annotations.js?v=2"></script>
+    <script src="js/brand-kit.js?v=2"></script>
+    <script src="js/bezel-renderer.js?v=2"></script>
+    <script src="js/keyboard.js?v=2"></script>
+    <script src="js/dynamic-screens.js?v=5"></script>
+    <script src="js/init.js?v=2"></script>
 </body>
 
 </html>

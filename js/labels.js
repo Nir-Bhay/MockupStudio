@@ -28,7 +28,10 @@ const updateLabelStyle = rafThrottle(function () {
 });
 
 function toggleLabelsVisible() {
-  const visible = $('lblVisible').checked;
+  const btn = $('tLvAll');
+  if (!btn) return;
+  btn.classList.toggle('on');
+  const visible = btn.classList.contains('on');
   document.querySelectorAll('.ph').forEach(el => {
     el.style.display = visible ? '' : 'none';
   });

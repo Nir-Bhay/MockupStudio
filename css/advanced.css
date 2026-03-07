@@ -277,6 +277,7 @@
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out)
 }
+
 .btn-none:hover {
   background: var(--danger, #f44);
   color: #fff;
@@ -293,7 +294,10 @@
   padding: 5px 0 2px;
   margin-top: 3px
 }
-.bg-cat-label:first-child { margin-top: 0 }
+
+.bg-cat-label:first-child {
+  margin-top: 0
+}
 
 /* ==================== SOLID COLOR PRESETS ==================== */
 .solid-presets {
@@ -302,6 +306,7 @@
   gap: 3px;
   margin-top: 5px
 }
+
 .solid-sw {
   aspect-ratio: 1;
   border-radius: 4px;
@@ -309,8 +314,15 @@
   border: 1.5px solid transparent;
   transition: all var(--duration-fast) var(--ease-out)
 }
-.solid-sw:hover { transform: scale(1.15); box-shadow: var(--shadow-sm) }
-.solid-sw.act { border-color: var(--fg-primary) }
+
+.solid-sw:hover {
+  transform: scale(1.15);
+  box-shadow: var(--shadow-sm)
+}
+
+.solid-sw.act {
+  border-color: var(--fg-primary)
+}
 
 /* ==================== ANNOTATIONS ==================== */
 .anno-marker {
@@ -669,4 +681,372 @@
   top: 15%;
   width: 3px;
   height: 7%
+}
+
+/* ==================== WATCH BEZEL ==================== */
+.bezel-watch {
+  border-radius: 50% !important;
+  padding: 8px !important
+}
+
+.bezel-watch .p-scr,
+.bezel-watch .t-scr {
+  border-radius: 50% !important
+}
+
+.bz-crown {
+  position: absolute;
+  right: -6px;
+  top: 35%;
+  width: 6px;
+  height: 16%;
+  background: linear-gradient(to right, #666, #888, #666);
+  border-radius: 0 3px 3px 0;
+  z-index: 31
+}
+
+.bz-crown-btn {
+  position: absolute;
+  right: -5px;
+  top: 55%;
+  width: 5px;
+  height: 6%;
+  background: linear-gradient(to right, #555, #777, #555);
+  border-radius: 0 2px 2px 0;
+  z-index: 31
+}
+
+.bz-watch-band-top {
+  position: absolute;
+  top: -18px;
+  left: 20%;
+  right: 20%;
+  height: 18px;
+  background: linear-gradient(to bottom, #333, #444);
+  border-radius: 4px 4px 0 0;
+  z-index: -1
+}
+
+.bz-watch-band-bottom {
+  position: absolute;
+  bottom: -18px;
+  left: 20%;
+  right: 20%;
+  height: 18px;
+  background: linear-gradient(to top, #333, #444);
+  border-radius: 0 0 4px 4px;
+  z-index: -1
+}
+
+/* ==================== MONITOR BEZEL ==================== */
+.bezel-monitor {
+  border-radius: 6px 6px 0 0 !important;
+  margin-bottom: 45px
+}
+
+.bz-monitor-chin {
+  position: absolute;
+  bottom: -22px;
+  left: -1px;
+  right: -1px;
+  height: 22px;
+  background: linear-gradient(to bottom, #e0e0e0, #ccc);
+  border-radius: 0 0 6px 6px;
+  border-top: 1px solid rgba(0, 0, 0, .05)
+}
+
+.bz-monitor-stand-neck {
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16%;
+  height: 14px;
+  background: linear-gradient(to right, #bbb, #ddd, #bbb);
+  border-radius: 0
+}
+
+.bz-monitor-stand-base {
+  position: absolute;
+  bottom: -42px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32%;
+  height: 6px;
+  background: linear-gradient(to bottom, #ccc, #aaa);
+  border-radius: 3px
+}
+
+.bz-monitor-logo {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ddd, #bbb);
+  border: 1px solid rgba(0, 0, 0, .08)
+}
+
+/* ==================== LAPTOP BEZEL ==================== */
+.bezel-laptop {
+  border-radius: 8px 8px 0 0 !important;
+  margin-bottom: 20px
+}
+
+.bz-laptop-hinge {
+  position: absolute;
+  bottom: -4px;
+  left: -4px;
+  right: -4px;
+  height: 4px;
+  background: linear-gradient(to bottom, #999, #777);
+  border-radius: 0 0 2px 2px
+}
+
+.bz-laptop-base {
+  position: absolute;
+  bottom: -20px;
+  left: -8%;
+  right: -8%;
+  height: 16px;
+  background: linear-gradient(to bottom, #c0c0c0 0%, #d5d5d5 30%, #b0b0b0 100%);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .15)
+}
+
+.bz-laptop-trackpad {
+  position: absolute;
+  bottom: -17px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18%;
+  height: 10px;
+  background: rgba(0, 0, 0, .04);
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, .06)
+}
+
+/* ==================== SHADOW SCENE OVERLAY ==================== */
+.ms-shadow-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 12px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  mix-blend-mode: multiply;
+  transition: filter .3s var(--ease-out)
+}
+
+/* ==================== SHADOW SCENE GRID ==================== */
+.shadow-scene-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-top: 4px
+}
+
+.shadow-scene-sw {
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-primary);
+  cursor: pointer;
+  background-color: #f5f0eb;
+  background-size: cover;
+  background-position: center;
+  transition: all var(--duration-fast) var(--ease-out);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2px;
+  overflow: hidden;
+  position: relative
+}
+
+.shadow-scene-sw span {
+  font-size: 7px;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .6);
+  font-weight: 500;
+  background: rgba(0, 0, 0, .3);
+  padding: 1px 4px;
+  border-radius: 2px;
+  backdrop-filter: blur(4px)
+}
+
+.shadow-scene-sw:hover {
+  border-color: var(--accent);
+  transform: scale(1.05)
+}
+
+.shadow-scene-sw.act {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft)
+}
+
+/* ==================== CORNER PRESETS ==================== */
+.corner-presets {
+  display: flex;
+  gap: 3px;
+  margin: 2px 0 6px;
+  flex-wrap: wrap
+}
+
+.corner-presets .corner-preset {
+  font-size: 7px !important;
+  padding: 2px 6px !important;
+  border-radius: 3px
+}
+
+.corner-presets .corner-preset.act {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent-border)
+}
+
+/* ==================== SHADOW PRESETS ==================== */
+.shadow-presets {
+  display: flex;
+  gap: 3px;
+  margin: 2px 0 6px;
+  flex-wrap: wrap
+}
+
+.shadow-presets .shadow-preset {
+  font-size: 7px !important;
+  padding: 2px 6px !important;
+  border-radius: 3px
+}
+
+.shadow-presets .shadow-preset.act {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent-border)
+}
+
+/* ==================== BG FIT BUTTONS ==================== */
+.bg-fit-btn {
+  font-size: 8px !important;
+  padding: 2px 6px !important
+}
+
+.bg-fit-btn.act {
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  border-color: var(--accent-border) !important
+}
+
+/* ==================== THEME CARD ENHANCEMENTS ==================== */
+.theme-card {
+  position: relative;
+  overflow: hidden
+}
+
+.theme-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, .05), transparent);
+  pointer-events: none;
+  border-radius: inherit
+}
+
+/* ==================== ENHANCED BG GALLERY ==================== */
+.bg-gallery-sw {
+  position: relative;
+  overflow: hidden
+}
+
+.bg-gallery-sw::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, .3));
+  pointer-events: none;
+  border-radius: inherit
+}
+
+/* ==================== SCENES TAB (per-frame shadows) ==================== */
+.scene-sec {
+  padding: 0
+}
+
+.scene-sec-t {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--fg-primary);
+  display: flex;
+  align-items: center;
+}
+
+.scene-presets {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.scene-preset-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-primary);
+  background: var(--bg-root);
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--fg-secondary);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.scene-preset-btn:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-softer);
+  color: var(--fg-primary);
+}
+
+.scene-preset-btn.act {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.scene-preset-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.scene-combo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-primary);
+  background: var(--bg-root);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.scene-combo-card:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-softer);
+}
+
+.scene-combo-n {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--fg-primary);
+}
+
+.scene-combo-d {
+  font-size: 7px;
+  color: var(--fg-tertiary);
 }

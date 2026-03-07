@@ -31,8 +31,8 @@ function buildRulers() {
   let rh = document.createElement('div');
   rh.id = 'rulerH'; rh.className = 'ruler ruler-h'; rh.style.display = 'none';
   let marks = '';
-  for (let i = 0; i <= 960; i += 50) {
-    marks += `<span class="ruler-mark" style="left:${(i / 960) * 100}%">${i}</span>`;
+  for (let i = 0; i <= CANVAS_W; i += 50) {
+    marks += `<span class="ruler-mark" style="left:${(i / CANVAS_W) * 100}%">${i}</span>`;
   }
   rh.innerHTML = marks;
   cv.appendChild(rh);
@@ -41,8 +41,8 @@ function buildRulers() {
   let rv = document.createElement('div');
   rv.id = 'rulerV'; rv.className = 'ruler ruler-v'; rv.style.display = 'none';
   marks = '';
-  for (let i = 0; i <= 600; i += 50) {
-    marks += `<span class="ruler-mark" style="top:${(i / 600) * 100}%">${i}</span>`;
+  for (let i = 0; i <= CANVAS_H; i += 50) {
+    marks += `<span class="ruler-mark" style="top:${(i / CANVAS_H) * 100}%">${i}</span>`;
   }
   rv.innerHTML = marks;
   cv.appendChild(rv);
@@ -129,10 +129,10 @@ function loadProject() {
 // ==================== AUTO-LAYOUT / DISTRIBUTE ====================
 function distributeFrames(axis) {
   if (!S.freeMode) { toast('Enable free mode first'); return }
-  const frames = ['bf', 'pf', 'tf'].filter(id => !$(id).classList.contains('hidden'));
+  const frames = ['bf', 'pf', 'tf', 'pf2'].filter(id => $(id) && !$(id).classList.contains('hidden'));
   if (frames.length < 2) return;
 
-  const msW = 960, msH = 600;
+  const msW = CANVAS_W, msH = CANVAS_H;
 
   if (axis === 'h') {
     // Distribute horizontally with equal spacing
@@ -164,10 +164,10 @@ function distributeFrames(axis) {
 
 function alignFrames(alignment) {
   if (!S.freeMode) { toast('Enable free mode first'); return }
-  const frames = ['bf', 'pf', 'tf'].filter(id => !$(id).classList.contains('hidden'));
+  const frames = ['bf', 'pf', 'tf', 'pf2'].filter(id => $(id) && !$(id).classList.contains('hidden'));
   if (frames.length < 1) return;
 
-  const msW = 960, msH = 600;
+  const msW = CANVAS_W, msH = CANVAS_H;
 
   frames.forEach(id => {
     const fr = $(id);
@@ -206,7 +206,16 @@ const BG_PATTERNS = {
   plusses: { n: 'Plus', cat: 'basic', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M12 8v8M8 12h8' stroke='${c}' stroke-width='1.2' stroke-linecap='round' fill='none'/></svg>` },
   arrows: { n: 'Arrows', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M10 4v12M6 8l4-4 4 4' stroke='${c}' stroke-width='.5' fill='none'/></svg>` },
   leaf: { n: 'Leaf', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M6 18Q6 6 18 6Q18 18 6 18z' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
-  trellis: { n: 'Trellis', cat: 'geo', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M0 0l20 20M20 0L0 20' stroke='${c}' stroke-width='.4'/></svg>` }
+  trellis: { n: 'Trellis', cat: 'geo', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M0 0l20 20M20 0L0 20' stroke='${c}' stroke-width='.4'/></svg>` },
+  // Additional patterns from reference images
+  flower: { n: 'Flower', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><circle cx='12' cy='8' r='3' fill='none' stroke='${c}' stroke-width='.4'/><circle cx='8' cy='14' r='3' fill='none' stroke='${c}' stroke-width='.4'/><circle cx='16' cy='14' r='3' fill='none' stroke='${c}' stroke-width='.4'/><circle cx='12' cy='12' r='1.5' fill='${c}'/></svg>` },
+  octagon: { n: 'Octagon', cat: 'geo', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M8 2h8l6 6v8l-6 6H8l-6-6V8z' fill='none' stroke='${c}' stroke-width='.4'/></svg>` },
+  herring: { n: 'Herringbone', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='12'><path d='M0 6l5-6 5 6 5-6 5 6M0 12l5-6 5 6 5-6 5 6' stroke='${c}' stroke-width='.5' fill='none'/></svg>` },
+  scales: { n: 'Scales', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M0 10 Q10 0 20 10' fill='none' stroke='${c}' stroke-width='.5'/><path d='M-10 20 Q0 10 10 20' fill='none' stroke='${c}' stroke-width='.5'/><path d='M10 20 Q20 10 30 20' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  maze: { n: 'Maze', cat: 'geo', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M0 0h10v10H0M10 10h10v10H10' fill='none' stroke='${c}' stroke-width='.5'/></svg>` },
+  weave: { n: 'Weave', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path d='M0 0h8v8H0M8 8h8v8H8' fill='${c}'/></svg>` },
+  hearts: { n: 'Hearts', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M12 20 Q4 14 4 9 Q4 5 8 5 Q10 5 12 8 Q14 5 16 5 Q20 5 20 9 Q20 14 12 20z' fill='none' stroke='${c}' stroke-width='.4'/></svg>` },
+  spiral: { n: 'Spiral', cat: 'fancy', svg: (c) => `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M12 12 Q12 6 18 6 Q24 6 24 12 Q24 20 14 20 Q6 20 6 12 Q6 4 14 2' fill='none' stroke='${c}' stroke-width='.4'/></svg>` }
 };
 
 // Pattern state defaults
@@ -556,7 +565,29 @@ const BG_GALLERY = [
   { n: 'Mystic', css: 'linear-gradient(135deg,#757f9a,#d7dde8)', cat: 'vivid' },
   { n: 'Dusk', css: 'linear-gradient(135deg,#2c3e50,#fd746c)', cat: 'vivid' },
   { n: 'Berry', css: 'linear-gradient(135deg,#8360c3,#2ebf91)', cat: 'vivid' },
-  { n: 'Lava', css: 'linear-gradient(135deg,#f12711,#f5af19)', cat: 'vivid' }
+  { n: 'Lava', css: 'linear-gradient(135deg,#f12711,#f5af19)', cat: 'vivid' },
+  // Desktop wallpaper styles
+  { n: 'Sequoia', css: 'linear-gradient(180deg,#1a1a2e,#16213e,#533483,#e94560)', cat: 'desktop' },
+  { n: 'Sonoma', css: 'linear-gradient(160deg,#87ceeb,#b0c4de,#708090,#455a64)', cat: 'desktop' },
+  { n: 'Ventura', css: 'linear-gradient(135deg,#0f2027,#203a43,#2c5364,#4ca1af)', cat: 'desktop' },
+  { n: 'Monterey', css: 'radial-gradient(ellipse at 50% 30%,#667eea 0%,#764ba2 40%,#1a1a2e 100%)', cat: 'desktop' },
+  { n: 'Big Sur', css: 'linear-gradient(180deg,#f093fb,#f5576c,#ffd200,#00f260)', cat: 'desktop' },
+  // Dreamy mystic
+  { n: 'Silk Rose', css: 'linear-gradient(135deg,#fecfef,#e8b4d9,#f5d5e7)', cat: 'mystic' },
+  { n: 'Silk Mint', css: 'linear-gradient(135deg,#a7f3d0,#99f6e4,#d5f5f0)', cat: 'mystic' },
+  { n: 'Silk Lilac', css: 'linear-gradient(135deg,#c9b1ff,#e0c3fc,#d8b4fe)', cat: 'mystic' },
+  { n: 'Silk Sky', css: 'linear-gradient(135deg,#bae6fd,#c7d2fe,#e0e7ff)', cat: 'mystic' },
+  { n: 'Cotton Candy', css: 'linear-gradient(135deg,#fce7f3,#dbeafe,#ede9fe)', cat: 'mystic' },
+  // Earth tones
+  { n: 'Sahara Dune', css: 'linear-gradient(145deg,#d4a574,#c49264,#a67a52)', cat: 'earth' },
+  { n: 'Desert Sand', css: 'linear-gradient(145deg,#f5e6d3,#e8d5c0,#ceb39a)', cat: 'earth' },
+  { n: 'Red Clay', css: 'linear-gradient(145deg,#8b4513,#a0522d,#deb887)', cat: 'earth' },
+  { n: 'Deep Ocean', css: 'linear-gradient(180deg,#006994,#00a5cf,#40bfef)', cat: 'earth' },
+  { n: 'Mountain', css: 'linear-gradient(180deg,#87ceeb,#708090,#2f4f4f)', cat: 'earth' },
+  // Cosmic
+  { n: 'Nebula', css: 'radial-gradient(at 30% 40%,#4c1d95 0,transparent 50%),radial-gradient(at 70% 60%,#1e1b4b 0,transparent 50%),#020617', cat: 'cosmic' },
+  { n: 'Deep Space', css: 'radial-gradient(at 50% 50%,#1e293b 0%,#020617 50%,#000 100%)', cat: 'cosmic' },
+  { n: 'Stardust', css: 'radial-gradient(at 30% 20%,#312e81 0,transparent 30%),radial-gradient(at 80% 80%,#1e1b4b 0,transparent 30%),#000', cat: 'cosmic' }
 ];
 
 function renderBgGallery() {
@@ -637,4 +668,215 @@ function applyCustomGradient() {
   $('ms').style.background = css;
   S.bgCustom = css; S.bg = null;
   toast('✓ Custom gradient applied');
+}
+
+// ==================== SHADOW SCENES (B&W overlay shadows) ====================
+const SHADOW_SCENES = {
+  blinds: { n: 'Window Blinds', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><defs><linearGradient id='b' x1='0' y1='0' x2='0' y2='1'>${Array.from({ length: 12 }, (_, i) => `<stop offset='${i * 8.33}%' stop-color='${i % 2 === 0 ? "rgba(0,0,0," + o + ")" : "transparent"}'/>`).join('')}</linearGradient></defs><rect width='200' height='200' fill='url(#b)' transform='rotate(-15,100,100)'/></svg>` },
+  palm: { n: 'Palm Leaves', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><g fill='rgba(0,0,0,${o})'><path d='M150 0 Q120 80 50 120 Q100 100 150 150 Q200 100 250 120 Q180 80 150 0z'/><path d='M80 100 Q60 160 30 200 Q80 180 120 220 Q100 160 80 100z'/><path d='M220 80 Q240 150 270 200 Q230 170 190 210 Q200 140 220 80z'/></g></svg>` },
+  window: { n: 'Window Frame', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><rect width='400' height='400' fill='rgba(0,0,0,${o * .3})'/><rect x='40' y='40' width='150' height='150' fill='rgba(255,255,255,${o})' rx='2'/><rect x='210' y='40' width='150' height='150' fill='rgba(255,255,255,${o})' rx='2'/><rect x='40' y='210' width='150' height='150' fill='rgba(255,255,255,${o})' rx='2'/><rect x='210' y='210' width='150' height='150' fill='rgba(255,255,255,${o})' rx='2'/></svg>` },
+  diagonal: { n: 'Diagonal Light', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>${Array.from({ length: 10 }, (_, i) => `<rect x='${i * 30 - 50}' y='-20' width='12' height='260' fill='rgba(0,0,0,${o})' transform='rotate(30,100,100)'/>`).join('')}</svg>` },
+  plant: { n: 'Plant Shadow', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><g fill='rgba(0,0,0,${o})'><ellipse cx='100' cy='60' rx='40' ry='25' transform='rotate(-20,100,60)'/><ellipse cx='180' cy='100' rx='35' ry='22' transform='rotate(15,180,100)'/><ellipse cx='130' cy='160' rx='45' ry='20' transform='rotate(-10,130,160)'/><ellipse cx='200' cy='200' rx='30' ry='18' transform='rotate(25,200,200)'/><ellipse cx='80' cy='230' rx='38' ry='22' transform='rotate(-15,80,230)'/><path d='M140 50 Q145 120 150 250' stroke='rgba(0,0,0,${o})' stroke-width='3' fill='none'/><path d='M160 80 Q165 140 170 240' stroke='rgba(0,0,0,${o})' stroke-width='2' fill='none'/></g></svg>` },
+  tropical: { n: 'Tropical', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><g fill='rgba(0,0,0,${o})'><path d='M0 150 Q80 100 150 0 Q120 100 200 150 Q120 140 0 150z'/><path d='M300 100 Q230 130 200 200 Q220 140 180 100 Q240 110 300 100z'/><path d='M100 300 Q130 230 200 200 Q140 230 100 180 Q110 240 100 300z'/></g></svg>` },
+  mesh: { n: 'Net Shadow', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><path d='M0 0l100 100M100 0L0 100M50 0v100M0 50h100' stroke='rgba(0,0,0,${o})' stroke-width='8' fill='none'/></svg>` },
+  arch: { n: 'Arch Window', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400'><rect width='300' height='400' fill='rgba(0,0,0,${o * .3})'/><path d='M50 400 V180 Q50 50 150 50 Q250 50 250 180 V400 Z' fill='rgba(255,255,255,${o})'/><line x1='150' y1='50' x2='150' y2='400' stroke='rgba(0,0,0,${o * .3})' stroke-width='6'/><line x1='50' y1='250' x2='250' y2='250' stroke='rgba(0,0,0,${o * .3})' stroke-width='6'/></svg>` },
+  softLight: { n: 'Soft Light', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><defs><radialGradient id='sl'><stop offset='0%' stop-color='rgba(255,255,255,${o * .5})'/><stop offset='100%' stop-color='transparent'/></radialGradient></defs><rect width='400' height='400' fill='rgba(0,0,0,${o * .15})'/><circle cx='120' cy='100' r='180' fill='url(#sl)'/></svg>` },
+  geometric: { n: 'Geometric', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><polygon points='100,10 190,80 160,180 40,180 10,80' fill='none' stroke='rgba(0,0,0,${o})' stroke-width='15'/><polygon points='100,40 165,90 145,160 55,160 35,90' fill='none' stroke='rgba(0,0,0,${o * .5})' stroke-width='8'/></svg>` },
+  // Additional shadow scenes from reference images
+  lattice: { n: 'Lattice', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>${Array.from({length:7},(_, i)=>`<line x1='${i*35}' y1='0' x2='${i*35}' y2='200' stroke='rgba(0,0,0,${o})' stroke-width='10'/>`).join('')}${Array.from({length:7},(_, i)=>`<line x1='0' y1='${i*35}' x2='200' y2='${i*35}' stroke='rgba(0,0,0,${o})' stroke-width='10'/>`).join('')}</svg>` },
+  monstera: { n: 'Monstera', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><g fill='rgba(0,0,0,${o})'><path d='M150 20 Q100 60 80 120 Q90 90 120 80 Q100 120 110 180 Q130 130 150 120 Q170 130 190 180 Q200 120 180 80 Q210 90 220 120 Q200 60 150 20z'/><circle cx='120' cy='110' r='12' fill='rgba(255,255,255,.8)'/><circle cx='180' cy='110' r='12' fill='rgba(255,255,255,.8)'/><circle cx='150' cy='140' r='10' fill='rgba(255,255,255,.8)'/><path d='M60 200 Q40 240 50 280 Q60 250 80 230 Q70 260 80 290 Q100 260 90 230 Q100 250 60 200z'/><path d='M230 180 Q250 220 240 260 Q230 230 210 220 Q220 250 210 280 Q200 240 200 210 Q190 230 230 180z'/></g></svg>` },
+  blindsWide: { n: 'Wide Blinds', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>${Array.from({length:6},(_, i)=>`<rect x='-20' y='${i*35}' width='240' height='18' fill='rgba(0,0,0,${o})'/>`).join('')}</svg>` },
+  circles: { n: 'Circle Bokeh', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><circle cx='60' cy='50' r='40' fill='rgba(0,0,0,${o*.2})'/><circle cx='200' cy='80' r='55' fill='rgba(0,0,0,${o*.15})'/><circle cx='130' cy='200' r='65' fill='rgba(0,0,0,${o*.18})'/><circle cx='250' cy='230' r='35' fill='rgba(0,0,0,${o*.25})'/><circle cx='40' cy='260' r='45' fill='rgba(0,0,0,${o*.12})'/><circle cx='280' cy='130' r='30' fill='rgba(0,0,0,${o*.2})'/></svg>` },
+  curtain: { n: 'Curtain', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400'><rect width='300' height='400' fill='rgba(0,0,0,${o*.2})'/><path d='M0 0 Q30 200 0 400 L130 400 Q100 200 130 0 Z' fill='rgba(255,255,255,${o*.8})'/><path d='M170 0 Q200 200 170 400 L300 400 Q270 200 300 0 Z' fill='rgba(255,255,255,${o*.8})'/></svg>` },
+  fence: { n: 'Fence', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>${Array.from({length:8},(_, i)=>`<rect x='${i*28}' y='0' width='14' height='200' fill='rgba(0,0,0,${o})'/>`).join('')}<rect x='0' y='30' width='200' height='8' fill='rgba(0,0,0,${o})'/><rect x='0' y='100' width='200' height='8' fill='rgba(0,0,0,${o})'/><rect x='0' y='170' width='200' height='8' fill='rgba(0,0,0,${o})'/></svg>` },
+  leaves: { n: 'Leaf Scatter', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><g fill='rgba(0,0,0,${o})'><ellipse cx='80' cy='40' rx='30' ry='12' transform='rotate(-30,80,40)'/><ellipse cx='220' cy='70' rx='25' ry='10' transform='rotate(20,220,70)'/><ellipse cx='150' cy='120' rx='35' ry='13' transform='rotate(-15,150,120)'/><ellipse cx='60' cy='180' rx='28' ry='11' transform='rotate(35,60,180)'/><ellipse cx='240' cy='200' rx='32' ry='12' transform='rotate(-25,240,200)'/><ellipse cx='130' cy='260' rx='30' ry='10' transform='rotate(10,130,260)'/><ellipse cx='200' cy='280' rx='22' ry='9' transform='rotate(-40,200,280)'/></g></svg>` },
+  spotlight2: { n: 'Dual Light', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><defs><radialGradient id='sp1'><stop offset='0%' stop-color='rgba(255,255,255,${o*.6})'/><stop offset='100%' stop-color='transparent'/></radialGradient><radialGradient id='sp2'><stop offset='0%' stop-color='rgba(255,255,255,${o*.4})'/><stop offset='100%' stop-color='transparent'/></radialGradient></defs><rect width='400' height='400' fill='rgba(0,0,0,${o*.2})'/><ellipse cx='100' cy='80' rx='160' ry='120' fill='url(#sp1)'/><ellipse cx='300' cy='320' rx='140' ry='100' fill='url(#sp2)'/></svg>` },
+  stripe: { n: 'Stripes', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>${Array.from({length:15},(_, i)=>`<rect x='${i*15-10}' y='-20' width='6' height='240' fill='rgba(0,0,0,${o})' transform='rotate(45,100,100)'/>`).join('')}</svg>` },
+  tree: { n: 'Tree Shadow', svg: (o) => `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400'><g fill='rgba(0,0,0,${o})'><path d='M140 400 L140 200 Q140 180 130 170 Q80 140 60 100 Q50 70 80 50 Q100 30 130 50 Q140 10 160 10 Q180 10 190 50 Q220 30 240 50 Q270 70 260 100 Q240 140 190 170 Q180 180 180 200 L180 400 Z'/><ellipse cx='50' cy='280' rx='30' ry='15' transform='rotate(-20,50,280)'/><ellipse cx='250' cy='300' rx='25' ry='12' transform='rotate(15,250,300)'/></g></svg>` }
+};
+
+S.shadowScene = S.shadowScene || null;
+S.shadowOpacity = S.shadowOpacity != null ? S.shadowOpacity : 30;
+S.shadowBlur = S.shadowBlur != null ? S.shadowBlur : 0;
+
+function setShadowScene(key) {
+  pushHistory();
+  S.shadowScene = key;
+  _applyShadowScene();
+  toast('✓ Shadow: ' + (SHADOW_SCENES[key] ? SHADOW_SCENES[key].n : 'None'));
+}
+
+function clearShadowScene() {
+  pushHistory();
+  S.shadowScene = null;
+  const el = $('msShadowOv');
+  if (el) { el.style.backgroundImage = 'none'; el.style.display = 'none'; }
+  toast('✕ Shadow scene removed');
+}
+
+function setShadowOpacity(v) {
+  S.shadowOpacity = parseInt(v);
+  if ($('rvShadowOp')) $('rvShadowOp').textContent = v + '%';
+  _applyShadowScene();
+}
+
+function setShadowSceneBlur(v) {
+  S.shadowBlur = parseInt(v);
+  if ($('rvShadowBl')) $('rvShadowBl').textContent = v + 'px';
+  _applyShadowScene();
+}
+
+function _applyShadowScene() {
+  let el = $('msShadowOv');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'msShadowOv';
+    el.className = 'ms-shadow-overlay';
+    $('ms').appendChild(el);
+  }
+  if (!S.shadowScene || !SHADOW_SCENES[S.shadowScene]) {
+    el.style.display = 'none';
+    return;
+  }
+  const scene = SHADOW_SCENES[S.shadowScene];
+  const opacity = (S.shadowOpacity || 30) / 100;
+  const svg = scene.svg(opacity);
+  const encoded = btoa(unescape(encodeURIComponent(svg)));
+  el.style.display = 'block';
+  el.style.backgroundImage = `url("data:image/svg+xml;base64,${encoded}")`;
+  el.style.backgroundSize = scene === SHADOW_SCENES.mesh ? '100px 100px' : 'cover';
+  el.style.backgroundRepeat = scene === SHADOW_SCENES.mesh ? 'repeat' : 'no-repeat';
+  el.style.filter = S.shadowBlur ? `blur(${S.shadowBlur}px)` : 'none';
+}
+
+function renderShadowSceneGrid() {
+  const grid = $('shadowSceneGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  Object.entries(SHADOW_SCENES).forEach(([key, scene]) => {
+    const sw = document.createElement('div');
+    sw.className = 'shadow-scene-sw' + (S.shadowScene === key ? ' act' : '');
+    sw.title = scene.n;
+    // Create a small preview
+    const svg = scene.svg(0.3);
+    const encoded = btoa(unescape(encodeURIComponent(svg)));
+    sw.style.backgroundImage = `url("data:image/svg+xml;base64,${encoded}")`;
+    sw.style.backgroundSize = 'cover';
+    sw.onclick = () => {
+      setShadowScene(key);
+      grid.querySelectorAll('.shadow-scene-sw').forEach(s => s.classList.remove('act'));
+      sw.classList.add('act');
+    };
+    const lbl = document.createElement('span');
+    lbl.textContent = scene.n;
+    sw.appendChild(lbl);
+    grid.appendChild(sw);
+  });
+}
+
+// ==================== CURVATURE / CORNER PRESETS ====================
+const CORNER_PRESETS = [
+  { n: 'Sharp', v: 0 },
+  { n: 'Subtle', v: 4 },
+  { n: 'Rounded', v: 10 },
+  { n: 'Smooth', v: 16 },
+  { n: 'Pill', v: 24 },
+  { n: 'Circle', v: 28 }
+];
+
+function renderCornerPresets() {
+  const el = $('cornerPresets');
+  if (!el) return;
+  el.innerHTML = '';
+  CORNER_PRESETS.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-s corner-preset' + (S.round == p.v ? ' act' : '');
+    btn.textContent = p.n;
+    btn.onclick = () => {
+      $('rngR').value = p.v;
+      setRnd(p.v);
+      el.querySelectorAll('.corner-preset').forEach(b => b.classList.remove('act'));
+      btn.classList.add('act');
+    };
+    el.appendChild(btn);
+  });
+}
+
+// ==================== SHADOW PRESETS ====================
+const SHADOW_PRESETS = [
+  { n: 'None', v: 0 },
+  { n: 'Subtle', v: 20 },
+  { n: 'Medium', v: 50 },
+  { n: 'Heavy', v: 80 },
+  { n: 'Ultra', v: 100 }
+];
+
+function renderShadowPresets() {
+  const el = $('shadowPresets');
+  if (!el) return;
+  el.innerHTML = '';
+  SHADOW_PRESETS.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-s shadow-preset' + (S.shadow == p.v ? ' act' : '');
+    btn.textContent = p.n;
+    btn.onclick = () => {
+      $('rngS').value = p.v;
+      setShd(p.v);
+      el.querySelectorAll('.shadow-preset').forEach(b => b.classList.remove('act'));
+      btn.classList.add('act');
+    };
+    el.appendChild(btn);
+  });
+}
+
+// ==================== BACKGROUND FIT OPTIONS ====================
+S.bgFit = S.bgFit || 'cover';
+
+function setBgFit(mode) {
+  S.bgFit = mode;
+  const bgImg = $('msBgImg');
+  if (bgImg) {
+    bgImg.style.objectFit = mode;
+    if (mode === 'tile') {
+      bgImg.style.objectFit = 'none';
+    }
+  }
+  document.querySelectorAll('.bg-fit-btn').forEach(b => b.classList.toggle('act', b.dataset.fit === mode));
+  toast('✓ BG fit: ' + mode);
+}
+
+// ==================== MORE SOLID COLOR PRESETS (expanded) ====================
+const SOLID_COLORS_EXTENDED = [
+  // Neutrals
+  '#ffffff', '#fafafa', '#f5f5f5', '#e5e5e5', '#d4d4d4', '#a3a3a3', '#737373', '#525252', '#404040', '#262626', '#171717', '#000000',
+  // Reds
+  '#fef2f2', '#fecaca', '#fca5a5', '#f87171', '#ef4444', '#dc2626', '#b91c1c', '#991b1b',
+  // Oranges
+  '#fff7ed', '#fed7aa', '#fdba74', '#fb923c', '#f97316', '#ea580c', '#c2410c',
+  // Yellows
+  '#fefce8', '#fef08a', '#fde047', '#facc15', '#eab308', '#ca8a04',
+  // Greens
+  '#f0fdf4', '#bbf7d0', '#86efac', '#4ade80', '#22c55e', '#16a34a', '#15803d',
+  // Blues
+  '#eff6ff', '#bfdbfe', '#93c5fd', '#60a5fa', '#3b82f6', '#2563eb', '#1d4ed8',
+  // Purples
+  '#faf5ff', '#e9d5ff', '#d8b4fe', '#c084fc', '#a855f7', '#9333ea', '#7e22ce',
+  // Pinks
+  '#fdf2f8', '#fbcfe8', '#f9a8d4', '#f472b6', '#ec4899', '#db2777', '#be185d',
+  // Brand Colors
+  '#c9956b', '#f5f0eb', '#1a1a1e', '#667eea', '#764ba2'
+];
+
+function renderSolidPresetsExtended() {
+  const el = $('solidPresets');
+  if (!el) return;
+  el.innerHTML = '';
+  SOLID_COLORS_EXTENDED.forEach(c => {
+    const sw = document.createElement('div');
+    sw.className = 'solid-sw';
+    sw.style.background = c;
+    sw.title = c;
+    sw.onclick = () => { setBgCustom(c); if ($('custBg')) $('custBg').value = c };
+    el.appendChild(sw);
+  });
 }

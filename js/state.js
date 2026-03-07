@@ -5,6 +5,12 @@ const S = {
   frameColor: '#ffffff', round: 10, shadow: 50, phoneScale: 100, pad: 5, bgBlur: 0,
   showNav: true, showIsland: true, showRefl: false, showWm: true, showBgOv: false,
   freeMode: false, patternResize: false, zoom: 1,
+  frameShadows: {
+    bf: { depth: 50, x: 0, y: 0, blur: 0, spread: 0, color: '#000000', opacity: 20, preset: null },
+    pf: { depth: 50, x: 0, y: 0, blur: 0, spread: 0, color: '#000000', opacity: 25, preset: null },
+    tf: { depth: 50, x: 0, y: 0, blur: 0, spread: 0, color: '#000000', opacity: 20, preset: null },
+    pf2: { depth: 50, x: 0, y: 0, blur: 0, spread: 0, color: '#000000', opacity: 25, preset: null }
+  },
   imgFit: { desktop: 'cover', mobile: 'cover', tablet: 'cover', mobile2: 'cover' },
   imgScale: { desktop: 100, mobile: 100, tablet: 100, mobile2: 100 },
   imgOff: { desktop: { x: 0, y: 0 }, mobile: { x: 0, y: 0 }, tablet: { x: 0, y: 0 }, mobile2: { x: 0, y: 0 } },
@@ -34,6 +40,7 @@ function _snapshotState() {
     phoneScale: S.phoneScale, pad: S.pad, bgBlur: S.bgBlur,
     showNav: S.showNav, showIsland: S.showIsland, showRefl: S.showRefl, showWm: S.showWm, showBgOv: S.showBgOv,
     freeMode: S.freeMode, patternResize: S.patternResize,
+    frameShadows: _deepClone(S.frameShadows),
     imgFit: _deepClone(S.imgFit), imgScale: _deepClone(S.imgScale),
     imgOff: _deepClone(S.imgOff), imgRad: _deepClone(S.imgRad),
     imgRotation: _deepClone(S.imgRotation), imgOpacity: _deepClone(S.imgOpacity),
@@ -47,8 +54,10 @@ function _snapshotState() {
     gradStops: _deepClone(S.gradStops || [{ pos: 0, color: '#c9956b' }, { pos: 100, color: '#1a1a1e' }]),
     gradType: S.gradType || 'linear', gradAngle: S.gradAngle || 145,
     animBg: S.animBg || false, bgPattern: S.bgPattern || null,
-    bgImage: S.bgImage || null,
-    patColor: S.patColor || '#969696', patOpacity: S.patOpacity != null ? S.patOpacity : 15, patScale: S.patScale || 100
+    bgImage: S.bgImage || null, bgImgUrl: S.bgImgUrl || null,
+    patColor: S.patColor || '#969696', patOpacity: S.patOpacity != null ? S.patOpacity : 15, patScale: S.patScale || 100,
+    shadowScene: S.shadowScene || null, shadowOpacity: S.shadowOpacity != null ? S.shadowOpacity : 30, shadowBlur: S.shadowBlur || 0,
+    bgFit: S.bgFit || 'cover'
   });
 }
 
@@ -132,6 +141,21 @@ function _restoreState(snap) {
 
   // Re-render dynamic elements
   _restoreDynamic();
+
+  // Restore shadow scene overlay
+  if (typeof _applyShadowScene === 'function') {
+    _applyShadowScene();
+    if ($('shadowSceneOp')) $('shadowSceneOp').value = S.shadowOpacity != null ? S.shadowOpacity : 30;
+    if ($('rvShadowOp')) $('rvShadowOp').textContent = (S.shadowOpacity != null ? S.shadowOpacity : 30) + '%';
+    if ($('shadowSceneBl')) $('shadowSceneBl').value = S.shadowBlur || 0;
+    if ($('rvShadowBl')) $('rvShadowBl').textContent = (S.shadowBlur || 0) + 'px';
+  }
+
+  // Restore BG fit
+  if (typeof setBgFit === 'function' && S.bgFit) setBgFit(S.bgFit);
+
+  // Restore per-frame shadows
+  if (typeof applyAllFrameShadows === 'function') applyAllFrameShadows();
 
   // Free mode UI
   $('freeBtn').style.background = S.freeMode ? 'rgba(201,149,107,.2)' : '';
@@ -306,7 +330,86 @@ const BGS = {
   glacier: 'linear-gradient(145deg,#e0eafc,#cfdef3,#dfe9f3)',
   dusk: 'linear-gradient(145deg,#2c3e50,#4ca1af)',
   cherry: 'linear-gradient(145deg,#eb3349,#f45c43)',
-  steel: 'linear-gradient(145deg,#333333,#555555,#444444)'
+  steel: 'linear-gradient(145deg,#333333,#555555,#444444)',
+  // === MYSTIC (soft flowing dreamy) ===
+  mysticRose: 'linear-gradient(135deg,#fecfef,#e8b4d9,#d4a5c7,#f5d5e7)',
+  mysticLilac: 'linear-gradient(160deg,#c9b1ff,#e0c3fc,#f0d9ff,#d8b4fe)',
+  mysticMint: 'linear-gradient(135deg,#a7f3d0,#99f6e4,#c4f1e0,#d5f5f0)',
+  mysticPeach: 'linear-gradient(150deg,#fed7aa,#fecaca,#fde2e4,#ffecd2)',
+  mysticSky: 'linear-gradient(135deg,#bae6fd,#c7d2fe,#ddd6fe,#e0e7ff)',
+  mysticCoral: 'linear-gradient(145deg,#fca5a5,#fda4af,#f9a8d4,#fbcfe8)',
+  mysticTeal: 'linear-gradient(140deg,#5eead4,#67e8f9,#a5f3fc,#99f6e4)',
+  mysticLavender: 'linear-gradient(155deg,#c4b5fd,#d8b4fe,#f0abfc,#e9d5ff)',
+  mysticSunrise: 'linear-gradient(135deg,#fed7aa,#fbbf24,#f9a8d4,#c084fc)',
+  mysticOcean: 'linear-gradient(140deg,#67e8f9,#6ee7b7,#a5b4fc,#93c5fd)',
+  mysticBlush: 'linear-gradient(130deg,#fce7f3,#ffe4e6,#fff1f2,#fdf2f8)',
+  mysticForest: 'linear-gradient(160deg,#6ee7b7,#86efac,#a7f3d0,#bbf7d0)',
+  mysticDream: 'linear-gradient(135deg,#e9d5ff,#fce7f3,#dbeafe,#ede9fe)',
+  mysticGlow: 'linear-gradient(145deg,#fef08a,#fde68a,#fbbf24,#fcd34d)',
+  mysticIce: 'linear-gradient(135deg,#e0f2fe,#dbeafe,#ede9fe,#f0f9ff)',
+  mysticWine: 'linear-gradient(140deg,#881337,#9f1239,#be185d,#a21caf)',
+  // === ABSTRACT (macOS-inspired flowing) ===
+  absOrange: 'linear-gradient(135deg,#ea580c,#f97316,#fb923c,#fdba74)',
+  absPurple: 'linear-gradient(135deg,#7c3aed,#8b5cf6,#a78bfa,#6d28d9)',
+  absBlue: 'linear-gradient(135deg,#2563eb,#3b82f6,#60a5fa,#1d4ed8)',
+  absPink: 'linear-gradient(135deg,#db2777,#ec4899,#f472b6,#be185d)',
+  absGreen: 'linear-gradient(135deg,#059669,#10b981,#34d399,#047857)',
+  absRed: 'linear-gradient(135deg,#dc2626,#ef4444,#f87171,#b91c1c)',
+  absTeal: 'linear-gradient(135deg,#0d9488,#14b8a6,#2dd4bf,#0f766e)',
+  absYellow: 'linear-gradient(135deg,#d97706,#f59e0b,#fbbf24,#b45309)',
+  absIndigo: 'linear-gradient(135deg,#4338ca,#4f46e5,#6366f1,#3730a3)',
+  absCyan: 'linear-gradient(135deg,#0891b2,#06b6d4,#22d3ee,#0e7490)',
+  absFuchsia: 'linear-gradient(135deg,#a21caf,#c026d3,#d946ef,#86198f)',
+  absLime: 'linear-gradient(135deg,#65a30d,#84cc16,#a3e635,#4d7c0f)',
+  // === RADIANT (soft luminance center glow) ===
+  radPink: 'radial-gradient(ellipse at 50% 50%,#fce7f3,#fbcfe8,#f9a8d4,#f472b6)',
+  radCoral: 'radial-gradient(ellipse at 50% 40%,#fff1f2,#ffe4e6,#fecdd3,#fda4af)',
+  radPurple: 'radial-gradient(ellipse at 50% 50%,#f5f3ff,#ede9fe,#ddd6fe,#c4b5fd)',
+  radOrange: 'radial-gradient(ellipse at 50% 50%,#fff7ed,#ffedd5,#fed7aa,#fdba74)',
+  radBlue: 'radial-gradient(ellipse at 50% 50%,#eff6ff,#dbeafe,#bfdbfe,#93c5fd)',
+  radGreen: 'radial-gradient(ellipse at 50% 50%,#ecfdf5,#d1fae5,#a7f3d0,#6ee7b7)',
+  radGold: 'radial-gradient(ellipse at 50% 50%,#fffbeb,#fef3c7,#fde68a,#fcd34d)',
+  radLilac: 'radial-gradient(ellipse at 50% 50%,#fdf4ff,#fae8ff,#f5d0fe,#e879f9)',
+  radTeal: 'radial-gradient(ellipse at 50% 50%,#f0fdfa,#ccfbf1,#99f6e4,#5eead4)',
+  radRose: 'radial-gradient(ellipse at 50% 50%,#fff1f2,#fce7f3,#fbcfe8,#f9a8d4)',
+  radSky: 'radial-gradient(ellipse at 50% 50%,#f0f9ff,#e0f2fe,#bae6fd,#7dd3fc)',
+  radMint: 'radial-gradient(ellipse at 50% 50%,#f0fdf4,#dcfce7,#bbf7d0,#86efac)',
+  // === COSMIC (deep space) ===
+  cosmicNebula: 'radial-gradient(at 30% 40%,#4c1d95 0,transparent 50%),radial-gradient(at 70% 60%,#1e1b4b 0,transparent 50%),radial-gradient(at 50% 20%,#312e81 0,transparent 40%),#020617',
+  cosmicVoid: 'radial-gradient(at 50% 50%,#0f172a 0,#020617 50%,#000000 100%)',
+  cosmicAurora: 'radial-gradient(at 20% 30%,#059669 0,transparent 50%),radial-gradient(at 80% 70%,#7c3aed 0,transparent 50%),radial-gradient(at 50% 100%,#0ea5e9 0,transparent 40%),#020617',
+  cosmicEmber: 'radial-gradient(at 40% 60%,#9f1239 0,transparent 40%),radial-gradient(at 70% 30%,#78350f 0,transparent 40%),radial-gradient(at 20% 80%,#7c2d12 0,transparent 40%),#0a0a0a',
+  cosmicDeep: 'radial-gradient(at 50% 50%,#1e293b 0%,#0f172a 40%,#020617 70%,#000000 100%)',
+  cosmicStars: 'radial-gradient(at 30% 20%,#312e81 0,transparent 30%),radial-gradient(at 80% 80%,#1e1b4b 0,transparent 30%),radial-gradient(at 60% 40%,#1e3a5f 0,transparent 30%),#000000',
+  // === EARTH (nature-inspired) ===
+  earthDesert: 'linear-gradient(145deg,#d4a574,#c49264,#b8845d,#a67a52)',
+  earthSand: 'linear-gradient(145deg,#f5e6d3,#e8d5c0,#dbc4ad,#ceb39a)',
+  earthClay: 'linear-gradient(145deg,#8b4513,#a0522d,#cd853f,#deb887)',
+  earthStone: 'linear-gradient(145deg,#708090,#778899,#8899aa,#b0c4de)',
+  earthOcean: 'linear-gradient(145deg,#006994,#008cba,#00a5cf,#40bfef)',
+  earthMountain: 'linear-gradient(180deg,#87ceeb,#b0c4de,#708090,#465362,#2f4f4f)',
+  earthSunset: 'linear-gradient(180deg,#1a1a2e,#16213e,#533483,#e94560,#f38181)',
+  earthDune: 'linear-gradient(160deg,#c2b280,#d2c290,#e2d2a0,#c9b87c)',
+  // === GLASS (frosted morphism) ===
+  glassClear: 'linear-gradient(135deg,rgba(255,255,255,.25),rgba(255,255,255,.05))',
+  glassFrost: 'linear-gradient(135deg,rgba(200,210,255,.2),rgba(255,255,255,.1),rgba(200,200,255,.15))',
+  glassDark: 'linear-gradient(135deg,rgba(15,15,30,.9),rgba(30,30,50,.8),rgba(20,20,40,.85))',
+  glassRose: 'linear-gradient(135deg,rgba(255,200,220,.2),rgba(255,180,200,.1),rgba(255,220,230,.15))',
+  glassOcean: 'linear-gradient(135deg,rgba(100,180,255,.15),rgba(80,160,240,.1),rgba(120,200,255,.12))',
+  glassViolet: 'linear-gradient(135deg,rgba(150,100,255,.15),rgba(180,130,255,.1),rgba(200,150,255,.12))',
+  // === TEXTURE-INSPIRED (CSS gradients mimicking textures) ===
+  txWood: 'repeating-linear-gradient(90deg,#deb887 0px,#d2b48c 3px,#c8a87c 6px,#be9a6c 8px,#d4a76a 10px,#deb887 12px)',
+  txMarble: 'linear-gradient(135deg,#f5f5f5 0%,#e8e8e8 25%,#f0f0f0 50%,#e0e0e0 75%,#f8f8f8 100%),linear-gradient(45deg,rgba(180,180,180,.1) 0%,transparent 40%,rgba(200,200,200,.1) 60%,transparent 100%)',
+  txConcrete: 'linear-gradient(145deg,#b0b0b0,#a0a0a0,#c0c0c0,#b5b5b5)',
+  txFabric: 'repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px),repeating-linear-gradient(90deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px),#e8e0d8',
+  txLeather: 'linear-gradient(145deg,#654321,#5c3d1e,#704214,#8b6914)',
+  txPaper: 'linear-gradient(145deg,#f5f0e8,#ede5d8,#f0e8dd,#e8e0d0)',
+  txDenim: 'linear-gradient(145deg,#4169e1,#3a5fcd,#3b5fc0,#436eb0)',
+  txBrick: 'repeating-linear-gradient(0deg,#a0522d 0px,#a0522d 20px,#8b4513 20px,#8b4513 22px),repeating-linear-gradient(90deg,#a0522d 0px,#a0522d 40px,#8b4513 40px,#8b4513 42px)',
+  txGold: 'linear-gradient(145deg,#ffd700,#daa520,#b8860b,#ffd700,#daa520)',
+  txSilver: 'linear-gradient(145deg,#c0c0c0,#d8d8d8,#a9a9a9,#c0c0c0,#e0e0e0)',
+  txRoseGold: 'linear-gradient(145deg,#b76e79,#c78283,#d4918e,#e8a598)',
+  txBronze: 'linear-gradient(145deg,#cd7f32,#b87333,#a0652a,#cd7f32)'
 };
 
 // ==================== LAYOUTS ====================
@@ -343,10 +446,46 @@ const LAYS = {
   appleStyle: { n: 'Apple', cat: 'showcase', bf: { l: 10, t: 5, w: 80, h: 70 }, pf: { l: 38, t: 65, w: 14, h: 32 }, tf: null },
   showcase: { n: 'Showcase', cat: 'showcase', bf: { l: 12, t: 2, w: 76, h: 62 }, pf: { l: 3, t: 50, w: 13, h: 48 }, tf: { l: 62, t: 50, w: 24, h: 40 } },
   panorama: { n: 'Panorama', cat: 'showcase', bf: { l: 2, t: 15, w: 96, h: 70 }, pf: null, tf: null },
-  triScreen: { n: 'Tri Screen', cat: 'showcase', bf: { l: 18, t: 5, w: 64, h: 72 }, pf: { l: 2, t: 20, w: 14, h: 60 }, tf: { l: 84, t: 20, w: 14, h: 52 } }
+  triScreen: { n: 'Tri Screen', cat: 'showcase', bf: { l: 18, t: 5, w: 64, h: 72 }, pf: { l: 2, t: 20, w: 14, h: 60 }, tf: { l: 84, t: 20, w: 14, h: 52 } },
+  // === FULLSCREEN ===
+  fullPhone: { n: 'Full Phone', cat: 'fullscreen', bf: null, pf: { l: 28, t: 2, w: 25, h: 96 }, tf: null },
+  fullTablet: { n: 'Full Tablet', cat: 'fullscreen', bf: null, pf: null, tf: { l: 10, t: 5, w: 80, h: 90 } },
+  fullBrowser: { n: 'Full Browser', cat: 'fullscreen', bf: { l: 2, t: 2, w: 96, h: 96 }, pf: null, tf: null },
+  // === ISOMETRIC ===
+  isoLeft: { n: 'Iso Left', cat: 'isometric', bf: { l: 10, t: 10, w: 70, h: 75 }, pf: { l: 72, t: 25, w: 16, h: 55 }, tf: null },
+  isoRight: { n: 'Iso Right', cat: 'isometric', bf: { l: 20, t: 10, w: 70, h: 75 }, pf: { l: 5, t: 25, w: 16, h: 55 }, tf: null },
+  isoTriple: { n: 'Iso Triple', cat: 'isometric', bf: { l: 15, t: 5, w: 60, h: 65 }, pf: { l: 2, t: 35, w: 14, h: 50 }, tf: { l: 78, t: 35, w: 20, h: 45 } },
+  // === EDITORIAL ===
+  editorial1: { n: 'Side Art', cat: 'editorial', bf: { l: 40, t: 5, w: 55, h: 85 }, pf: null, tf: null },
+  editorial2: { n: 'Top Heavy', cat: 'editorial', bf: { l: 5, t: 2, w: 90, h: 55 }, pf: { l: 30, t: 60, w: 14, h: 38 }, tf: null },
+  editorial3: { n: 'Split', cat: 'editorial', bf: { l: 2, t: 5, w: 48, h: 90 }, pf: { l: 52, t: 20, w: 16, h: 60 }, tf: null },
+  editMag: { n: 'Magazine 2', cat: 'editorial', bf: { l: 2, t: 2, w: 55, h: 96 }, pf: { l: 60, t: 5, w: 16, h: 45 }, tf: { l: 60, t: 55, w: 36, h: 40 } },
+  // === SOCIAL ===
+  story: { n: 'Story', cat: 'social', bf: null, pf: { l: 32, t: 2, w: 20, h: 96 }, tf: null },
+  socialDuo: { n: 'Social Duo', cat: 'social', bf: null, pf: { l: 10, t: 5, w: 18, h: 90 }, tf: null, pf2: { l: 60, t: 5, w: 18, h: 90 } },
+  socialGrid: { n: 'Social Grid', cat: 'social', bf: null, pf: { l: 5, t: 5, w: 17, h: 88 }, tf: null, pf2: { l: 25, t: 5, w: 17, h: 88 } },
+  postView: { n: 'Post View', cat: 'social', bf: { l: 5, t: 5, w: 90, h: 90 }, pf: null, tf: null },
+  // === LAPTOP (uses browser frame with laptop proportions) ===
+  laptop: { n: 'Laptop', cat: 'laptop', bf: { l: 10, t: 10, w: 80, h: 65 }, pf: null, tf: null },
+  laptopOpen: { n: 'Laptop Open', cat: 'laptop', bf: { l: 5, t: 5, w: 90, h: 70 }, pf: null, tf: null },
+  laptopSide: { n: 'Laptop Side', cat: 'laptop', bf: { l: 15, t: 8, w: 70, h: 60 }, pf: { l: 70, t: 35, w: 16, h: 55 }, tf: null },
+  laptopDuo: { n: 'Laptop+Phone', cat: 'laptop', bf: { l: 3, t: 8, w: 65, h: 65 }, pf: { l: 72, t: 20, w: 16, h: 60 }, tf: null },
+  laptopTriple: { n: 'Laptop+Devices', cat: 'laptop', bf: { l: 10, t: 3, w: 75, h: 55 }, pf: { l: 5, t: 58, w: 14, h: 40 }, tf: { l: 55, t: 58, w: 30, h: 38 } },
+  // === MONITOR (uses browser frame with monitor proportions) ===
+  monitor: { n: 'Monitor', cat: 'monitor', bf: { l: 8, t: 3, w: 84, h: 80 }, pf: null, tf: null },
+  monitorWide: { n: 'Ultrawide', cat: 'monitor', bf: { l: 3, t: 10, w: 94, h: 60 }, pf: null, tf: null },
+  monitorDual: { n: 'Dual Monitor', cat: 'monitor', bf: { l: 2, t: 8, w: 48, h: 70 }, pf: null, tf: { l: 52, t: 8, w: 46, h: 70 } },
+  monitorSetup: { n: 'Desk Setup', cat: 'monitor', bf: { l: 12, t: 3, w: 76, h: 60 }, pf: { l: 3, t: 40, w: 12, h: 42 }, tf: { l: 78, t: 25, w: 20, h: 40 } },
+  // === WATCH (uses phone frame styled as watch) ===
+  watch: { n: 'Watch', cat: 'watch', bf: null, pf: { l: 38, t: 15, w: 14, h: 70 }, tf: null },
+  watchDuo: { n: 'Watch Duo', cat: 'watch', bf: null, pf: { l: 20, t: 15, w: 14, h: 70 }, tf: null, pf2: { l: 55, t: 15, w: 14, h: 70 } },
+  watchPhone: { n: 'Watch+Phone', cat: 'watch', bf: null, pf: { l: 15, t: 10, w: 12, h: 65 }, tf: null, pf2: { l: 50, t: 8, w: 20, h: 84 } },
+  // === FLOATING ===
+  floatCenter: { n: 'Float Center', cat: 'creative', bf: { l: 15, t: 15, w: 70, h: 70 }, pf: null, tf: null },
+  floatStack: { n: 'Float Stack', cat: 'creative', bf: { l: 10, t: 5, w: 60, h: 55 }, pf: { l: 50, t: 30, w: 16, h: 50 }, tf: { l: 65, t: 45, w: 25, h: 40 } }
 };
 
-const LAY_CATS = { single: 'Single Device', multi: 'Multi Device', creative: 'Creative', bento: 'Bento Grid', showcase: 'Showcase' };
+const LAY_CATS = { single: 'Single Device', multi: 'Multi Device', creative: 'Creative', bento: 'Bento Grid', showcase: 'Showcase', fullscreen: 'Fullscreen', isometric: 'Isometric', editorial: 'Editorial', social: 'Social', laptop: 'Laptop', monitor: 'Monitor', watch: 'Watch' };
 
 // ==================== THEMES ====================
 const THEMES = [
@@ -366,7 +505,17 @@ const THEMES = [
   { id: 'gradient', n: 'Gradient', bg: 'linear-gradient(135deg,#667eea,#764ba2)' },
   { id: 'clay', n: 'Clay', bg: 'linear-gradient(135deg,#f0ece1,#dfd8c8)' },
   { id: 'editorial', n: 'Editorial', bg: 'linear-gradient(135deg,#f4f4f0,#e8e8e4)' },
-  { id: 'wireframe', n: 'Wireframe', bg: 'linear-gradient(135deg,#ffffff,#f5f5f5)' }
+  { id: 'wireframe', n: 'Wireframe', bg: 'linear-gradient(135deg,#ffffff,#f5f5f5)' },
+  { id: 'aurora', n: 'Aurora', bg: 'linear-gradient(135deg,#0f172a,#1e1b4b,#312e81)' },
+  { id: 'sunset', n: 'Sunset', bg: 'linear-gradient(135deg,#f97316,#ec4899,#8b5cf6)' },
+  { id: 'ocean', n: 'Ocean', bg: 'linear-gradient(135deg,#0ea5e9,#06b6d4,#14b8a6)' },
+  { id: 'forest', n: 'Forest', bg: 'linear-gradient(135deg,#064e3b,#065f46,#047857)' },
+  { id: 'midnight', n: 'Midnight', bg: 'linear-gradient(135deg,#020617,#0f172a,#1e293b)' },
+  { id: 'rose', n: 'Rose', bg: 'linear-gradient(135deg,#fce7f3,#fbcfe8,#f9a8d4)' },
+  { id: 'monochrome', n: 'Mono', bg: 'linear-gradient(135deg,#27272a,#3f3f46,#52525b)' },
+  { id: 'luxury', n: 'Luxury', bg: 'linear-gradient(135deg,#1c1917,#292524,#44403c)' },
+  { id: 'paper', n: 'Paper', bg: 'linear-gradient(135deg,#faf8f5,#f5f0e8,#ede5d8)' },
+  { id: 'holographic', n: 'Holo', bg: 'linear-gradient(135deg,#c084fc,#818cf8,#22d3ee,#a3e635)' }
 ];
 
 // ==================== TEMPLATES ====================
@@ -410,7 +559,59 @@ const TPLS = [
   // === Bento ===
   { n: 'Bento Layout', s: 'Grid showcase', cat: 'bento', lay: 'bento2x2', bg: 'midnight', theme: 'dark' },
   { n: 'Bento Feature', s: 'Feature grid', cat: 'bento', lay: 'bento3', bg: 'charcoal', theme: 'glass' },
-  { n: 'Bento Asym', s: 'Asymmetric grid', cat: 'bento', lay: 'bentoAsym', bg: 'noir', theme: 'neo' }
+  { n: 'Bento Asym', s: 'Asymmetric grid', cat: 'bento', lay: 'bentoAsym', bg: 'noir', theme: 'neo' },
+  // === Social Media ===
+  { n: 'IG Story', s: 'Story format', cat: 'social', lay: 'story', bg: 'mysticRose', theme: 'default' },
+  { n: 'IG Post', s: 'Square post', cat: 'social', lay: 'postView', bg: 'mysticLilac', theme: 'glass' },
+  { n: 'Social Twin', s: 'Side by side', cat: 'social', lay: 'socialDuo', bg: 'mysticSky', theme: 'default' },
+  { n: 'TikTok', s: 'Vertical video', cat: 'social', lay: 'fullPhone', bg: 'cosmicNebula', theme: 'dark' },
+  // === Presentation ===
+  { n: 'Pitch Deck', s: 'Investor pitch', cat: 'presentation', lay: 'center', bg: 'midnight', theme: 'glass' },
+  { n: 'Case Study', s: 'UX case study', cat: 'presentation', lay: 'editorial1', bg: 'snow', theme: 'minimal' },
+  { n: 'Feature Show', s: 'Product features', cat: 'presentation', lay: 'isoLeft', bg: 'meshPurple', theme: 'neo' },
+  { n: 'Comparison', s: 'Before/after', cat: 'presentation', lay: 'editorial3', bg: 'cream', theme: 'clay' },
+  // === Dribbble/Behance ===
+  { n: 'Dribbble Shot', s: 'Portfolio shot', cat: 'dribbble', lay: 'heroFloat', bg: 'radPink', theme: 'default' },
+  { n: 'Behance Hero', s: 'Project cover', cat: 'dribbble', lay: 'hero', bg: 'cosmicDeep', theme: 'dark' },
+  { n: 'Minimal Shot', s: 'Clean & simple', cat: 'dribbble', lay: 'minCenter', bg: 'glassFrost', theme: 'frosted' },
+  { n: 'Bold Shot', s: 'Statement piece', cat: 'dribbble', lay: 'panorama', bg: 'absIndigo', theme: 'neo' },
+  // === Isometric ===
+  { n: 'Iso Mockup', s: '3D perspective', cat: 'isometric', lay: 'isoLeft', bg: 'meshAurora', theme: 'glass' },
+  { n: 'Iso Right', s: 'Right angle 3D', cat: 'isometric', lay: 'isoRight', bg: 'cosmicNebula', theme: 'dark' },
+  { n: 'Iso Triple', s: 'Triple device 3D', cat: 'isometric', lay: 'isoTriple', bg: 'meshTwilight', theme: 'neo' },
+  // === Glass/Frosted ===
+  { n: 'Glass Card', s: 'Frosted glass', cat: 'glass', lay: 'center', bg: 'glassFrost', theme: 'frosted' },
+  { n: 'Glass Dark', s: 'Dark glass', cat: 'glass', lay: 'heroFloat', bg: 'glassDark', theme: 'glass' },
+  { n: 'Glass Rose', s: 'Pink frosted', cat: 'glass', lay: 'duo', bg: 'glassRose', theme: 'frosted' },
+  // === Texture ===
+  { n: 'Wood Desk', s: 'Natural wood', cat: 'texture', lay: 'hero', bg: 'txWood', theme: 'default' },
+  { n: 'Marble', s: 'Marble surface', cat: 'texture', lay: 'center', bg: 'txMarble', theme: 'minimal' },
+  { n: 'Gold Luxury', s: 'Premium gold', cat: 'texture', lay: 'heroFloat', bg: 'txGold', theme: 'luxury' },
+  { n: 'Paper Note', s: 'Paper texture', cat: 'texture', lay: 'minCenter', bg: 'txPaper', theme: 'paper' },
+  // === Laptop ===
+  { n: 'Laptop Hero', s: 'MacBook mockup', cat: 'laptop', lay: 'laptop', bg: 'charcoal', theme: 'dark' },
+  { n: 'Laptop Open', s: 'Open laptop', cat: 'laptop', lay: 'laptopOpen', bg: 'midnight', theme: 'glass' },
+  { n: 'Laptop+Phone', s: 'Responsive pair', cat: 'laptop', lay: 'laptopDuo', bg: 'meshPurple', theme: 'neo' },
+  { n: 'Laptop Desk', s: 'Desk scene', cat: 'laptop', lay: 'laptopSide', bg: 'txWood', theme: 'default' },
+  { n: 'Full Setup', s: 'All devices', cat: 'laptop', lay: 'laptopTriple', bg: 'noir', theme: 'dark' },
+  // === Monitor ===
+  { n: 'iMac View', s: 'Desktop monitor', cat: 'monitor', lay: 'monitor', bg: 'snow', theme: 'minimal' },
+  { n: 'Ultrawide', s: 'Wide display', cat: 'monitor', lay: 'monitorWide', bg: 'charcoal', theme: 'dark' },
+  { n: 'Dual Monitor', s: 'Two screens', cat: 'monitor', lay: 'monitorDual', bg: 'midnight', theme: 'glass' },
+  { n: 'Desk Setup', s: 'Multi-device desk', cat: 'monitor', lay: 'monitorSetup', bg: 'meshOcean', theme: 'neo' },
+  // === Watch ===
+  { n: 'Watch App', s: 'Smartwatch UI', cat: 'watch', lay: 'watch', bg: 'noir', theme: 'dark' },
+  { n: 'Watch Duo', s: 'Two watch faces', cat: 'watch', lay: 'watchDuo', bg: 'cosmicDeep', theme: 'dark' },
+  { n: 'Watch+Phone', s: 'Watch companion', cat: 'watch', lay: 'watchPhone', bg: 'meshPurple', theme: 'neo' },
+  // === Cosmic ===
+  { n: 'Cosmic App', s: 'Space themed', cat: 'social', lay: 'fullPhone', bg: 'cosmicNebula', theme: 'dark' },
+  { n: 'Aurora Shot', s: 'Northern lights', cat: 'presentation', lay: 'hero', bg: 'cosmicAurora', theme: 'aurora' },
+  // === Earth ===
+  { n: 'Desert View', s: 'Sandy tones', cat: 'texture', lay: 'center', bg: 'earthDesert', theme: 'default' },
+  { n: 'Mountain Air', s: 'Mountain scene', cat: 'texture', lay: 'panorama', bg: 'earthMountain', theme: 'frosted' },
+  // === Mystic ===
+  { n: 'Dream Flow', s: 'Dreamy gradient', cat: 'glass', lay: 'heroFloat', bg: 'mysticDream', theme: 'frosted' },
+  { n: 'Soft Glow', s: 'Gentle radiance', cat: 'glass', lay: 'center', bg: 'radPink', theme: 'pastel' }
 ];
 
-const TPL_CATS = { saas: 'SaaS', portfolio: 'Portfolio', mobile: 'Mobile', dashboard: 'Dashboard', ecommerce: 'E-Commerce', startup: 'Startup', agency: 'Agency', multidevice: 'Multi-Device', bento: 'Bento' };
+const TPL_CATS = { saas: 'SaaS', portfolio: 'Portfolio', mobile: 'Mobile', dashboard: 'Dashboard', ecommerce: 'E-Commerce', startup: 'Startup', agency: 'Agency', multidevice: 'Multi-Device', bento: 'Bento', social: 'Social', presentation: 'Presentation', dribbble: 'Dribbble', isometric: 'Isometric', glass: 'Glass', texture: 'Texture', laptop: 'Laptop', monitor: 'Monitor', watch: 'Watch' };

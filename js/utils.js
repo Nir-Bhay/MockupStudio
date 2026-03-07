@@ -13,8 +13,8 @@ let CANVAS_W = 960;
 let CANVAS_H = 600;
 
 function setCanvasSize(w, h) {
-  CANVAS_W = w;
-  CANVAS_H = h;
+  CANVAS_W = parseInt(w);
+  CANVAS_H = parseInt(h);
   const ms = $('ms');
   if (ms) {
     ms.style.width = w + 'px';
@@ -22,7 +22,7 @@ function setCanvasSize(w, h) {
   }
   const stSize = $('stSize');
   if (stSize) stSize.value = w + 'x' + h;
-  if (typeof centerStage === 'function') centerStage();
+  if (typeof zFit === 'function') zFit();
   if (!S.freeMode && typeof applyLayout === 'function') applyLayout();
 }
 

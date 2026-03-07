@@ -24,8 +24,21 @@ function buildUI() {
   // Backgrounds — categorized gradient grid
   renderCategorizedBgGrid();
 
-  // Solid color presets
-  renderSolidPresets();
+  // Solid color presets (extended palette)
+  if (typeof renderSolidPresetsExtended === 'function') renderSolidPresetsExtended();
+  else renderSolidPresets();
+
+  // Shadow scene grid (Scenes tab)
+  if (typeof renderShadowSceneGrid === 'function') renderShadowSceneGrid();
+
+  // Corner presets
+  if (typeof renderCornerPresets === 'function') renderCornerPresets();
+
+  // Shadow presets
+  if (typeof renderShadowPresets === 'function') renderShadowPresets();
+
+  // Scene presets (per-frame shadows)
+  if (typeof renderScenePresets === 'function') renderScenePresets();
 
   // Themes
   const tg = $('themeGrid'); tg.innerHTML = '';
@@ -71,7 +84,14 @@ const BGS_CATEGORIES = {
   vibrant: { n: 'Vibrant', keys: ['neon', 'electric', 'plasma', 'prism', 'rainbow'] },
   mesh: { n: 'Mesh', keys: ['meshPurple', 'meshGreen', 'meshWarm', 'meshAurora', 'meshRose', 'meshOcean', 'meshSunset', 'meshMint', 'meshTwilight'] },
   studio: { n: 'Studio', keys: ['studioBlack', 'studioWhite', 'studioGray', 'studioCream', 'studioSlate', 'studioCool'] },
-  premium: { n: 'Premium', keys: ['velvet', 'copper', 'titanium', 'champagne', 'glacier', 'dusk', 'cherry', 'steel'] }
+  premium: { n: 'Premium', keys: ['velvet', 'copper', 'titanium', 'champagne', 'glacier', 'dusk', 'cherry', 'steel'] },
+  mystic: { n: 'Mystic', keys: ['mysticRose', 'mysticLilac', 'mysticMint', 'mysticPeach', 'mysticSky', 'mysticCoral', 'mysticTeal', 'mysticLavender', 'mysticSunrise', 'mysticOcean', 'mysticBlush', 'mysticForest', 'mysticDream', 'mysticGlow', 'mysticIce', 'mysticWine'] },
+  abstract: { n: 'Abstract', keys: ['absOrange', 'absPurple', 'absBlue', 'absPink', 'absGreen', 'absRed', 'absTeal', 'absYellow', 'absIndigo', 'absCyan', 'absFuchsia', 'absLime'] },
+  radiant: { n: 'Radiant', keys: ['radPink', 'radCoral', 'radPurple', 'radOrange', 'radBlue', 'radGreen', 'radGold', 'radLilac', 'radTeal', 'radRose', 'radSky', 'radMint'] },
+  cosmic: { n: 'Cosmic', keys: ['cosmicNebula', 'cosmicVoid', 'cosmicAurora', 'cosmicEmber', 'cosmicDeep', 'cosmicStars'] },
+  earthTones: { n: 'Earth', keys: ['earthDesert', 'earthSand', 'earthClay', 'earthStone', 'earthOcean', 'earthMountain', 'earthSunset', 'earthDune'] },
+  glass: { n: 'Glass', keys: ['glassClear', 'glassFrost', 'glassDark', 'glassRose', 'glassOcean', 'glassViolet'] },
+  texture: { n: 'Texture', keys: ['txWood', 'txMarble', 'txConcrete', 'txFabric', 'txLeather', 'txPaper', 'txDenim', 'txBrick', 'txGold', 'txSilver', 'txRoseGold', 'txBronze'] }
 };
 
 function renderCategorizedBgGrid() {

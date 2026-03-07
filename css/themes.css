@@ -433,3 +433,61 @@
     background: transparent !important;
     border: 1.5px solid #2563eb !important
 }
+
+/* ==================== AURORA THEME ==================== */
+.ms.th-aurora .bf { background: rgba(15,23,42,.9)!important; border: 1px solid rgba(99,102,241,.2)!important; box-shadow: 0 20px 60px rgba(99,102,241,.2), 0 0 40px rgba(99,102,241,.1)!important }
+.ms.th-aurora .pf, .ms.th-aurora .tf { background: rgba(15,23,42,.9)!important; border: 1px solid rgba(99,102,241,.2)!important; box-shadow: 0 20px 60px rgba(99,102,241,.15)!important }
+.ms.th-aurora .b-bar { background: rgba(15,23,42,.95)!important }
+.ms.th-aurora .b-nav { background: rgba(15,23,42,.9)!important }
+
+/* ==================== SUNSET THEME ==================== */
+.ms.th-sunset .bf { background: rgba(30,10,10,.85)!important; border: 1px solid rgba(249,115,22,.2)!important; box-shadow: 0 20px 60px rgba(249,115,22,.15), 0 0 40px rgba(236,72,153,.1)!important }
+.ms.th-sunset .pf, .ms.th-sunset .tf { background: rgba(30,10,10,.85)!important; border: 1px solid rgba(249,115,22,.2)!important }
+.ms.th-sunset .b-bar { background: rgba(30,10,10,.95)!important }
+.ms.th-sunset .b-nav { background: rgba(30,10,10,.9)!important }
+
+/* ==================== OCEAN THEME ==================== */
+.ms.th-ocean .bf { background: rgba(8,30,50,.85)!important; border: 1px solid rgba(14,165,233,.15)!important; box-shadow: 0 20px 60px rgba(14,165,233,.15)!important }
+.ms.th-ocean .pf, .ms.th-ocean .tf { background: rgba(8,30,50,.85)!important; border: 1px solid rgba(14,165,233,.15)!important }
+.ms.th-ocean .b-bar { background: rgba(8,30,50,.95)!important }
+
+/* ==================== FOREST THEME ==================== */
+.ms.th-forest .bf { background: rgba(6,30,20,.85)!important; border: 1px solid rgba(16,185,129,.15)!important; box-shadow: 0 20px 60px rgba(16,185,129,.12)!important }
+.ms.th-forest .pf, .ms.th-forest .tf { background: rgba(6,30,20,.85)!important; border: 1px solid rgba(16,185,129,.15)!important }
+.ms.th-forest .b-bar { background: rgba(6,30,20,.95)!important }
+
+/* ==================== MIDNIGHT THEME ==================== */
+.ms.th-midnight .bf { background: #020617!important; border: 1px solid rgba(148,163,184,.08)!important; box-shadow: 0 25px 60px rgba(0,0,0,.4)!important }
+.ms.th-midnight .pf, .ms.th-midnight .tf { background: #020617!important; border: 1px solid rgba(148,163,184,.08)!important }
+.ms.th-midnight .b-bar { background: #0f172a!important }
+.ms.th-midnight .b-nav { background: #0f172a!important }
+
+/* ==================== ROSE THEME ==================== */
+.ms.th-rose .bf { background: #fff1f2!important; border: 1px solid rgba(236,72,153,.12)!important; box-shadow: 0 20px 50px rgba(236,72,153,.1)!important }
+.ms.th-rose .pf, .ms.th-rose .tf { background: #fff1f2!important; border: 1px solid rgba(236,72,153,.12)!important }
+.ms.th-rose .b-bar { background: rgba(255,241,242,.95)!important }
+.ms.th-rose .dot-r { background: #f472b6!important } .ms.th-rose .dot-y { background: #fbbf24!important } .ms.th-rose .dot-g { background: #34d399!important }
+
+/* ==================== MONOCHROME THEME ==================== */
+.ms.th-monochrome .bf { background: #27272a!important; border: 1px solid #3f3f46!important; box-shadow: 0 20px 50px rgba(0,0,0,.25)!important }
+.ms.th-monochrome .pf, .ms.th-monochrome .tf { background: #27272a!important; border: 1px solid #3f3f46!important }
+.ms.th-monochrome .b-bar { background: #18181b!important } .ms.th-monochrome .b-nav { background: #18181b!important }
+.ms.th-monochrome .dot-r, .ms.th-monochrome .dot-y, .ms.th-monochrome .dot-g { background: #52525b!important }
+
+/* ==================== LUXURY THEME ==================== */
+.ms.th-luxury .bf { background: #1c1917!important; border: 1px solid rgba(180,140,100,.15)!important; box-shadow: 0 20px 60px rgba(0,0,0,.3), 0 0 30px rgba(180,140,100,.08)!important }
+.ms.th-luxury .pf, .ms.th-luxury .tf { background: #1c1917!important; border: 1px solid rgba(180,140,100,.15)!important }
+.ms.th-luxury .b-bar { background: #292524!important } .ms.th-luxury .b-nav { background: #292524!important }
+.ms.th-luxury .dot-r { background: #c9956b!important } .ms.th-luxury .dot-y { background: #d4a574!important } .ms.th-luxury .dot-g { background: #b8845d!important }
+
+/* ==================== PAPER THEME ==================== */
+.ms.th-paper .bf { background: #faf8f5!important; border: 1px solid #e8e0d0!important; box-shadow: 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)!important }
+.ms.th-paper .pf, .ms.th-paper .tf { background: #faf8f5!important; border: 1px solid #e8e0d0!important }
+.ms.th-paper .b-bar { background: #f5f0e8!important; border-bottom: 1px solid #e8e0d0!important }
+.ms.th-paper .b-nav { background: #faf8f5!important; border-bottom: 1px solid #e8e0d0!important }
+
+/* ==================== HOLOGRAPHIC THEME ==================== */
+.ms.th-holographic .bf { background: rgba(20,10,30,.85)!important; border: 1px solid rgba(192,132,252,.15)!important; box-shadow: 0 20px 60px rgba(129,140,248,.15), 0 0 40px rgba(34,211,238,.1)!important }
+.ms.th-holographic .pf, .ms.th-holographic .tf { background: rgba(20,10,30,.85)!important; border: 1px solid rgba(192,132,252,.15)!important }
+.ms.th-holographic .b-bar { background: rgba(20,10,30,.95)!important }
+.ms.th-holographic .dot-r { background: #c084fc!important } .ms.th-holographic .dot-y { background: #22d3ee!important } .ms.th-holographic .dot-g { background: #a3e635!important }

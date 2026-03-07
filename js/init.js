@@ -16,9 +16,13 @@ function doReset() {
     if (S.showRefl) togRefl(); if (!S.showWm) togWm(); if (S.showBgOv) togBgOv();
     if (S.noiseEnabled) togNoise(); if (S.vignetteEnabled) togVignette(); if (S.animBg) togAnimBg();
 
+    // Clear shadow scene
+    if (typeof clearShadowScene === 'function') clearShadowScene();
+    S.shadowScene = null; S.shadowOpacity = 30; S.shadowBlur = 0; S.bgFit = 'cover';
+
     // Remove all dynamic elements
     _removeAllDynamicElements();
-    _removeAllDynamic();
+    if (typeof _removeAllDynamic === 'function') _removeAllDynamic();
     S.shapes = []; S.selShape = null;
     S.badges = []; S.selBadge = null;
     S.annotations = []; S.selAnno = null;

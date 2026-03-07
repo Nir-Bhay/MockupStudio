@@ -17,7 +17,8 @@ const setImgOff = rafThrottle(function (type, axis, v) {
 });
 const setImgRad = rafThrottle(function (type, v) {
   S.imgRad[type] = parseInt(v);
-  if (type === 'desktop') $('rvDR').textContent = v + 'px';
+  const rvId = { desktop: 'rvDR', mobile: 'rvMR', tablet: 'rvTR', mobile2: 'rvM2R' }[type];
+  if ($(rvId)) $(rvId).textContent = v + 'px';
   applyImgStyle(type);
 });
 
@@ -67,8 +68,8 @@ function autoFitImg(type) {
   S.imgOff[type] = { x: 0, y: 0 };
 
   // Update UI controls
-  const fitSelect = { desktop: 'dFit', mobile: 'mFit', mobile2: 'm2Fit' }[type];
-  if ($(fitSelect)) $(fitSelect).value = fit;
+  const fitSelect = { desktop: 'dFit', mobile: 'mFit', tablet: 'tFit', mobile2: 'm2Fit' }[type];
+  if (fitSelect && $(fitSelect)) $(fitSelect).value = fit;
 
   applyImgStyle(type);
   toast('✓ Auto-fit applied');
@@ -85,7 +86,7 @@ function resetImgControls(type) {
   S.imgFilters[type] = { brightness: 100, contrast: 100, saturation: 100, blur: 0 };
 
   // Update UI controls for the reset type
-  const fitSelect = { desktop: 'dFit', mobile: 'mFit', mobile2: 'm2Fit' }[type];
+  const fitSelect = { desktop: 'dFit', mobile: 'mFit', tablet: 'tFit', mobile2: 'm2Fit' }[type];
   if (fitSelect && $(fitSelect)) $(fitSelect).value = 'cover';
 
   applyImgStyle(type);

@@ -24,6 +24,19 @@ function addDynamicScreen(type) {
     clone.style.left = `calc(50% + ${ox}px)`;
     clone.style.top = `calc(50% + ${oy}px)`;
 
+    // Use the base frame's current size if visible, otherwise use standard reference sizes
+    const _refSize = { desktop: { w: '70%', h: '80%' }, mobile: { w: '18%', h: '82%' }, tablet: { w: '30%', h: '60%' } };
+    const baseVisible = !template.classList.contains('hidden');
+    const bw = template.style.width;
+    const bh = template.style.height;
+    if (baseVisible && bw && bh && bw !== '0px' && bh !== '0px') {
+        clone.style.width = bw;
+        clone.style.height = bh;
+    } else {
+        clone.style.width = _refSize[type].w;
+        clone.style.height = _refSize[type].h;
+    }
+
     if (type === 'desktop' || type === 'tablet') {
         clone.style.transform = 'translate(-50%, -50%)';
     } else {

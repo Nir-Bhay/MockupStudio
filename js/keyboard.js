@@ -1,3 +1,4 @@
+//  Shahar Dil Se Surendra bhai mafi mangta hun
 // ==================== KEYBOARD SHORTCUTS ====================
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;

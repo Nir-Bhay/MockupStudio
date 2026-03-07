@@ -1,3 +1,4 @@
+//  Shahar Dil Se Surendra bhai mafi mangta hun
 // ==================== IMAGE CONTROLS ====================
 function setImgFit(type, v) {
   S.imgFit[type] = v;

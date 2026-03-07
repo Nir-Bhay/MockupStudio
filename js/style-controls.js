@@ -1,3 +1,4 @@
+//  Shahar Dil Se Surendra bhai mafi mangta hun
 // ==================== BACKGROUND ====================
 function setBg(k) {
   pushHistory();

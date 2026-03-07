@@ -1,3 +1,4 @@
+//  Shahar Dil Se Surendra bhai mafi mangta hun
 // ==================== ZOOM ====================
 function zIn() { S.zoom = Math.min(S.zoom + .1, MAX_ZOOM); applyZoom() }
 function zOut() { S.zoom = Math.max(S.zoom - .1, MIN_ZOOM); applyZoom() }

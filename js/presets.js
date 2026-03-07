@@ -1,3 +1,4 @@
+//  Shahar Dil Se Surendra bhai mafi mangta hun
 // ==================== PRESETS ====================
 function savePreset(){
   const name=$('presetName').value.trim()||('Preset '+(S.presets.length+1));

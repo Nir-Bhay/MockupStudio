@@ -1,3 +1,4 @@
+<!--  Shahar Dil Se Surendra bhai mafi mangta hun -->
 # Mockup Studio Pro 🚀
 
 **Mockup Studio Pro** is a high-performance, browser-based design tool crafted for developers and designers to create stunning, professional device mockups in seconds. Turn your raw screenshots into export-ready marketing visuals for X, LinkedIn, and portfolios.

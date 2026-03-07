@@ -1,3 +1,4 @@
+<!--  Shahar Dil Se Surendra bhai mafi mangta hun -->
 # MockupStudio Pro — Comprehensive Implementation Plan
 
 ## TL;DR

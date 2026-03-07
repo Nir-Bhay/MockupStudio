@@ -1,3 +1,4 @@
+//  Shahar Dil Se Surendra bhai mafi mangta hun
 // ==================== LABELS ====================
 function updateLabels() {
   const n = $('lblN').value, d = $('lblD').value, m = $('lblM').value, t = $('lblT').value, u = $('urlTxt').value;

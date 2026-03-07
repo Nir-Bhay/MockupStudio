@@ -1,3 +1,4 @@
+//  Shahar Dil Se Surendra bhai mafi mangta hun
 // ==================== RESET (with confirmation) ====================
 function doReset() {
   confirmAction('Are you sure you want to reset everything? All unsaved work will be lost.', () => {
